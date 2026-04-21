@@ -1,75 +1,53 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 
-const links = [
-  { href: '#home', label: 'Главная' },
-  { href: '#catalog', label: 'Каталог' },
-  { href: '#advantages', label: 'Преимущества' },
-  { href: '#tech', label: 'Технологии' },
-  { href: '#quiz', label: 'Квиз' },
-  { href: '#warranty', label: 'Гарантия' },
-  { href: '#service', label: 'Сервис' },
-  { href: '#about', label: 'О нас' },
-  { href: '#faq', label: 'FAQ' },
-  { href: '#contacts', label: 'Контакты' },
-];
-
-const Header = () => {
+const Header = ({ onLead }: { onLead: (source: string) => void }) => {
   const [open, setOpen] = useState(false);
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-coal/80 backdrop-blur-xl border-b border-coal-light">
+    <header className="fixed top-0 inset-x-0 z-50 bg-coal/85 backdrop-blur-xl border-b border-coal-light">
       <div className="container flex items-center justify-between h-16">
         <a href="#home" className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-ember via-fire to-fire-dark flex items-center justify-center animate-pulse-glow">
-            <Icon name="Flame" size={20} className="text-coal" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ember via-fire to-fire-dark flex items-center justify-center shadow-lg shadow-fire/30">
+            <Icon name="Wheat" size={22} className="text-coal" />
           </div>
-          <span className="font-oswald text-xl font-bold tracking-wide text-white">
-            ПЕЧИ<span className="text-fire-gradient">ПРО</span>
-          </span>
+          <div className="leading-tight">
+            <div className="font-oswald text-xl font-bold tracking-wider text-white">ТЕХНО<span className="text-fire-gradient">СИБ</span></div>
+            <div className="text-[10px] uppercase tracking-[0.2em] text-white/50">печное оборудование</div>
+          </div>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-6">
-          {links.slice(0, 7).map((l) => (
-            <a key={l.href} href={l.href} className="nav-link text-sm text-white/80 hover:text-white">
-              {l.label}
-            </a>
-          ))}
+        <nav className="hidden lg:flex items-center gap-6 text-sm text-white/70">
+          <span className="opacity-40 cursor-default">Меню появится позже</span>
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
-          <a href="tel:+78001234567" className="text-sm text-white/80 hover:text-fire transition">
-            +7 (800) 123-45-67
+        <div className="hidden md:flex items-center gap-4">
+          <a href="tel:+70000000000" className="text-sm text-white/80 hover:text-fire transition flex items-center gap-2">
+            <Icon name="Phone" size={14} />
+            +7 (000) 000-00-00
           </a>
-          <a
-            href="#quiz"
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white text-sm font-semibold hover:shadow-lg hover:shadow-fire/30 transition"
+          <button
+            onClick={() => onLead('header')}
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white text-sm font-semibold hover:shadow-lg hover:shadow-fire/40 transition"
           >
-            Подобрать печь
-          </a>
+            Оставить заявку
+          </button>
         </div>
 
-        <button
-          className="lg:hidden text-white"
-          onClick={() => setOpen(!open)}
-          aria-label="menu"
-        >
+        <button className="md:hidden text-white" onClick={() => setOpen(!open)} aria-label="menu">
           <Icon name={open ? 'X' : 'Menu'} size={24} />
         </button>
       </div>
 
       {open && (
-        <div className="lg:hidden bg-coal-mid border-t border-coal-light animate-fade-in-up">
+        <div className="md:hidden bg-coal-mid border-t border-coal-light animate-fade-in-up">
           <div className="container py-4 flex flex-col gap-3">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="text-white/80 hover:text-fire py-1"
-              >
-                {l.label}
-              </a>
-            ))}
+            <a href="tel:+70000000000" className="text-white/80">+7 (000) 000-00-00</a>
+            <button
+              onClick={() => { setOpen(false); onLead('header'); }}
+              className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white font-semibold"
+            >
+              Оставить заявку
+            </button>
           </div>
         </div>
       )}

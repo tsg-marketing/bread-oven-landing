@@ -1,84 +1,132 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import func2url from '../../../backend/func2url.json';
 
-type Option = { label: string; icon: string };
-type Question = { id: string; q: string; options: Option[] };
+type SingleQ = {
+  id: string;
+  q: string;
+  type: 'single';
+  options: { label: string; icon: string }[];
+};
+type MultiQ = {
+  id: string;
+  q: string;
+  type: 'multi';
+  options: { label: string; icon: string }[];
+};
+type Question = SingleQ | MultiQ;
 
 const questions: Question[] = [
   {
-    id: 'purpose',
-    q: 'Для чего нужна печь?',
+    id: 'product',
+    type: 'single',
+    q: 'Тип изделий',
     options: [
-      { label: 'Баня / сауна', icon: 'Droplets' },
-      { label: 'Отопление дома', icon: 'Home' },
-      { label: 'Камин для гостиной', icon: 'Flame' },
-      { label: 'Производство / цех', icon: 'Factory' },
+      { label: 'Хлеб', icon: 'Wheat' },
+      { label: 'Сдоба', icon: 'Croissant' },
+      { label: 'Пицца', icon: 'Pizza' },
+      { label: 'Мясо-рыба-овощи', icon: 'Drumstick' },
+      { label: 'Всё вместе', icon: 'UtensilsCrossed' },
     ],
   },
   {
-    id: 'area',
-    q: 'Какая площадь отопления?',
+    id: 'volume',
+    type: 'single',
+    q: 'Планируемый объём',
     options: [
-      { label: 'До 50 м²', icon: 'Square' },
-      { label: '50–100 м²', icon: 'SquareStack' },
-      { label: '100–200 м²', icon: 'Grid2x2' },
-      { label: 'Более 200 м²', icon: 'Grid3x3' },
+      { label: 'До 50 кг/смену', icon: 'Package' },
+      { label: '50–200 кг/смену', icon: 'Package2' },
+      { label: '200–500 кг/смену', icon: 'Boxes' },
+      { label: '500+ кг/смену', icon: 'Container' },
     ],
   },
   {
-    id: 'fuel',
-    q: 'Какое топливо предпочитаете?',
+    id: 'energy',
+    type: 'single',
+    q: 'Тип энергоносителя',
     options: [
-      { label: 'Дрова', icon: 'TreePine' },
-      { label: 'Уголь', icon: 'Mountain' },
-      { label: 'Газ', icon: 'Zap' },
-      { label: 'Комбинированное', icon: 'Combine' },
+      { label: 'Электричество 220В', icon: 'Plug' },
+      { label: 'Электричество 380В', icon: 'PlugZap' },
+      { label: 'Газ', icon: 'Flame' },
     ],
   },
   {
-    id: 'budget',
-    q: 'Ориентировочный бюджет?',
+    id: 'extras',
+    type: 'multi',
+    q: 'Что ещё нужно? (можно несколько)',
     options: [
-      { label: 'До 50 000 ₽', icon: 'Wallet' },
-      { label: '50 000 – 100 000 ₽', icon: 'CreditCard' },
-      { label: '100 000 – 200 000 ₽', icon: 'Banknote' },
-      { label: 'Более 200 000 ₽', icon: 'Gem' },
+      { label: 'Пароувлажнение', icon: 'Droplets' },
+      { label: 'Каменный под', icon: 'Square' },
+      { label: 'Расстоечный шкаф', icon: 'Archive' },
+      { label: 'Подставка', icon: 'Square' },
     ],
   },
 ];
 
-const Quiz = () => {
+const Quiz = ({ onDone }: { onDone?: () => void }) => {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [done, setDone] = useState(false);
-  const [phone, setPhone] = useState('');
-  const [name, setName] = useState('');
-  const [sent, setSent] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
+  const [phase, setPhase] = useState<'quiz' | 'form' | 'sent'>('quiz');
+  const [form, setForm] = useState({ name: '', phone: '', email: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const progress = ((step + (done ? 1 : 0)) / (questions.length + 1)) * 100;
+  const progress = ((step + (phase !== 'quiz' ? 1 : 0)) / (questions.length + 1)) * 100;
+  const current = questions[step];
 
-  const choose = (val: string) => {
-    const next = { ...answers, [questions[step].id]: val };
+  const chooseSingle = (val: string) => {
+    const next = { ...answers, [current.id]: val };
     setAnswers(next);
     if (step < questions.length - 1) {
-      setTimeout(() => setStep(step + 1), 250);
+      setTimeout(() => setStep(step + 1), 200);
     } else {
-      setTimeout(() => setDone(true), 250);
+      setTimeout(() => setPhase('form'), 200);
     }
+  };
+
+  const toggleMulti = (val: string) => {
+    const cur = (answers[current.id] as string[]) || [];
+    const next = cur.includes(val) ? cur.filter((x) => x !== val) : [...cur, val];
+    setAnswers({ ...answers, [current.id]: next });
+  };
+
+  const submitMulti = () => {
+    if (step < questions.length - 1) setStep(step + 1);
+    else setPhase('form');
   };
 
   const reset = () => {
     setStep(0);
     setAnswers({});
-    setDone(false);
-    setSent(false);
-    setPhone('');
-    setName('');
+    setPhase('quiz');
+    setForm({ name: '', phone: '', email: '' });
+    setErrorMsg('');
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setSubmitting(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch(func2url.lead, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          source: 'quiz',
+          payload: { answers },
+        }),
+      });
+      if (!res.ok) throw new Error('fail');
+      setPhase('sent');
+      onDone?.();
+    } catch {
+      setErrorMsg('Не удалось отправить. Попробуйте ещё раз или позвоните нам.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -89,18 +137,21 @@ const Quiz = () => {
       <div className="container relative">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> КВИЗ ПОДБОРА <span className="w-8 h-px bg-fire" />
+            <span className="w-8 h-px bg-fire" /> ПОДБОР ПЕЧИ <span className="w-8 h-px bg-fire" />
           </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
-            Подберём печь <span className="text-fire-gradient">за 60 секунд</span>
+            Подобрать <span className="text-fire-gradient">печь</span>
           </h2>
-          <p className="text-white/60 mt-3">Ответьте на 4 вопроса — получите персональную подборку и скидку 7%.</p>
+          <p className="text-white/60 mt-3">Ответьте на 4 вопроса — технолог подберёт оптимальные модели.</p>
         </div>
 
         <div className="max-w-3xl mx-auto bg-coal-mid border border-coal-light rounded-3xl p-8 md:p-10 relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-1 bg-gradient-to-r from-fire to-ember transition-all duration-500" style={{ width: `${progress}%` }} />
+          <div
+            className="absolute top-0 left-0 h-1 bg-gradient-to-r from-fire to-ember transition-all duration-500"
+            style={{ width: `${progress}%` }}
+          />
 
-          {!done && (
+          {phase === 'quiz' && (
             <div className="animate-fade-in-up">
               <div className="flex items-center justify-between mb-6">
                 <span className="text-sm text-white/50">
@@ -108,81 +159,125 @@ const Quiz = () => {
                 </span>
                 <span className="text-sm text-fire-gradient font-bold">{Math.round(progress)}%</span>
               </div>
-              <h3 className="font-oswald text-2xl md:text-3xl text-white mb-8">{questions[step].q}</h3>
+              <h3 className="font-oswald text-2xl md:text-3xl text-white mb-8">{current.q}</h3>
               <div className="grid sm:grid-cols-2 gap-3">
-                {questions[step].options.map((o) => (
-                  <button
-                    key={o.label}
-                    onClick={() => choose(o.label)}
-                    className="group text-left flex items-center gap-4 p-5 rounded-xl bg-coal border border-coal-light hover:border-fire transition"
-                  >
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/20 flex items-center justify-center group-hover:from-fire/40 group-hover:to-fire/20 transition">
-                      <Icon name={o.icon} size={20} className="text-fire" />
-                    </div>
-                    <span className="text-white font-medium flex-1">{o.label}</span>
-                    <Icon name="ChevronRight" size={18} className="text-white/30 group-hover:text-fire group-hover:translate-x-1 transition" />
-                  </button>
-                ))}
+                {current.options.map((o) => {
+                  const selected =
+                    current.type === 'multi'
+                      ? ((answers[current.id] as string[]) || []).includes(o.label)
+                      : answers[current.id] === o.label;
+                  return (
+                    <button
+                      key={o.label}
+                      onClick={() => (current.type === 'multi' ? toggleMulti(o.label) : chooseSingle(o.label))}
+                      className={`group text-left flex items-center gap-4 p-5 rounded-xl border transition ${
+                        selected
+                          ? 'bg-fire/10 border-fire'
+                          : 'bg-coal border-coal-light hover:border-fire/50'
+                      }`}
+                    >
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/20 flex items-center justify-center flex-shrink-0">
+                        <Icon name={o.icon} size={20} className="text-fire" />
+                      </div>
+                      <span className="text-white font-medium flex-1">{o.label}</span>
+                      {current.type === 'multi' ? (
+                        <div
+                          className={`w-5 h-5 rounded border flex items-center justify-center ${
+                            selected ? 'bg-fire border-fire' : 'border-white/30'
+                          }`}
+                        >
+                          {selected && <Icon name="Check" size={14} className="text-white" />}
+                        </div>
+                      ) : (
+                        <Icon
+                          name="ChevronRight"
+                          size={18}
+                          className="text-white/30 group-hover:text-fire transition"
+                        />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
-              {step > 0 && (
-                <button
-                  onClick={() => setStep(step - 1)}
-                  className="mt-6 text-sm text-white/50 hover:text-fire flex items-center gap-1"
-                >
-                  <Icon name="ArrowLeft" size={14} /> Назад
-                </button>
-              )}
+
+              <div className="mt-6 flex items-center justify-between">
+                {step > 0 ? (
+                  <button
+                    onClick={() => setStep(step - 1)}
+                    className="text-sm text-white/50 hover:text-fire flex items-center gap-1"
+                  >
+                    <Icon name="ArrowLeft" size={14} /> Назад
+                  </button>
+                ) : (
+                  <span />
+                )}
+                {current.type === 'multi' && (
+                  <button
+                    onClick={submitMulti}
+                    className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center gap-2"
+                  >
+                    Далее <Icon name="ArrowRight" size={16} />
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
-          {done && !sent && (
+          {phase === 'form' && (
             <div className="animate-fade-in-up">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-5 flex items-center justify-center animate-pulse-glow">
                 <Icon name="Check" size={28} className="text-coal" />
               </div>
-              <h3 className="font-oswald text-2xl md:text-3xl text-white text-center mb-2">Отлично, подборка готова!</h3>
-              <p className="text-white/60 text-center mb-6">Оставьте контакты — пришлём 3 модели под ваш запрос и скидку 7%.</p>
+              <h3 className="font-oswald text-2xl md:text-3xl text-white text-center mb-2">
+                Подборка готова!
+              </h3>
+              <p className="text-white/60 text-center mb-6">Оставьте контакты — пришлём подборку и КП.</p>
 
               <form onSubmit={submit} className="max-w-md mx-auto space-y-3">
                 <input
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Ваше имя"
                   className="w-full bg-coal border border-coal-light focus:border-fire rounded-xl px-4 py-3 text-white outline-none transition"
                 />
                 <input
                   required
                   type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+7 (___) ___-__-__"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="Телефон"
                   className="w-full bg-coal border border-coal-light focus:border-fire rounded-xl px-4 py-3 text-white outline-none transition"
                 />
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="Email"
+                  className="w-full bg-coal border border-coal-light focus:border-fire rounded-xl px-4 py-3 text-white outline-none transition"
+                />
+                {errorMsg && <div className="text-sm text-red-400">{errorMsg}</div>}
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center justify-center gap-2 disabled:opacity-60"
                 >
-                  Получить подборку <Icon name="ArrowRight" size={18} />
+                  {submitting ? 'Отправляем...' : 'Подобрать мою печь'} <Icon name="ArrowRight" size={18} />
                 </button>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="w-full text-sm text-white/40 hover:text-fire"
-                >
+                <button type="button" onClick={reset} className="w-full text-sm text-white/40 hover:text-fire">
                   Пройти заново
                 </button>
               </form>
             </div>
           )}
 
-          {sent && (
+          {phase === 'sent' && (
             <div className="animate-fade-in-up text-center py-6">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-5 flex items-center justify-center animate-pulse-glow">
                 <Icon name="PartyPopper" size={32} className="text-coal" />
               </div>
               <h3 className="font-oswald text-3xl text-white mb-2">Заявка принята!</h3>
-              <p className="text-white/60 mb-6">Менеджер перезвонит в течение 15 минут и пришлёт подборку.</p>
+              <p className="text-white/60 mb-6">Технолог-эксперт свяжется с вами в течение 15 минут.</p>
               <button
                 onClick={reset}
                 className="px-6 py-3 rounded-xl border border-coal-light text-white hover:border-fire transition"

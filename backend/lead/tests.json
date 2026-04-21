@@ -1,0 +1,26 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS returns 200",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST with phone accepted",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Иван", "phone": "+79990001122", "source": "quiz"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST without phone/email rejected",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Без контактов"},
+      "expectedStatus": 400
+    }
+  ]
+}

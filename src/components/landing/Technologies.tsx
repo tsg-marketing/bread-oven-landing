@@ -1,56 +1,73 @@
 import Icon from '@/components/ui/icon';
 
-const TECH_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/c1deba47-4981-4d69-8aa5-56716397cffa.jpg';
-
 const techs = [
-  { icon: 'Flame', t: 'Вторичный дожиг', v: '85%', vl: 'КПД' },
-  { icon: 'Thermometer', t: 'Теплоаккумулятор', v: '12ч', vl: 'горения' },
-  { icon: 'Wind', t: 'Конвекция', v: '+35%', vl: 'к теплу' },
-  { icon: 'Gauge', t: 'Плазменная резка', v: '±0.1мм', vl: 'точность' },
+  {
+    icon: 'Layers3',
+    t: 'Независимые ярусы = параллельная работа',
+    d: 'Каждая камера — отдельная печь с раздельной регулировкой верхних и нижних ТЭНов. Одновременно пеките хлеб при 280°С и деликатные булочки при 180°С.',
+  },
+  {
+    icon: 'Square',
+    t: 'Каменный под = премиальное качество выпечки',
+    d: 'Камень накапливает тепло и отдаёт мягкое инфракрасное излучение. Результат: пышный мякиш, хрустящая корочка, минимальный упёк.',
+  },
+  {
+    icon: 'Droplets',
+    t: 'Пароувлажнение для идеальной корочки',
+    d: 'Усиленный парогенератор из стальных шаров + редукционный узел обеспечивают стабильную подачу пара даже при падении давления воды в системе.',
+  },
+  {
+    icon: 'ShieldCheck',
+    t: 'Нержавеющая сталь и энергоэффективность',
+    d: 'Корпус из нержавейки AISI 304. Теплоизоляция из экологичного базальтового волокна без фенола. Экономия электроэнергии до 20% по сравнению с устаревшими моделями.',
+  },
+  {
+    icon: 'Blocks',
+    t: 'Модульность: масштабируйте по мере роста',
+    d: 'Серии Stone и «Иртыш» позволяют добавлять или убирать ярусы без замены оборудования. Начните с 2 ярусов — расширьтесь до 3–4, когда увеличится спрос.',
+  },
+  {
+    icon: 'Zap',
+    t: 'Электричество или газ — выбор за вами',
+    d: 'Печи выпускаются в обоих исполнениях. Оптимизируйте эксплуатационные расходы под инфраструктуру объекта.',
+  },
 ];
 
 const Technologies = () => {
   return (
     <section id="tech" className="py-24 bg-coal-mid relative overflow-hidden">
-      <div className="container grid lg:grid-cols-2 gap-12 items-center">
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-tr from-fire/30 to-ember/20 blur-3xl" />
-          <div className="relative rounded-3xl overflow-hidden border border-coal-light">
-            <img src={TECH_IMG} alt="Технологии производства" className="w-full h-[500px] object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-coal/80 via-transparent" />
-            <div className="absolute bottom-6 left-6 right-6 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-fire/20 border border-fire/40 backdrop-blur flex items-center justify-center">
-                <Icon name="Cpu" size={20} className="text-fire" />
-              </div>
-              <div>
-                <div className="text-xs text-white/60">Собственное КБ</div>
-                <div className="font-oswald text-lg text-white">14 инженеров и технологов</div>
-              </div>
-            </div>
+      <div className="absolute top-1/2 left-0 w-[500px] h-[500px] rounded-full bg-fire/10 blur-[140px] -translate-y-1/2" />
+      <div className="container relative">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
+            <span className="w-8 h-px bg-fire" /> ТЕХНОЛОГИИ <span className="w-8 h-px bg-fire" />
           </div>
+          <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
+            Ключевые технологии <span className="text-fire-gradient">ярусных печей</span>
+          </h2>
         </div>
 
-        <div>
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ТЕХНОЛОГИИ
-          </div>
-          <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-6">
-            Инженерия <span className="text-fire-gradient">огня</span>
-          </h2>
-          <p className="text-white/70 mb-8 text-lg">
-            Мы не просто варим металл. Каждая печь — результат многолетних исследований, испытаний и инженерных решений, которые реально экономят ваши деньги на отоплении.
-          </p>
-
-          <div className="grid grid-cols-2 gap-4">
-            {techs.map((t) => (
-              <div key={t.t} className="bg-coal rounded-xl p-5 border border-coal-light hover:border-fire/40 transition">
-                <Icon name={t.icon} size={22} className="text-fire mb-3" />
-                <div className="font-oswald text-2xl font-bold text-fire-gradient">{t.v}</div>
-                <div className="text-xs text-white/50 mb-2">{t.vl}</div>
-                <div className="text-sm text-white/80">{t.t}</div>
+        <div className="grid md:grid-cols-2 gap-5">
+          {techs.map((t, i) => (
+            <div
+              key={t.t}
+              style={{ animationDelay: `${i * 80}ms` }}
+              className="card-hover group bg-coal rounded-2xl p-7 border border-coal-light flex gap-5 animate-fade-in-up"
+            >
+              <div className="flex-shrink-0">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center group-hover:scale-110 transition">
+                  <Icon name={t.icon} size={24} className="text-white" />
+                </div>
+                <div className="mt-2 text-center text-xs font-oswald text-fire-gradient font-bold">
+                  0{i + 1}
+                </div>
               </div>
-            ))}
-          </div>
+              <div>
+                <h3 className="font-oswald text-xl text-white mb-2 leading-tight">{t.t}</h3>
+                <p className="text-white/65 text-sm leading-relaxed">{t.d}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

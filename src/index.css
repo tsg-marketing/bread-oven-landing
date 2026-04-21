@@ -33,14 +33,15 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Brand colors */
-    --fire: 22 100% 55%;
-    --fire-dark: 16 95% 42%;
-    --ember: 38 100% 60%;
-    --coal: 220 15% 8%;
-    --coal-mid: 220 12% 14%;
-    --coal-light: 220 10% 20%;
-    --steel: 210 20% 55%;
+    /* Brand colors — хлебопекарный */
+    --fire: 28 88% 52%;
+    --fire-dark: 18 85% 40%;
+    --ember: 40 95% 58%;
+    --coal: 28 22% 10%;
+    --coal-mid: 28 18% 15%;
+    --coal-light: 28 14% 22%;
+    --steel: 35 15% 55%;
+    --cream: 36 30% 94%;
   }
 
   .dark {

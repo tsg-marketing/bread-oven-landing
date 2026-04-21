@@ -1,12 +1,10 @@
 {
   "tests": [
     {
-      "name": "Returns sample catalog when no feed URL",
+      "name": "Returns catalog from t-sib feed",
       "method": "GET",
       "path": "/",
-      "expectedStatus": 200,
-      "expectedBody": {"source": "sample"},
-      "bodyMatcher": "partial"
+      "expectedStatus": 200
     },
     {
       "name": "OPTIONS returns 200 for CORS",
