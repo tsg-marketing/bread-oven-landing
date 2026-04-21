@@ -58,7 +58,7 @@ const Index = () => {
         title={leadTitle}
       />
       <QuizModal open={quizOpen} onClose={() => setQuizOpen(false)} />
-      <QuizTeaser />
+      <QuizTeaser onOpen={openQuiz} />
     </div>
   );
 };

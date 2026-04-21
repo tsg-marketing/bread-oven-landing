@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
+import ConsentNote from './ConsentNote';
 
 export type LeadModalProps = {
   open: boolean;
@@ -128,9 +129,7 @@ const LeadModal = ({
                 {submitting ? 'Отправляем...' : 'Отправить'}
                 <Icon name="Send" size={16} />
               </button>
-              <p className="text-xs text-center" style={{ color: 'hsl(var(--ink) / 0.45)' }}>
-                Нажимая «Отправить», вы соглашаетесь с политикой конфиденциальности.
-              </p>
+              <ConsentNote className="text-center" />
             </form>
           </>
         ) : (

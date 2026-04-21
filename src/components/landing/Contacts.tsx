@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
+import ConsentNote from './ConsentNote';
 
 const CONTACT_INFO = [
   { icon: 'Phone', label: 'Телефон', value: '8-800-500-40-54', href: 'tel:+78005004054' },
@@ -160,9 +161,7 @@ const Contacts = () => {
                 >
                   {submitting ? 'Отправляем...' : 'Отправить'} <Icon name="Send" size={18} />
                 </button>
-                <p className="text-xs text-center" style={{ color: 'hsl(var(--ink) / 0.45)' }}>
-                  Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных
-                </p>
+                <ConsentNote className="text-center" />
               </form>
             ) : (
               <div className="text-center py-10 animate-fade-in-up">

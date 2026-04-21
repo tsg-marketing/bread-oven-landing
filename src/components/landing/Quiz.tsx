@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
+import ConsentNote from './ConsentNote';
 
 type SingleQ = {
   id: string;
@@ -261,6 +262,7 @@ export const QuizInner = ({
             >
               Пройти заново
             </button>
+            <ConsentNote className="text-center" tone="light" />
           </form>
         </div>
       )}

@@ -11,7 +11,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
         borderColor: 'hsl(var(--coal-light))',
       }}
     >
-      <div className="container flex items-center justify-between h-16">
+      <div className="container flex items-center justify-between h-20">
         <a href="#home" className="flex items-center gap-3">
           <img
             src="https://cdn.poehali.dev/files/ca89fddf-7bc6-4cd1-9d5f-5696c3edbc2d.jpg"
@@ -25,7 +25,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           </div>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-6 text-sm" style={{ color: 'hsl(var(--ink) / 0.75)' }}>
+        <nav className="hidden lg:flex items-center gap-6 text-base font-medium" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
           <a href="#catalog" className="nav-link hover:text-fire transition">Каталог</a>
           <a href="#tech" className="nav-link hover:text-fire transition">Технологии</a>
           <a href="#warranty" className="nav-link hover:text-fire transition">Гарантия</a>
@@ -36,17 +36,17 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+78005004054" className="text-sm hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
-            <Icon name="Phone" size={14} />
+          <a href="tel:+78005004054" className="text-base font-medium hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
+            <Icon name="Phone" size={16} />
             8-800-500-40-54
           </a>
-          <a href="mailto:info@t-sib.ru" className="text-sm hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
-            <Icon name="Mail" size={14} />
+          <a href="mailto:info@t-sib.ru" className="text-base font-medium hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
+            <Icon name="Mail" size={16} />
             info@t-sib.ru
           </a>
           <button
             onClick={() => onLead('header')}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-sm font-semibold hover:shadow-lg hover:shadow-fire/40 transition"
+            className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-base font-semibold hover:shadow-lg hover:shadow-fire/40 transition"
             style={{ color: '#fff' }}
           >
             Оставить заявку
@@ -68,15 +68,15 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           className="md:hidden border-t animate-fade-in-up"
           style={{ background: 'hsl(var(--coal-mid))', borderColor: 'hsl(var(--coal-light))' }}
         >
-          <div className="container py-4 flex flex-col gap-3">
-            <a href="#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Каталог</a>
-            <a href="#tech" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Технологии</a>
-            <a href="#warranty" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Гарантия</a>
-            <a href="#service" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Сервис</a>
-            <a href="#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>О компании</a>
-            <a href="#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Контакты</a>
-            <a href="tel:+78005004054" style={{ color: 'hsl(var(--ink) / 0.8)' }}>8-800-500-40-54</a>
-            <a href="mailto:info@t-sib.ru" style={{ color: 'hsl(var(--ink) / 0.8)' }}>info@t-sib.ru</a>
+          <div className="container py-4 flex flex-col gap-3 text-lg font-medium">
+            <a href="#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>Каталог</a>
+            <a href="#tech" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>Технологии</a>
+            <a href="#warranty" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>Гарантия</a>
+            <a href="#service" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>Сервис</a>
+            <a href="#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>О компании</a>
+            <a href="#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>Контакты</a>
+            <a href="tel:+78005004054" style={{ color: 'hsl(var(--ink) / 0.9)' }}>8-800-500-40-54</a>
+            <a href="mailto:info@t-sib.ru" style={{ color: 'hsl(var(--ink) / 0.9)' }}>info@t-sib.ru</a>
             <button
               onClick={() => { setOpen(false); onLead('header'); }}
               className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark font-semibold"
