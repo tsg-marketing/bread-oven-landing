@@ -23,7 +23,7 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
   return (
     <section
       id="home"
-      className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden pt-20"
+      className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden pt-24"
       style={{
         background:
           'linear-gradient(135deg, hsl(var(--coal)) 0%, hsl(var(--coal-mid)) 50%, hsl(var(--cream)) 100%)',
