@@ -300,9 +300,6 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
             <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
               Каталог <span className="text-fire-gradient">печей</span>
             </h2>
-            <p className="text-white/60 mt-3 max-w-2xl">
-              Актуальный ассортимент из нашего фида. Цены и наличие обновляются автоматически.
-            </p>
           </div>
         </div>
 
