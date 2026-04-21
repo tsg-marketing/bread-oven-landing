@@ -1,0 +1,18 @@
+{
+  "tests": [
+    {
+      "name": "Returns sample catalog when no feed URL",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"source": "sample"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "OPTIONS returns 200 for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
