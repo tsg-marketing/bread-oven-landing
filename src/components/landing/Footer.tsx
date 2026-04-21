@@ -35,29 +35,11 @@ const Footer = () => {
                 <Icon name="Phone" size={16} />
               </a>
               <a
-                href="mailto:info@tehnosib.ru"
+                href="mailto:info@t-sib.ru"
                 className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
                 style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
               >
                 <Icon name="Mail" size={16} />
-              </a>
-              <a
-                href="https://wa.me/78005004054"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
-                style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
-              >
-                <Icon name="MessageCircle" size={16} />
-              </a>
-              <a
-                href="https://t.me/tehnosib"
-                target="_blank"
-                rel="noreferrer"
-                className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
-                style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
-              >
-                <Icon name="Send" size={16} />
               </a>
             </div>
           </div>

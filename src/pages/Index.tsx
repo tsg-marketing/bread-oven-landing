@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import Advantages from '@/components/landing/Advantages';
@@ -10,26 +10,35 @@ import Warranty from '@/components/landing/Warranty';
 import Service from '@/components/landing/Service';
 import About from '@/components/landing/About';
 import FAQ from '@/components/landing/FAQ';
-import Contacts, { ContactsRef } from '@/components/landing/Contacts';
+import Contacts from '@/components/landing/Contacts';
 import Footer from '@/components/landing/Footer';
+import LeadModal from '@/components/landing/LeadModal';
+import QuizModal from '@/components/landing/QuizModal';
+import QuizTeaser from '@/components/landing/QuizTeaser';
 
 const Index = () => {
-  const contactsRef = useRef<ContactsRef>(null);
+  const [leadOpen, setLeadOpen] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [leadSource, setLeadSource] = useState('lead');
+  const [leadPayload, setLeadPayload] = useState<Record<string, unknown> | undefined>();
+  const [leadTitle, setLeadTitle] = useState('Оставьте заявку');
 
-  const scrollToQuiz = () => {
-    document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth' });
+  const openLead = (source: string, payload?: Record<string, unknown>, title?: string) => {
+    setLeadSource(source);
+    setLeadPayload(payload);
+    setLeadTitle(title || 'Оставьте заявку');
+    setLeadOpen(true);
   };
-  const scrollToContacts = (source = 'contacts') => {
-    contactsRef.current?.focus(source);
-  };
+
+  const openQuiz = () => setQuizOpen(true);
 
   return (
     <div className="min-h-screen" style={{ background: 'hsl(var(--coal))', color: 'hsl(var(--ink))' }}>
-      <Header onLead={scrollToContacts} />
+      <Header onLead={() => openLead('header')} />
       <main>
-        <Hero onQuiz={scrollToQuiz} onKp={() => scrollToContacts('hero-kp')} />
+        <Hero onQuiz={openQuiz} onKp={() => openLead('hero-kp', undefined, 'Запросить КП')} />
         <Advantages />
-        <Catalog onLead={(src) => scrollToContacts(src)} />
+        <Catalog onLead={(src, payload) => openLead(src, payload, 'Оставьте заявку')} />
         <Comparison />
         <Quiz />
         <Technologies />
@@ -37,9 +46,19 @@ const Index = () => {
         <Service />
         <About />
         <FAQ />
-        <Contacts ref={contactsRef} />
+        <Contacts />
       </main>
       <Footer />
+
+      <LeadModal
+        open={leadOpen}
+        onClose={() => setLeadOpen(false)}
+        source={leadSource}
+        payload={leadPayload}
+        title={leadTitle}
+      />
+      <QuizModal open={quizOpen} onClose={() => setQuizOpen(false)} />
+      <QuizTeaser />
     </div>
   );
 };

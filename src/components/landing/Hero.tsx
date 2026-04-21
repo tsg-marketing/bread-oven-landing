@@ -40,7 +40,7 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-fire/15 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Icon name={b.icon} size={20} className="text-fire" />
                 </div>
-                <span className="text-lg md:text-xl" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
+                <span className="text-lg md:text-xl font-bold" style={{ color: 'hsl(var(--ink))' }}>
                   {b.t}
                 </span>
               </li>

@@ -40,6 +40,10 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             <Icon name="Phone" size={14} />
             8-800-500-40-54
           </a>
+          <a href="mailto:info@t-sib.ru" className="text-sm hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
+            <Icon name="Mail" size={14} />
+            info@t-sib.ru
+          </a>
           <button
             onClick={() => onLead('header')}
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-sm font-semibold hover:shadow-lg hover:shadow-fire/40 transition"
@@ -72,6 +76,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             <a href="#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>О компании</a>
             <a href="#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Контакты</a>
             <a href="tel:+78005004054" style={{ color: 'hsl(var(--ink) / 0.8)' }}>8-800-500-40-54</a>
+            <a href="mailto:info@t-sib.ru" style={{ color: 'hsl(var(--ink) / 0.8)' }}>info@t-sib.ru</a>
             <button
               onClick={() => { setOpen(false); onLead('header'); }}
               className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark font-semibold"

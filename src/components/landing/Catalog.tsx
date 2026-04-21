@@ -210,17 +210,6 @@ const ProductModal = ({
                   <Icon name="Send" size={16} />
                   Оставить заявку
                 </button>
-                {product.url && (
-                  <a
-                    href={product.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-5 py-3 rounded-xl border border-coal-light text-white hover:border-fire transition flex items-center gap-2"
-                  >
-                    Открыть на сайте
-                    <Icon name="ExternalLink" size={14} />
-                  </a>
-                )}
               </div>
             </div>
           </div>
@@ -388,26 +377,24 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                       <ProductGallery pictures={p.pictures} alt={p.name} onImageClick={() => setModal(p)} />
 
                       <div className="p-5 flex flex-col flex-1">
-                        <div className="flex items-start gap-2 mb-2 flex-wrap">
-                          {p.vendor && (
+                        {p.vendor && (
+                          <div className="mb-2">
                             <span className="px-2.5 py-1 rounded-full bg-fire/10 border border-fire/30 text-fire text-xs uppercase font-medium">
                               {p.vendor}
                             </span>
-                          )}
-                          {p.available && (
-                            <span className="px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/40 text-green-400 text-xs uppercase font-medium">
-                              В наличии
-                            </span>
-                          )}
-                        </div>
+                          </div>
+                        )}
                         <h3 className="font-oswald text-xl md:text-2xl text-white mb-3 leading-tight line-clamp-2">
                           {p.name}
                         </h3>
 
                         {p.performance && (
-                          <div className="flex items-center gap-2 text-base text-white/80 mb-3">
+                          <div className="flex items-center gap-2 text-base text-white mb-3">
                             <Icon name="Gauge" size={18} className="text-fire flex-shrink-0" />
-                            <span>Производительность: {p.performance}</span>
+                            <span>
+                              <span className="text-white/80">Производительность:</span>{' '}
+                              <span className="font-semibold">{p.performance}</span>
+                            </span>
                           </div>
                         )}
 
@@ -419,8 +406,9 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                                 className="flex items-start gap-2 text-base"
                               >
                                 <Icon name="Dot" size={18} className="text-fire flex-shrink-0 mt-0.5" />
-                                <div className="text-white/85 leading-snug">
-                                  <span className="text-white/55">{k}:</span> {v}
+                                <div className="text-white leading-snug">
+                                  <span className="text-white/80">{k}:</span>{' '}
+                                  <span className="font-semibold">{v}</span>
                                 </div>
                               </div>
                             ))}

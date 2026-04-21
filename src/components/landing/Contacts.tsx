@@ -1,35 +1,20 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
 
-export type ContactsRef = {
-  focus: (source?: string) => void;
-};
-
 const CONTACT_INFO = [
   { icon: 'Phone', label: 'Телефон', value: '8-800-500-40-54', href: 'tel:+78005004054' },
-  { icon: 'Mail', label: 'Email', value: 'info@tehnosib.ru', href: 'mailto:info@tehnosib.ru' },
+  { icon: 'Mail', label: 'Email', value: 'info@t-sib.ru', href: 'mailto:info@t-sib.ru' },
   { icon: 'MapPin', label: 'Москва', value: 'ш. Энтузиастов, д. 56, стр. 32, офис 115', href: null },
   { icon: 'MapPin', label: 'Новосибирск', value: 'ул. Электрозаводская, 2 к1, офис 304, 314', href: null },
-  { icon: 'Clock', label: 'Режим работы', value: 'Пн–Пт 9:00–18:00', href: null },
 ];
 
-const Contacts = forwardRef<ContactsRef>((_, ref) => {
+const Contacts = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState('');
-  const [source, setSource] = useState('contacts');
   const nameRef = useRef<HTMLInputElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useImperativeHandle(ref, () => ({
-    focus: (src) => {
-      if (src) setSource(src);
-      sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => nameRef.current?.focus(), 500);
-    },
-  }));
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +28,7 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
           name: form.name,
           phone: form.phone,
           email: form.email,
-          source,
+          source: 'contacts',
         }),
       });
       if (!res.ok) throw new Error('fail');
@@ -57,7 +42,6 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
 
   return (
     <section
-      ref={sectionRef}
       id="contacts"
       className="py-24 relative overflow-hidden"
       style={{
@@ -77,7 +61,7 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
             <span className="text-fire-gradient">Мы поможем</span>
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'hsl(var(--ink) / 0.7)' }}>
-            Технолог-эксперт подберёт модель под ваши объёмы, помещение и бюджет за 15 минут. Бесплатно.
+            Технолог-эксперт подберёт модель под ваши объёмы, помещение и бюджет. Бесплатно.
           </p>
         </div>
 
@@ -114,26 +98,6 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
               </div>
             ))}
 
-            <div className="flex gap-3 pt-2">
-              <a
-                href="https://wa.me/78005004054"
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 py-3 rounded-xl bg-[#25D366] text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition"
-              >
-                <Icon name="MessageCircle" size={18} />
-                WhatsApp
-              </a>
-              <a
-                href="https://t.me/tehnosib"
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 py-3 rounded-xl bg-[#0088cc] text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition"
-              >
-                <Icon name="Send" size={18} />
-                Telegram
-              </a>
-            </div>
           </div>
 
           {/* Форма */}
@@ -144,7 +108,7 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
             {!sent ? (
               <form onSubmit={submit} className="space-y-4">
                 <h3 className="font-oswald text-2xl font-bold mb-2" style={{ color: 'hsl(var(--ink))' }}>
-                  Получите подбор печи за 15 минут
+                  Получите подбор печи
                 </h3>
                 <p className="text-sm mb-4" style={{ color: 'hsl(var(--ink) / 0.6)' }}>
                   Оставьте контакты — технолог-эксперт перезвонит и подберёт оптимальное решение.
@@ -209,7 +173,7 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
                   Заявка отправлена!
                 </h3>
                 <p style={{ color: 'hsl(var(--ink) / 0.6)' }}>
-                  Технолог-эксперт свяжется с вами в течение 15 минут.
+                  Технолог-эксперт свяжется с вами в ближайшее время.
                 </p>
               </div>
             )}
@@ -218,8 +182,6 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
       </div>
     </section>
   );
-});
-
-Contacts.displayName = 'Contacts';
+};
 
 export default Contacts;
