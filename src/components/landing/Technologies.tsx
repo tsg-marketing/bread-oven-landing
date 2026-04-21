@@ -52,7 +52,7 @@ const Technologies = () => {
             <div
               key={t.t}
               style={{ animationDelay: `${i * 80}ms` }}
-              className="card-hover group bg-coal rounded-2xl p-7 border border-coal-light flex gap-5 animate-fade-in-up"
+              className="card-hover group bg-white rounded-2xl p-7 border border-coal-light shadow-sm flex gap-5 animate-fade-in-up"
             >
               <div className="flex-shrink-0">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center group-hover:scale-110 transition">

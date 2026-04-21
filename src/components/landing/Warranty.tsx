@@ -36,7 +36,7 @@ const Warranty = () => {
             <div
               key={b.t}
               style={{ animationDelay: `${i * 100}ms` }}
-              className="card-hover relative bg-coal-mid rounded-2xl p-7 border border-coal-light overflow-hidden animate-fade-in-up"
+              className="card-hover relative bg-white rounded-2xl p-7 border border-coal-light shadow-sm overflow-hidden animate-fade-in-up"
             >
               <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-fire/10 blur-2xl" />
               <div className="relative">

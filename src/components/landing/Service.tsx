@@ -25,7 +25,7 @@ const Service = () => {
             <div
               key={it.t}
               style={{ animationDelay: `${i * 90}ms` }}
-              className="card-hover relative bg-coal rounded-2xl p-6 border border-coal-light animate-fade-in-up"
+              className="card-hover relative bg-white rounded-2xl p-6 border border-coal-light shadow-sm animate-fade-in-up"
             >
               <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/30 flex items-center justify-center mb-5">
                 <Icon name={it.icon} size={24} className="text-fire" />

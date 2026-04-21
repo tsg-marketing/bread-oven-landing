@@ -33,14 +33,16 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Brand colors — хлебопекарный */
+    /* Brand colors — хлебопекарный (светлая тема) */
     --fire: 28 88% 52%;
     --fire-dark: 18 85% 40%;
     --ember: 40 95% 58%;
-    --coal: 28 22% 10%;
-    --coal-mid: 28 18% 15%;
-    --coal-light: 28 14% 22%;
-    --steel: 35 15% 55%;
+    /* "coal" теперь светлые тона: фоны и карточки */
+    --coal: 36 40% 98%; /* почти белый, кремовый */
+    --coal-mid: 36 35% 95%; /* слегка тёплый фон секций */
+    --coal-light: 30 18% 86%; /* границы/разделители */
+    --steel: 28 10% 35%; /* вторичный текст */
+    --ink: 28 25% 14%; /* основной тёмный текст */
     --cream: 36 30% 94%;
   }
 
@@ -81,7 +83,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: hsl(var(--coal));
+    color: hsl(var(--ink));
     font-family: "Golos Text", sans-serif;
   }
 
@@ -91,19 +94,76 @@
   h4,
   h5 {
     font-family: "Oswald", sans-serif;
+    color: hsl(var(--ink));
   }
+}
+
+/* === Светлая тема: переопределяем text-white и прозрачности === */
+/* Теперь "белый текст" в компонентах превращается в тёмный для читаемости */
+.text-white {
+  color: hsl(var(--ink)) !important;
+}
+.text-white\/90 {
+  color: hsl(var(--ink) / 0.92) !important;
+}
+.text-white\/85 {
+  color: hsl(var(--ink) / 0.85) !important;
+}
+.text-white\/80 {
+  color: hsl(var(--ink) / 0.8) !important;
+}
+.text-white\/70 {
+  color: hsl(var(--ink) / 0.7) !important;
+}
+.text-white\/60 {
+  color: hsl(var(--ink) / 0.6) !important;
+}
+.text-white\/50 {
+  color: hsl(var(--ink) / 0.55) !important;
+}
+.text-white\/40 {
+  color: hsl(var(--ink) / 0.5) !important;
+}
+.text-white\/30 {
+  color: hsl(var(--ink) / 0.4) !important;
+}
+
+/* Градиентные/цветные кнопки и элементы на fire-фоне — белый текст */
+[class*="from-fire"].text-white,
+[class*="from-fire"] .text-white,
+[class*="from-ember"].text-white,
+[class*="from-ember"] .text-white,
+.bg-fire.text-white,
+.bg-fire .text-white,
+.bg-fire-dark.text-white,
+.bg-fire-dark .text-white {
+  color: #fff !important;
+}
+
+/* Границы и прозрачные фоны на белом */
+.border-white\/20 {
+  border-color: hsl(var(--ink) / 0.15) !important;
+}
+.border-white\/30 {
+  border-color: hsl(var(--ink) / 0.2) !important;
+}
+.bg-white\/5 {
+  background-color: hsl(var(--ink) / 0.04) !important;
+}
+.bg-white\/10 {
+  background-color: hsl(var(--ink) / 0.06) !important;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(var(--coal));
+  background: hsl(var(--coal-mid));
 }
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--fire));
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 /* Animations */

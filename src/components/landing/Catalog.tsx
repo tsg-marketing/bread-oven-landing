@@ -31,7 +31,7 @@ const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) 
 
   return (
     <>
-      <div className="relative h-56 overflow-hidden bg-coal-light group">
+      <div className="relative h-56 overflow-hidden bg-white group">
         <img
           src={src}
           alt={alt}
@@ -48,7 +48,8 @@ const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) 
                 e.stopPropagation();
                 setIdx((idx - 1 + pictures.length) % pictures.length);
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-coal/80 backdrop-blur border border-white/20 text-white flex items-center justify-center hover:bg-fire transition"
+              style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
             >
               <Icon name="ChevronLeft" size={16} />
             </button>
@@ -57,7 +58,8 @@ const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) 
                 e.stopPropagation();
                 setIdx((idx + 1) % pictures.length);
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-coal/80 backdrop-blur border border-white/20 text-white flex items-center justify-center hover:bg-fire transition"
+              style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
             >
               <Icon name="ChevronRight" size={16} />
             </button>
@@ -208,7 +210,7 @@ const ProductModal = ({
             <div>
               <h4 className="font-oswald text-lg text-white mb-3">Описание</h4>
               <div
-                className="text-white/70 text-sm leading-relaxed prose prose-invert max-w-none"
+                className="text-white/70 text-sm leading-relaxed prose max-w-none"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </div>

@@ -24,7 +24,7 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-coal text-white min-h-screen">
+    <div className="min-h-screen" style={{ background: 'hsl(var(--coal))', color: 'hsl(var(--ink))' }}>
       <Header onLead={scrollToContacts} />
       <main>
         <Hero onQuiz={scrollToQuiz} onKp={() => scrollToContacts('hero-kp')} />

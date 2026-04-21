@@ -226,7 +226,7 @@ const Quiz = ({ onDone }: { onDone?: () => void }) => {
           {phase === 'form' && (
             <div className="animate-fade-in-up">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-5 flex items-center justify-center animate-pulse-glow">
-                <Icon name="Check" size={28} className="text-coal" />
+                <Icon name="Check" size={28} className="text-white" />
               </div>
               <h3 className="font-oswald text-2xl md:text-3xl text-white text-center mb-2">
                 Подборка готова!
@@ -274,7 +274,7 @@ const Quiz = ({ onDone }: { onDone?: () => void }) => {
           {phase === 'sent' && (
             <div className="animate-fade-in-up text-center py-6">
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-5 flex items-center justify-center animate-pulse-glow">
-                <Icon name="PartyPopper" size={32} className="text-coal" />
+                <Icon name="PartyPopper" size={32} className="text-white" />
               </div>
               <h3 className="font-oswald text-3xl text-white mb-2">Заявка принята!</h3>
               <p className="text-white/60 mb-6">Технолог-эксперт свяжется с вами в течение 15 минут.</p>

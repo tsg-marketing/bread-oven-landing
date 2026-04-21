@@ -29,7 +29,7 @@ const Advantages = () => {
             <div
               key={it.t}
               style={{ animationDelay: `${i * 70}ms` }}
-              className="card-hover group relative bg-coal rounded-2xl p-7 border border-coal-light overflow-hidden animate-fade-in-up"
+              className="card-hover group relative bg-white rounded-2xl p-7 border border-coal-light shadow-sm overflow-hidden animate-fade-in-up"
             >
               <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-fire/5 blur-2xl group-hover:bg-fire/15 transition" />
               <div className="relative">

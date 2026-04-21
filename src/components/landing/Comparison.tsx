@@ -21,10 +21,10 @@ const Comparison = () => {
           </h2>
         </div>
 
-        <div className="rounded-2xl overflow-hidden border border-coal-light bg-coal">
+        <div className="rounded-2xl overflow-hidden border border-coal-light bg-white shadow-lg">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-coal-mid">
+              <thead style={{ background: 'hsl(var(--coal-mid))' }}>
                 <tr className="text-left text-white/70 text-xs uppercase tracking-wider">
                   <th className="p-4 font-medium">Тип печи</th>
                   <th className="p-4 font-medium">Применение</th>
@@ -35,7 +35,7 @@ const Comparison = () => {
               </thead>
               <tbody>
                 {rows.map((r, i) => (
-                  <tr key={r.type} className={`border-t border-coal-light text-white ${i % 2 ? 'bg-coal/50' : ''}`}>
+                  <tr key={r.type} className={`border-t border-coal-light text-white ${i % 2 ? 'bg-[hsl(var(--coal-mid))]/60' : ''}`}>
                     <td className="p-4 font-oswald text-fire-gradient font-bold">{r.type}</td>
                     <td className="p-4 text-sm text-white/80">{r.area}</td>
                     <td className="p-4 text-sm text-white/80">{r.vol}</td>
