@@ -7,9 +7,10 @@ export type ContactsRef = {
 };
 
 const CONTACT_INFO = [
-  { icon: 'Phone', label: 'Телефон', value: '+7 (383) 200-00-00', href: 'tel:+73832000000' },
+  { icon: 'Phone', label: 'Телефон', value: '8-800-500-40-54', href: 'tel:+78005004054' },
   { icon: 'Mail', label: 'Email', value: 'info@tehnosib.ru', href: 'mailto:info@tehnosib.ru' },
-  { icon: 'MapPin', label: 'Адрес', value: 'г. Новосибирск, ул. Станционная, 60', href: null },
+  { icon: 'MapPin', label: 'Москва', value: 'ш. Энтузиастов, д. 56, стр. 32, офис 115', href: null },
+  { icon: 'MapPin', label: 'Новосибирск', value: 'ул. Электрозаводская, 2 к1, офис 304, 314', href: null },
   { icon: 'Clock', label: 'Режим работы', value: 'Пн–Пт 9:00–18:00', href: null },
 ];
 
@@ -71,9 +72,6 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
 
       <div className="container relative max-w-6xl">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ОСТАВЬТЕ ЗАЯВКУ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase mb-4" style={{ color: 'hsl(var(--ink))' }}>
             Не знаете, какую печь выбрать? <br />
             <span className="text-fire-gradient">Мы поможем</span>
@@ -118,7 +116,7 @@ const Contacts = forwardRef<ContactsRef>((_, ref) => {
 
             <div className="flex gap-3 pt-2">
               <a
-                href="https://wa.me/73832000000"
+                href="https://wa.me/78005004054"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 py-3 rounded-xl bg-[#25D366] text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition"

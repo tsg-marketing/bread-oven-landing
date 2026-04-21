@@ -16,9 +16,6 @@ const Advantages = () => {
       <div className="absolute top-1/3 right-0 w-96 h-96 rounded-full bg-fire/10 blur-[120px]" />
       <div className="container relative">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ПРЕИМУЩЕСТВА <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Наши <span className="text-fire-gradient">преимущества</span>
           </h2>
@@ -36,8 +33,8 @@ const Advantages = () => {
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/30 flex items-center justify-center mb-5 group-hover:scale-110 transition">
                   <Icon name={it.icon} size={24} className="text-fire" />
                 </div>
-                <h3 className="font-oswald text-xl text-white mb-2 leading-tight">{it.t}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{it.d}</p>
+                <h3 className="font-oswald text-2xl md:text-3xl text-white mb-3 leading-tight">{it.t}</h3>
+                <p className="text-white/70 text-lg md:text-xl leading-relaxed">{it.d}</p>
               </div>
             </div>
           ))}

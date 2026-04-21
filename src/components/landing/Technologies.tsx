@@ -39,9 +39,6 @@ const Technologies = () => {
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] rounded-full bg-fire/10 blur-[140px] -translate-y-1/2" />
       <div className="container relative">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ТЕХНОЛОГИИ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Ключевые технологии <span className="text-fire-gradient">ярусных печей</span>
           </h2>
@@ -55,16 +52,13 @@ const Technologies = () => {
               className="card-hover group bg-white rounded-2xl p-7 border border-coal-light shadow-sm flex gap-5 animate-fade-in-up"
             >
               <div className="flex-shrink-0">
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center group-hover:scale-110 transition">
-                  <Icon name={t.icon} size={24} className="text-white" />
-                </div>
-                <div className="mt-2 text-center text-xs font-oswald text-fire-gradient font-bold">
-                  0{i + 1}
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center group-hover:scale-110 transition shadow-lg shadow-fire/30">
+                  <Icon name={t.icon} size={40} className="text-white" />
                 </div>
               </div>
               <div>
-                <h3 className="font-oswald text-xl text-white mb-2 leading-tight">{t.t}</h3>
-                <p className="text-white/65 text-sm leading-relaxed">{t.d}</p>
+                <h3 className="font-oswald text-2xl md:text-3xl text-white mb-3 leading-tight">{t.t}</h3>
+                <p className="text-white/75 text-lg md:text-xl leading-relaxed">{t.d}</p>
               </div>
             </div>
           ))}

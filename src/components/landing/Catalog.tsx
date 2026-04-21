@@ -40,10 +40,23 @@ const findParamByKey = (params: Record<string, string>, needle: string): string 
   return '';
 };
 
-const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) => {
+const ProductGallery = ({
+  pictures,
+  alt,
+  onImageClick,
+}: {
+  pictures: string[];
+  alt: string;
+  onImageClick?: () => void;
+}) => {
   const [idx, setIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const src = pictures[idx] || PLACEHOLDER;
+
+  const handleClick = () => {
+    if (onImageClick) onImageClick();
+    else if (pictures.length > 0) setLightbox(true);
+  };
 
   return (
     <>
@@ -51,8 +64,8 @@ const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) 
         <img
           src={src}
           alt={alt}
-          onClick={() => pictures.length > 0 && setLightbox(true)}
-          className="w-full h-full object-contain p-4 cursor-zoom-in group-hover:scale-105 transition duration-500"
+          onClick={handleClick}
+          className="w-full h-full object-contain p-4 cursor-pointer group-hover:scale-105 transition duration-500"
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
           }}
@@ -97,10 +110,14 @@ const ProductGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) 
           className="fixed inset-0 z-[100] bg-black/90 backdrop-blur flex items-center justify-center p-4 animate-fade-in-up"
         >
           <button
-            onClick={() => setLightbox(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-fire transition"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightbox(false);
+            }}
+            className="absolute top-4 right-4 px-4 py-2 rounded-full bg-gradient-to-r from-fire to-fire-dark text-white font-semibold flex items-center gap-2 shadow-lg shadow-fire/40 hover:shadow-xl transition z-10"
           >
-            <Icon name="X" size={20} />
+            <Icon name="X" size={18} />
+            Закрыть
           </button>
           <img
             src={src}
@@ -210,12 +227,12 @@ const ProductModal = ({
 
           {Object.keys(product.params).length > 0 && (
             <div className="mb-6">
-              <h4 className="font-oswald text-lg text-white mb-3">Характеристики</h4>
-              <div className="grid sm:grid-cols-2 gap-2">
+              <h4 className="font-oswald text-2xl text-white mb-4">Характеристики</h4>
+              <div className="grid sm:grid-cols-2 gap-3">
                 {Object.entries(product.params).map(([k, v]) => (
-                  <div key={k} className="bg-coal rounded-lg p-3 border border-coal-light">
-                    <div className="text-xs text-white/50 mb-0.5">{k}</div>
-                    <div className="text-sm text-white">{v}</div>
+                  <div key={k} className="bg-coal rounded-lg p-4 border border-coal-light">
+                    <div className="text-sm text-white/60 mb-1">{k}</div>
+                    <div className="text-lg text-white font-medium">{v}</div>
                   </div>
                 ))}
               </div>
@@ -291,9 +308,6 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
       <div className="container relative">
         <div className="flex items-end justify-between flex-wrap gap-4 mb-8">
           <div>
-            <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-              <span className="w-8 h-px bg-fire" /> КАТАЛОГ
-            </div>
             <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
               Каталог <span className="text-fire-gradient">печей</span>
             </h2>
@@ -364,60 +378,61 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((p, i) => {
                   const priceText = formatPrice(p.price);
-                  const tray = findParamByKey(p.params, 'противен');
-                  const temperature = findParamByKey(p.params, 'температур');
+                  const allParams = Object.entries(p.params || {}).filter(([, v]) => v);
                   return (
                     <article
                       key={p.id}
                       style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
                       className="card-hover group bg-coal-mid rounded-2xl overflow-hidden border border-coal-light animate-fade-in-up flex flex-col"
                     >
-                      <ProductGallery pictures={p.pictures} alt={p.name} />
+                      <ProductGallery pictures={p.pictures} alt={p.name} onImageClick={() => setModal(p)} />
 
                       <div className="p-5 flex flex-col flex-1">
                         <div className="flex items-start gap-2 mb-2 flex-wrap">
                           {p.vendor && (
-                            <span className="px-2 py-0.5 rounded-full bg-fire/10 border border-fire/30 text-fire text-[10px] uppercase font-medium">
+                            <span className="px-2.5 py-1 rounded-full bg-fire/10 border border-fire/30 text-fire text-xs uppercase font-medium">
                               {p.vendor}
                             </span>
                           )}
                           {p.available && (
-                            <span className="px-2 py-0.5 rounded-full bg-green-500/15 border border-green-500/40 text-green-400 text-[10px] uppercase font-medium">
+                            <span className="px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/40 text-green-400 text-xs uppercase font-medium">
                               В наличии
                             </span>
                           )}
                         </div>
-                        <h3 className="font-oswald text-lg text-white mb-2 leading-tight line-clamp-2">
+                        <h3 className="font-oswald text-xl md:text-2xl text-white mb-3 leading-tight line-clamp-2">
                           {p.name}
                         </h3>
 
-                        <div className="space-y-1.5 mb-3">
-                          {p.performance && (
-                            <div className="flex items-center gap-2 text-sm text-white/70">
-                              <Icon name="Gauge" size={14} className="text-fire flex-shrink-0" />
-                              <span className="line-clamp-1">Производительность: {p.performance}</span>
-                            </div>
-                          )}
-                          {tray && (
-                            <div className="flex items-center gap-2 text-sm text-white/70">
-                              <Icon name="LayoutGrid" size={14} className="text-fire flex-shrink-0" />
-                              <span className="line-clamp-1">Противень: {tray}</span>
-                            </div>
-                          )}
-                          {temperature && (
-                            <div className="flex items-center gap-2 text-sm text-white/70">
-                              <Icon name="Thermometer" size={14} className="text-fire flex-shrink-0" />
-                              <span className="line-clamp-1">Температура: {temperature}</span>
-                            </div>
-                          )}
-                        </div>
+                        {p.performance && (
+                          <div className="flex items-center gap-2 text-base text-white/80 mb-3">
+                            <Icon name="Gauge" size={18} className="text-fire flex-shrink-0" />
+                            <span>Производительность: {p.performance}</span>
+                          </div>
+                        )}
+
+                        {allParams.length > 0 && (
+                          <div className="mb-3 grid grid-cols-1 gap-1.5">
+                            {allParams.map(([k, v]) => (
+                              <div
+                                key={k}
+                                className="flex items-start gap-2 text-base"
+                              >
+                                <Icon name="Dot" size={18} className="text-fire flex-shrink-0 mt-0.5" />
+                                <div className="text-white/85 leading-snug">
+                                  <span className="text-white/55">{k}:</span> {v}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
 
                         {priceText && (
                           <div className="mb-3 pt-3 border-t border-coal-light">
-                            <div className="text-[10px] uppercase tracking-wider text-white/50 mb-0.5">
+                            <div className="text-xs uppercase tracking-wider text-white/50 mb-1">
                               Цена
                             </div>
-                            <div className="font-oswald text-2xl font-bold text-fire-gradient">
+                            <div className="font-oswald text-3xl font-bold text-fire-gradient">
                               {priceText}
                             </div>
                           </div>
@@ -426,16 +441,16 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                         <div className={`mt-auto flex items-center gap-2 ${priceText ? '' : 'pt-3 border-t border-coal-light'}`}>
                           <button
                             onClick={() => setModal(p)}
-                            className="flex-1 px-3 py-2 rounded-lg bg-coal border border-coal-light text-white text-sm hover:border-fire transition flex items-center justify-center gap-1"
+                            className="flex-1 px-4 py-3 rounded-lg bg-coal border border-coal-light text-white text-base hover:border-fire transition flex items-center justify-center gap-2"
                           >
                             Подробнее
-                            <Icon name="ArrowRight" size={14} />
+                            <Icon name="ArrowRight" size={16} />
                           </button>
                           <button
                             onClick={() => onLead('catalog', { productId: p.id, productName: p.name })}
-                            className="px-3 py-2 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white text-sm font-semibold hover:shadow-lg hover:shadow-fire/30 transition flex items-center gap-1"
+                            className="px-4 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white text-base font-semibold hover:shadow-lg hover:shadow-fire/30 transition flex items-center gap-2"
                           >
-                            <Icon name="Send" size={14} />
+                            <Icon name="Send" size={16} />
                             Заявка
                           </button>
                         </div>

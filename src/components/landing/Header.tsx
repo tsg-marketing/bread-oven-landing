@@ -12,16 +12,15 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
       }}
     >
       <div className="container flex items-center justify-between h-16">
-        <a href="#home" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ember via-fire to-fire-dark flex items-center justify-center shadow-lg shadow-fire/30">
-            <Icon name="Wheat" size={22} className="text-white" />
-          </div>
-          <div className="leading-tight">
-            <div className="font-oswald text-xl font-bold tracking-wider" style={{ color: 'hsl(var(--ink))' }}>
-              ТЕХНО<span className="text-fire-gradient">СИБ</span>
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'hsl(var(--ink) / 0.5)' }}>
-              печное оборудование
+        <a href="#home" className="flex items-center gap-3">
+          <img
+            src="https://cdn.poehali.dev/files/ca89fddf-7bc6-4cd1-9d5f-5696c3edbc2d.jpg"
+            alt="ТЕХНОСИБ"
+            className="h-10 md:h-11 w-auto bg-white rounded-md p-1"
+          />
+          <div className="hidden sm:block leading-tight max-w-[260px]">
+            <div className="text-[11px] md:text-xs" style={{ color: 'hsl(var(--ink) / 0.7)' }}>
+              Профессиональное пищевое<br />и упаковочное оборудование
             </div>
           </div>
         </a>
@@ -37,9 +36,9 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a href="tel:+73832000000" className="text-sm hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
+          <a href="tel:+78005004054" className="text-sm hover:text-fire transition flex items-center gap-2" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
             <Icon name="Phone" size={14} />
-            +7 (383) 200-00-00
+            8-800-500-40-54
           </a>
           <button
             onClick={() => onLead('header')}
@@ -72,7 +71,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             <a href="#service" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Сервис</a>
             <a href="#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>О компании</a>
             <a href="#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>Контакты</a>
-            <a href="tel:+73832000000" style={{ color: 'hsl(var(--ink) / 0.8)' }}>+7 (383) 200-00-00</a>
+            <a href="tel:+78005004054" style={{ color: 'hsl(var(--ink) / 0.8)' }}>8-800-500-40-54</a>
             <button
               onClick={() => { setOpen(false); onLead('header'); }}
               className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark font-semibold"

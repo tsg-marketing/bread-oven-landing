@@ -13,17 +13,14 @@ const Footer = () => {
       <div className="container">
         <div className="grid md:grid-cols-4 gap-10 mb-10">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ember via-fire to-fire-dark flex items-center justify-center">
-                <Icon name="Wheat" size={22} className="text-white" />
-              </div>
-              <div className="leading-tight">
-                <div className="font-oswald text-xl font-bold tracking-wider" style={{ color: '#fff' }}>
-                  ТЕХНО<span className="text-fire-gradient">СИБ</span>
-                </div>
-                <div className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                  печное оборудование
-                </div>
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src="https://cdn.poehali.dev/files/ca89fddf-7bc6-4cd1-9d5f-5696c3edbc2d.jpg"
+                alt="ТЕХНОСИБ"
+                className="h-12 w-auto bg-white rounded-md p-1"
+              />
+              <div className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                Профессиональное пищевое<br />и упаковочное оборудование
               </div>
             </div>
             <p className="text-sm max-w-md" style={{ color: 'rgba(255,255,255,0.6)' }}>
@@ -31,7 +28,7 @@ const Footer = () => {
             </p>
             <div className="flex gap-3 mt-5">
               <a
-                href="tel:+73832000000"
+                href="tel:+78005004054"
                 className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
                 style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
               >
@@ -45,7 +42,7 @@ const Footer = () => {
                 <Icon name="Mail" size={16} />
               </a>
               <a
-                href="https://wa.me/73832000000"
+                href="https://wa.me/78005004054"
                 target="_blank"
                 rel="noreferrer"
                 className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
@@ -96,12 +93,12 @@ const Footer = () => {
                 <Icon name="MapPin" size={16} className="text-fire flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="font-medium" style={{ color: '#fff' }}>Новосибирск</div>
-                  ул. Станционная, 60, офис 304
+                  ул. Электрозаводская, 2 к1, офис 304, 314
                 </div>
               </div>
               <div className="flex gap-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
                 <Icon name="Phone" size={16} className="text-fire flex-shrink-0 mt-0.5" />
-                <a href="tel:+73832000000" className="hover:text-fire transition">+7 (383) 200-00-00</a>
+                <a href="tel:+78005004054" className="hover:text-fire transition">8-800-500-40-54</a>
               </div>
             </div>
           </div>

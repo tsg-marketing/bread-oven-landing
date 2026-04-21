@@ -23,9 +23,6 @@ const Warranty = () => {
     <section id="warranty" className="py-24 bg-coal relative overflow-hidden">
       <div className="container">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ГАРАНТИЯ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Работаем <span className="text-fire-gradient">по документам</span>
           </h2>
@@ -43,8 +40,8 @@ const Warranty = () => {
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center mb-5">
                   <Icon name={b.icon} size={28} className="text-white" />
                 </div>
-                <h3 className="font-oswald text-2xl text-white mb-2 leading-tight">{b.t}</h3>
-                <p className="text-white/65">{b.d}</p>
+                <h3 className="font-oswald text-2xl md:text-3xl text-white mb-3 leading-tight">{b.t}</h3>
+                <p className="text-white/75 text-lg md:text-xl leading-relaxed">{b.d}</p>
               </div>
             </div>
           ))}

@@ -26,15 +26,8 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
 
       <div className="container relative z-10 grid lg:grid-cols-2 gap-12 items-center py-16">
         <div className="animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-fire/30 shadow-sm mb-6">
-            <span className="w-2 h-2 rounded-full bg-fire animate-pulse" />
-            <span className="text-sm text-coal-mid" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
-              Хлебопекарное и кондитерское оборудование
-            </span>
-          </div>
           <h1 className="font-oswald text-4xl md:text-6xl font-bold uppercase leading-[1.02] mb-6" style={{ color: 'hsl(var(--ink))' }}>
-            Профессиональные печи<br />
-            для <span className="text-fire-gradient">пекарен и пиццерий</span>
+            Профессиональные печи для <span className="text-fire-gradient">хлебозаводов, пекарен и пиццерий</span>
           </h1>
 
           <ul className="space-y-3 mb-8">
@@ -44,10 +37,10 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
                 style={{ animationDelay: `${i * 100}ms` }}
                 className="flex items-start gap-3 animate-fade-in-up"
               >
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-fire/15 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Icon name={b.icon} size={16} className="text-fire" />
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-fire/15 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Icon name={b.icon} size={20} className="text-fire" />
                 </div>
-                <span className="text-base md:text-lg" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
+                <span className="text-lg md:text-xl" style={{ color: 'hsl(var(--ink) / 0.85)' }}>
                   {b.t}
                 </span>
               </li>
@@ -78,21 +71,7 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
         <div className="relative animate-fade-in-up delay-200">
           <div className="absolute inset-0 bg-gradient-to-tr from-fire/20 to-ember/15 blur-3xl rounded-full" />
           <div className="relative rounded-3xl overflow-hidden border bg-white shadow-2xl shadow-fire/10" style={{ borderColor: 'hsl(var(--coal-light))' }}>
-            <img src={HERO_IMG} alt="Профессиональная конвекционная печь Danler" className="w-full h-[520px] object-contain bg-white p-6" />
-            <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-lg border border-fire/30 rounded-xl px-3 py-2 flex items-center gap-2 shadow">
-              <Icon name="BadgeCheck" size={14} className="text-fire" />
-              <span className="text-xs font-semibold" style={{ color: 'hsl(var(--ink))' }}>
-                В наличии
-              </span>
-            </div>
-            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-lg border rounded-xl px-4 py-2 shadow" style={{ borderColor: 'hsl(var(--coal-light))' }}>
-              <div className="text-[10px] uppercase tracking-widest" style={{ color: 'hsl(var(--ink) / 0.5)' }}>
-                Конвекционная печь
-              </div>
-              <div className="font-oswald font-bold text-lg" style={{ color: 'hsl(var(--ink))' }}>
-                DANLER · 10 уровней
-              </div>
-            </div>
+            <img src={HERO_IMG} alt="Профессиональная конвекционная печь" className="w-full h-[520px] object-contain bg-white p-6" />
           </div>
         </div>
       </div>

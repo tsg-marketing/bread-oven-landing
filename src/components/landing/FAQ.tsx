@@ -19,9 +19,6 @@ const FAQ = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-fire/10 blur-[140px]" />
       <div className="container relative max-w-4xl">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> FAQ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Часто <span className="text-fire-gradient">спрашивают</span>
           </h2>

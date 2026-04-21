@@ -136,9 +136,6 @@ const Quiz = ({ onDone }: { onDone?: () => void }) => {
 
       <div className="container relative">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> ПОДБОР ПЕЧИ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Подобрать <span className="text-fire-gradient">печь</span>
           </h2>

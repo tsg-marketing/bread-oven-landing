@@ -13,9 +13,6 @@ const Comparison = () => {
     <section id="comparison" className="py-24 bg-coal-mid relative overflow-hidden">
       <div className="container">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 text-fire text-sm font-semibold mb-3">
-            <span className="w-8 h-px bg-fire" /> СРАВНЕНИЕ <span className="w-8 h-px bg-fire" />
-          </div>
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
             Сравнение <span className="text-fire-gradient">типов печей</span>
           </h2>
@@ -25,22 +22,22 @@ const Comparison = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead style={{ background: 'hsl(var(--coal-mid))' }}>
-                <tr className="text-left text-white/70 text-xs uppercase tracking-wider">
-                  <th className="p-4 font-medium">Тип печи</th>
-                  <th className="p-4 font-medium">Применение</th>
-                  <th className="p-4 font-medium">Объём</th>
-                  <th className="p-4 font-medium">Качество</th>
-                  <th className="p-4 font-medium">Особенности</th>
+                <tr className="text-left text-white/70 text-base uppercase tracking-wider">
+                  <th className="p-5 font-medium">Тип печи</th>
+                  <th className="p-5 font-medium">Применение</th>
+                  <th className="p-5 font-medium">Объём</th>
+                  <th className="p-5 font-medium">Качество</th>
+                  <th className="p-5 font-medium">Особенности</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r, i) => (
                   <tr key={r.type} className={`border-t border-coal-light text-white ${i % 2 ? 'bg-[hsl(var(--coal-mid))]/60' : ''}`}>
-                    <td className="p-4 font-oswald text-fire-gradient font-bold">{r.type}</td>
-                    <td className="p-4 text-sm text-white/80">{r.area}</td>
-                    <td className="p-4 text-sm text-white/80">{r.vol}</td>
-                    <td className="p-4 text-sm text-white/80">{r.quality}</td>
-                    <td className="p-4 text-sm text-white/80">{r.note}</td>
+                    <td className="p-5 font-oswald text-fire-gradient font-bold text-xl">{r.type}</td>
+                    <td className="p-5 text-lg text-white/85">{r.area}</td>
+                    <td className="p-5 text-lg text-white/85">{r.vol}</td>
+                    <td className="p-5 text-lg text-white/85">{r.quality}</td>
+                    <td className="p-5 text-lg text-white/85">{r.note}</td>
                   </tr>
                 ))}
               </tbody>
