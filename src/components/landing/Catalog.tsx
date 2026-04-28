@@ -205,10 +205,10 @@ const ProductModal = ({
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => onLead(product)}
-                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center gap-2"
+                  className="px-7 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-fire to-fire-dark text-white font-bold text-lg md:text-xl uppercase tracking-wide shadow-lg shadow-fire/40 hover:shadow-2xl hover:shadow-fire/60 hover:scale-[1.03] transition flex items-center gap-3 animate-pulse-glow"
                 >
-                  <Icon name="Send" size={16} />
-                  Оставить заявку
+                  <Icon name="Phone" size={22} />
+                  Получить консультацию
                 </button>
               </div>
             </div>
