@@ -2,30 +2,29 @@ import Icon from '@/components/ui/icon';
 
 const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/2d2334c4-5b43-4c5e-bfb9-01feec608bc6.png';
 
-type Bullet = { icon: string; bold: string; rest: string };
-
-const bullets: Bullet[] = [
-  {
-    icon: 'Layers',
-    bold: 'Полная линейка печей для выпечки',
-    rest: ' — 150+ моделей, 5 типов, все масштабы бизнеса',
-  },
-  { icon: 'Award', bold: 'Лучшие', rest: ' мировые и российские бренды' },
-  {
-    icon: 'Plug',
-    bold: 'Электричество, газ или дизель',
-    rest: ' — выбирайте оптимальный энергоноситель',
-  },
-  { icon: 'Truck', bold: 'Доставка по всей России', rest: ' и собственная сервисная служба' },
-];
-
 type Offer = { icon: string; title: string; subtitle: string };
 
 const offers: Offer[] = [
-  { icon: 'BadgePercent', title: 'Скидка до 12%', subtitle: 'при заказе до конца месяца' },
-  { icon: 'Calendar', title: 'Рассрочка 0%', subtitle: 'на 6 месяцев без переплат' },
-  { icon: 'Wrench', title: 'Монтаж в подарок', subtitle: 'при покупке от 500 000 ₽' },
-  { icon: 'ShieldCheck', title: 'Гарантия 3 года', subtitle: 'на всё оборудование' },
+  {
+    icon: 'Layers',
+    title: 'Полная линейка печей для выпечки',
+    subtitle: '150+ моделей, 5 типов, все масштабы бизнеса',
+  },
+  {
+    icon: 'Award',
+    title: 'Лучшие мировые и российские бренды',
+    subtitle: 'проверенные производители',
+  },
+  {
+    icon: 'Plug',
+    title: 'Электричество, газ или дизель',
+    subtitle: 'выбирайте оптимальный энергоноситель',
+  },
+  {
+    icon: 'Truck',
+    title: 'Доставка по всей России',
+    subtitle: 'и собственная сервисная служба',
+  },
 ];
 
 const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
@@ -65,23 +64,9 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
             <span className="text-fire-gradient">хлебозаводов, пекарен и пиццерий</span>
           </h1>
 
-          <ul className="space-y-2 mb-4 md:mb-5">
-            {bullets.map((b, i) => (
-              <li
-                key={b.bold}
-                style={{ animationDelay: `${i * 100}ms` }}
-                className="flex items-start gap-3 animate-fade-in-up"
-              >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-fire/15 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Icon name={b.icon} size={20} className="text-fire" />
-                </div>
-                <span className="text-lg md:text-xl" style={{ color: 'hsl(var(--ink))' }}>
-                  <span className="font-bold">{b.bold}</span>
-                  <span style={{ color: 'hsl(var(--ink) / 0.85)' }}>{b.rest}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <p className="text-lg md:text-xl mb-5 md:mb-6 max-w-xl" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
+            Подберём оборудование под ваш объём, продукт и бюджет — от мини-пекарни до промышленного хлебозавода.
+          </p>
 
           <div className="flex flex-wrap gap-3">
             <button
