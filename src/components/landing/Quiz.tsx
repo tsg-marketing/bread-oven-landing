@@ -136,7 +136,7 @@ export const QuizInner = ({
   const gridCols = compact ? 'grid-cols-1' : 'sm:grid-cols-2';
 
   return (
-    <div className="bg-coal-mid border border-coal-light rounded-2xl p-6 md:p-8 relative overflow-hidden">
+    <div className="bg-white border border-coal-light rounded-2xl p-6 md:p-8 relative overflow-hidden">
       <div
         className="absolute top-0 left-0 h-1 bg-gradient-to-r from-fire to-ember transition-all duration-500"
         style={{ width: `${progress}%` }}
@@ -144,16 +144,19 @@ export const QuizInner = ({
 
       {phase === 'quiz' && (
         <div className="animate-fade-in-up">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-sm text-white/50">
+          <div className="flex items-center justify-between mb-5">
+            <span className="text-base font-semibold" style={{ color: '#000' }}>
               Шаг {step + 1} из {questions.length}
             </span>
-            <span className="text-sm text-fire-gradient font-bold">{Math.round(progress)}%</span>
+            <span className="text-base text-fire-gradient font-bold">{Math.round(progress)}%</span>
           </div>
-          <h3 className={`font-oswald ${compact ? 'text-xl' : 'text-2xl md:text-3xl'} text-white mb-5`}>
+          <h3
+            className={`font-oswald ${compact ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold mb-6`}
+            style={{ color: '#000' }}
+          >
             {current.q}
           </h3>
-          <div className={`grid ${gridCols} gap-2.5`}>
+          <div className={`grid ${gridCols} gap-3`}>
             {current.options.map((o) => {
               const selected =
                 current.type === 'multi'
@@ -165,29 +168,32 @@ export const QuizInner = ({
                   onClick={() =>
                     current.type === 'multi' ? toggleMulti(o.label) : chooseSingle(o.label)
                   }
-                  className={`group text-left flex items-center gap-3 p-3 rounded-xl border transition ${
+                  className={`group text-left flex items-center gap-3 p-4 rounded-xl border-2 transition ${
                     selected
                       ? 'bg-fire/10 border-fire'
-                      : 'bg-coal border-coal-light hover:border-fire/50'
+                      : 'bg-white border-coal-light hover:border-fire/50'
                   }`}
                 >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/20 flex items-center justify-center flex-shrink-0">
-                    <Icon name={o.icon} size={18} className="text-fire" />
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0">
+                    <Icon name={o.icon} size={24} className="text-fire" />
                   </div>
-                  <span className="text-white font-medium flex-1 text-sm">{o.label}</span>
+                  <span className="font-bold flex-1 text-base md:text-lg" style={{ color: '#000' }}>
+                    {o.label}
+                  </span>
                   {current.type === 'multi' ? (
                     <div
-                      className={`w-5 h-5 rounded border flex items-center justify-center ${
-                        selected ? 'bg-fire border-fire' : 'border-white/30'
+                      className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                        selected ? 'bg-fire border-fire' : 'border-black/40'
                       }`}
                     >
-                      {selected && <Icon name="Check" size={14} className="text-white" />}
+                      {selected && <Icon name="Check" size={16} className="text-white" />}
                     </div>
                   ) : (
                     <Icon
                       name="ChevronRight"
-                      size={16}
-                      className="text-white/30 group-hover:text-fire transition"
+                      size={22}
+                      className="group-hover:text-fire transition"
+                      style={{ color: '#000' }}
                     />
                   )}
                 </button>
@@ -195,13 +201,14 @@ export const QuizInner = ({
             })}
           </div>
 
-          <div className="mt-5 flex items-center justify-between">
+          <div className="mt-6 flex items-center justify-between">
             {step > 0 ? (
               <button
                 onClick={() => setStep(step - 1)}
-                className="text-sm text-white/50 hover:text-fire flex items-center gap-1"
+                className="text-base font-semibold hover:text-fire flex items-center gap-1"
+                style={{ color: '#000' }}
               >
-                <Icon name="ArrowLeft" size={14} /> Назад
+                <Icon name="ArrowLeft" size={16} /> Назад
               </button>
             ) : (
               <span />
@@ -209,9 +216,9 @@ export const QuizInner = ({
             {current.type === 'multi' && (
               <button
                 onClick={submitMulti}
-                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center gap-2"
+                className="px-6 py-3 rounded-lg bg-gradient-to-r from-fire to-fire-dark text-white font-bold text-base hover:shadow-lg hover:shadow-fire/40 transition flex items-center gap-2"
               >
-                Далее <Icon name="ArrowRight" size={16} />
+                Далее <Icon name="ArrowRight" size={18} />
               </button>
             )}
           </div>
@@ -223,10 +230,10 @@ export const QuizInner = ({
           <div className="w-14 h-14 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-4 flex items-center justify-center animate-pulse-glow">
             <Icon name="Check" size={24} className="text-white" />
           </div>
-          <h3 className="font-oswald text-xl md:text-2xl text-white text-center mb-2">
+          <h3 className="font-oswald text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: '#000' }}>
             Подборка готова!
           </h3>
-          <p className="text-white/60 text-center text-sm mb-5">
+          <p className="text-center text-base mb-5" style={{ color: '#000' }}>
             Оставьте контакты — пришлём подборку и КП.
           </p>
 
@@ -236,7 +243,8 @@ export const QuizInner = ({
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="Ваше имя"
-              className="w-full bg-coal border border-coal-light focus:border-fire rounded-xl px-4 py-3 text-white outline-none transition"
+              className="w-full bg-white border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3 outline-none transition text-base"
+              style={{ color: '#000' }}
             />
             <input
               required
@@ -244,7 +252,8 @@ export const QuizInner = ({
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
               placeholder="Телефон"
-              className="w-full bg-coal border border-coal-light focus:border-fire rounded-xl px-4 py-3 text-white outline-none transition"
+              className="w-full bg-white border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3 outline-none transition text-base"
+              style={{ color: '#000' }}
             />
             {errorMsg && <div className="text-sm text-red-400">{errorMsg}</div>}
             <button
@@ -258,7 +267,8 @@ export const QuizInner = ({
             <button
               type="button"
               onClick={reset}
-              className="w-full text-sm text-white/40 hover:text-fire"
+              className="w-full text-sm hover:text-fire"
+              style={{ color: '#000' }}
             >
               Пройти заново
             </button>
@@ -272,13 +282,14 @@ export const QuizInner = ({
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-fire to-ember mx-auto mb-4 flex items-center justify-center animate-pulse-glow">
             <Icon name="PartyPopper" size={28} className="text-white" />
           </div>
-          <h3 className="font-oswald text-2xl text-white mb-2">Заявка принята!</h3>
-          <p className="text-white/60 text-sm mb-5">
+          <h3 className="font-oswald text-3xl font-bold mb-2" style={{ color: '#000' }}>Заявка принята!</h3>
+          <p className="text-base mb-5" style={{ color: '#000' }}>
             Технолог-эксперт свяжется с вами в ближайшее время.
           </p>
           <button
             onClick={reset}
-            className="px-5 py-2.5 rounded-xl border border-coal-light text-white hover:border-fire transition"
+            className="px-5 py-2.5 rounded-xl border-2 border-coal-light hover:border-fire transition font-semibold"
+            style={{ color: '#000' }}
           >
             Пройти ещё раз
           </button>
