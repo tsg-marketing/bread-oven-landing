@@ -292,31 +292,24 @@ const Quiz = ({ onDone }: { onDone?: () => void }) => {
   return (
     <section
       id="quiz"
-      className="py-24 relative overflow-hidden bg-coal"
+      className="py-24 relative overflow-hidden bg-coal-mid"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-coal via-coal-mid to-coal" />
       <div className="absolute top-10 right-10 w-[500px] h-[500px] rounded-full bg-fire/15 blur-[140px]" />
       <div className="absolute bottom-10 left-10 w-[400px] h-[400px] rounded-full bg-ember/10 blur-[120px]" />
 
       <div className="container relative">
         <div className="text-center mb-10 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-fire/15 backdrop-blur border border-fire/40 mb-5">
-            <Icon name="Sparkles" size={14} className="text-amber-300" />
-            <span className="text-amber-300 text-xs font-bold uppercase tracking-wider">
-              Бесплатный подбор за 2 минуты
-            </span>
-          </div>
-          <h2 className="font-oswald text-4xl md:text-6xl font-black uppercase text-white leading-tight">
+          <h2 className="font-oswald text-4xl md:text-6xl font-black uppercase leading-tight" style={{ color: 'hsl(var(--ink))' }}>
             Выбери идеальную печь <br className="hidden md:block" />
             <span className="text-fire-gradient">для своей пекарни!</span>
           </h2>
-          <p className="text-white/70 text-lg mt-4">
+          <p className="text-lg mt-4" style={{ color: 'hsl(var(--steel))' }}>
             Ответь на 4 простых вопроса — технолог пришлёт подборку моделей и КП с ценами.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto p-[2px] rounded-3xl bg-gradient-to-br from-fire via-amber-400 to-ember shadow-2xl shadow-fire/20">
-          <div className="rounded-[22px] bg-coal-mid">
+        <div className="max-w-3xl mx-auto p-[3px] rounded-3xl bg-gradient-to-br from-fire via-amber-400 to-ember shadow-2xl shadow-fire/25">
+          <div className="rounded-[22px] bg-white">
             <QuizInner onDone={onDone} />
           </div>
         </div>
