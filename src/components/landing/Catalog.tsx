@@ -251,6 +251,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
   const [activeCat, setActiveCat] = useState<string>('all');
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<Product | null>(null);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     fetch(func2url.catalog)
@@ -266,8 +267,27 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
       });
   }, []);
 
+  useEffect(() => {
+    setVisibleCount(6);
+  }, [activeCat, search]);
+
+  /** Считаем заполненные параметры товара: name, vendor, performance, picture, price + ключи params */
+  const countFilledParams = (p: Product): number => {
+    let n = 0;
+    if (p.name && p.name.trim()) n++;
+    if (p.vendor && p.vendor.trim()) n++;
+    if (p.performance && p.performance.trim()) n++;
+    if (p.picture && p.picture.trim()) n++;
+    if (p.price && Number(p.price) > 0) n++;
+    if (p.description && p.description.trim()) n++;
+    if (p.params) {
+      for (const v of Object.values(p.params)) if (v && String(v).trim()) n++;
+    }
+    return n;
+  };
+
   const filtered = useMemo(() => {
-    let list = items;
+    let list = items.filter((i) => countFilledParams(i) > 3);
     if (activeCat !== 'all') list = list.filter((i) => i.categoryId === activeCat);
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -291,6 +311,10 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
     });
   }, [items, activeCat, search]);
 
+  const visibleItems = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
+  const canShowMore = visibleCount < filtered.length;
+  const isExpanded = visibleCount >= filtered.length && filtered.length > 6;
+
   return (
     <section id="catalog" className="relative py-24 bg-coal overflow-hidden">
       <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-fire/10 blur-[140px]" />
@@ -313,10 +337,10 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   : 'bg-coal-mid text-white/70 border-coal-light hover:border-fire/40 hover:text-white'
               }`}
             >
-              Все ({items.length})
+              Все ({items.filter((i) => countFilledParams(i) > 3).length})
             </button>
             {categories.map((c) => {
-              const count = items.filter((i) => i.categoryId === c.id).length;
+              const count = items.filter((i) => i.categoryId === c.id && countFilledParams(i) > 3).length;
               return (
                 <button
                   key={c.id}
@@ -361,8 +385,9 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                 По вашему запросу ничего не найдено
               </div>
             ) : (
+              <>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((p, i) => {
+                {visibleItems.map((p, i) => {
                   const priceText = formatPrice(p.price);
                   const allParams = Object.entries(p.params || {}).filter(([, v]) => v);
                   return (
@@ -452,6 +477,29 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   );
                 })}
               </div>
+
+              {(canShowMore || isExpanded) && (
+                <div className="flex justify-center mt-10">
+                  {canShowMore ? (
+                    <button
+                      onClick={() => setVisibleCount(visibleCount + 6)}
+                      className="px-8 py-4 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-bold text-base hover:shadow-2xl hover:shadow-fire/40 transition flex items-center gap-2"
+                    >
+                      Показать больше
+                      <Icon name="ChevronDown" size={18} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setVisibleCount(6)}
+                      className="px-8 py-4 rounded-xl bg-coal-mid border-2 border-fire text-fire font-bold text-base hover:bg-fire/10 transition flex items-center gap-2"
+                    >
+                      Свернуть
+                      <Icon name="ChevronUp" size={18} />
+                    </button>
+                  )}
+                </div>
+              )}
+              </>
             )}
           </>
         )}
