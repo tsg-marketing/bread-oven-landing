@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
 
@@ -252,6 +252,16 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState<Product | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const scrollToGridTop = () => {
+    setTimeout(() => {
+      const el = gridRef.current;
+      if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY - 120;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }, 50);
+  };
 
   useEffect(() => {
     fetch(func2url.catalog)
@@ -379,7 +389,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
               </div>
             ) : (
               <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {visibleItems.map((p, i) => {
                   const priceText = formatPrice(p.price);
                   const allParams = Object.entries(p.params || {}).filter(([, v]) => v);
@@ -484,7 +494,10 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   )}
                   {canShowLess && (
                     <button
-                      onClick={() => setVisibleCount(Math.max(6, visibleCount - 6))}
+                      onClick={() => {
+                        setVisibleCount(Math.max(6, visibleCount - 6));
+                        scrollToGridTop();
+                      }}
                       className="px-8 py-4 rounded-xl bg-coal-mid border-2 border-fire text-fire font-bold text-base hover:bg-fire/10 transition flex items-center gap-2"
                     >
                       Показать меньше
@@ -493,7 +506,10 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   )}
                   {canShowLess && !canShowMore && (
                     <button
-                      onClick={() => setVisibleCount(6)}
+                      onClick={() => {
+                        setVisibleCount(6);
+                        scrollToGridTop();
+                      }}
                       className="px-8 py-4 rounded-xl bg-coal border-2 border-coal-light text-white font-bold text-base hover:border-fire transition flex items-center gap-2"
                     >
                       Свернуть всё
