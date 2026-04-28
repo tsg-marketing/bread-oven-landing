@@ -21,10 +21,10 @@ const QuizModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =>
           <Icon name="X" size={18} />
         </button>
         <div className="mb-4 text-center">
-          <h3 className="font-oswald text-3xl md:text-4xl font-bold uppercase text-white">
-            Подобрать <span className="text-fire-gradient">печь</span>
+          <h3 className="font-oswald text-3xl md:text-4xl font-bold uppercase text-fire drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+            Подобрать <span className="text-amber-300">печь</span>
           </h3>
-          <p className="text-white/70 mt-2 text-sm">
+          <p className="text-white mt-2 text-sm font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
             Ответьте на 4 вопроса — технолог подберёт оптимальные модели.
           </p>
         </div>
