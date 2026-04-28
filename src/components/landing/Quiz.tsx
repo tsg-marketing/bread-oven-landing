@@ -290,22 +290,35 @@ export const QuizInner = ({
 
 const Quiz = ({ onDone }: { onDone?: () => void }) => {
   return (
-    <section id="quiz" className="py-24 bg-coal relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-fire/20 blur-[140px]" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-ember/15 blur-[120px]" />
+    <section
+      id="quiz"
+      className="py-24 relative overflow-hidden bg-gradient-to-br from-fire via-fire-dark to-ember"
+    >
+      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,white_0%,transparent_40%),radial-gradient(circle_at_80%_80%,white_0%,transparent_40%)]" />
+      <div className="absolute top-10 right-10 w-[500px] h-[500px] rounded-full bg-amber-300/30 blur-[140px]" />
+      <div className="absolute bottom-10 left-10 w-[400px] h-[400px] rounded-full bg-yellow-200/20 blur-[120px]" />
 
       <div className="container relative">
-        <div className="text-center mb-10">
-          <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white">
-            Подобрать <span className="text-fire-gradient">печь</span>
+        <div className="text-center mb-10 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-coal/40 backdrop-blur border border-amber-300/40 mb-5">
+            <Icon name="Sparkles" size={14} className="text-amber-300" />
+            <span className="text-amber-200 text-xs font-bold uppercase tracking-wider">
+              Бесплатный подбор за 2 минуты
+            </span>
+          </div>
+          <h2 className="font-oswald text-4xl md:text-6xl font-black uppercase text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] leading-tight">
+            Выбери идеальную печь <br className="hidden md:block" />
+            <span className="text-amber-300">для своей пекарни!</span>
           </h2>
-          <p className="text-white/60 mt-3">
-            Ответьте на 4 вопроса — технолог подберёт оптимальные модели.
+          <p className="text-white text-lg mt-4 font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.4)]">
+            Ответь на 4 простых вопроса — технолог пришлёт подборку моделей и КП с ценами.
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <QuizInner onDone={onDone} />
+        <div className="max-w-3xl mx-auto p-1.5 rounded-3xl bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 shadow-2xl shadow-black/40">
+          <div className="rounded-[18px] bg-coal">
+            <QuizInner onDone={onDone} />
+          </div>
         </div>
       </div>
     </section>
