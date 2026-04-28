@@ -254,13 +254,18 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
   const [visibleCount, setVisibleCount] = useState(6);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const scrollToGridTop = () => {
+  /** Скролл к низу N-й карточки (после сворачивания — к концу оставшегося блока) */
+  const scrollToCardBottom = (cardIndex: number) => {
     setTimeout(() => {
-      const el = gridRef.current;
-      if (!el) return;
-      const y = el.getBoundingClientRect().top + window.scrollY - 120;
+      const grid = gridRef.current;
+      if (!grid) return;
+      const cards = grid.querySelectorAll<HTMLElement>('article');
+      const target = cards[Math.min(cardIndex, cards.length - 1)];
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const y = rect.bottom + window.scrollY - window.innerHeight + 80;
       window.scrollTo({ top: y, behavior: 'smooth' });
-    }, 50);
+    }, 60);
   };
 
   useEffect(() => {
@@ -495,8 +500,9 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   {canShowLess && (
                     <button
                       onClick={() => {
-                        setVisibleCount(Math.max(6, visibleCount - 6));
-                        scrollToGridTop();
+                        const next = Math.max(6, visibleCount - 6);
+                        setVisibleCount(next);
+                        scrollToCardBottom(next - 1);
                       }}
                       className="px-8 py-4 rounded-xl bg-coal-mid border-2 border-fire text-fire font-bold text-base hover:bg-fire/10 transition flex items-center gap-2"
                     >
@@ -508,7 +514,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                     <button
                       onClick={() => {
                         setVisibleCount(6);
-                        scrollToGridTop();
+                        scrollToCardBottom(5);
                       }}
                       className="px-8 py-4 rounded-xl bg-coal border-2 border-coal-light text-white font-bold text-base hover:border-fire transition flex items-center gap-2"
                     >
