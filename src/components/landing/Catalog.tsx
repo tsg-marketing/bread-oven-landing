@@ -205,10 +205,11 @@ const ProductModal = ({
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => onLead(product)}
-                  className="px-7 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-fire to-fire-dark text-white font-bold text-lg md:text-xl uppercase tracking-wide shadow-lg shadow-fire/40 hover:shadow-2xl hover:shadow-fire/60 hover:scale-[1.03] transition flex items-center gap-3 animate-pulse-glow"
+                  style={{ background: 'hsl(var(--fire))' }}
+                  className="px-7 py-4 rounded-xl font-extrabold text-lg md:text-xl uppercase tracking-wide shadow-lg shadow-fire/40 hover:shadow-2xl hover:shadow-fire/60 hover:scale-[1.03] transition flex items-center gap-3"
                 >
-                  <Icon name="Phone" size={22} />
-                  Получить консультацию
+                  <Icon name="Phone" size={22} style={{ color: '#fff' }} />
+                  <span style={{ color: '#fff' }}>Получить консультацию</span>
                 </button>
               </div>
             </div>
