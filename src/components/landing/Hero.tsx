@@ -19,6 +19,15 @@ const bullets: Bullet[] = [
   { icon: 'Truck', bold: 'Доставка по всей России', rest: ' и собственная сервисная служба' },
 ];
 
+type Offer = { icon: string; title: string; subtitle: string };
+
+const offers: Offer[] = [
+  { icon: 'BadgePercent', title: 'Скидка до 12%', subtitle: 'при заказе до конца месяца' },
+  { icon: 'Calendar', title: 'Рассрочка 0%', subtitle: 'на 6 месяцев без переплат' },
+  { icon: 'Wrench', title: 'Монтаж в подарок', subtitle: 'при покупке от 500 000 ₽' },
+  { icon: 'ShieldCheck', title: 'Гарантия 3 года', subtitle: 'на всё оборудование' },
+];
+
 const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
   return (
     <section
@@ -45,7 +54,8 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
         <div className="absolute -bottom-20 -right-20 w-[500px] h-[500px] rounded-full bg-ember/20 blur-[140px] animate-fire delay-300" />
       </div>
 
-      <div className="container relative z-10 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center py-6 md:py-8 lg:py-10">
+      <div className="container relative z-10 py-6 md:py-8 lg:py-10">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <div className="animate-fade-in-up">
           <h1
             className="font-oswald text-4xl md:text-6xl font-bold uppercase leading-[1.02] mb-3 md:mb-4"
@@ -106,6 +116,29 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
               className="w-full h-[420px] object-contain bg-white p-4"
             />
           </div>
+        </div>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-8 md:mt-10">
+          {offers.map((o, i) => (
+            <div
+              key={o.title}
+              style={{ animationDelay: `${i * 80}ms`, borderColor: 'hsl(var(--coal-light))' }}
+              className="animate-fade-in-up bg-white rounded-2xl border-2 p-4 md:p-5 flex items-center gap-3 hover:border-fire hover:shadow-lg hover:shadow-fire/10 transition"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-fire to-fire-dark flex items-center justify-center flex-shrink-0">
+                <Icon name={o.icon} size={24} className="text-white" />
+              </div>
+              <div className="min-w-0">
+                <div className="font-oswald font-bold text-base md:text-lg uppercase leading-tight" style={{ color: 'hsl(var(--ink))' }}>
+                  {o.title}
+                </div>
+                <div className="text-xs md:text-sm leading-snug" style={{ color: 'hsl(var(--ink) / 0.7)' }}>
+                  {o.subtitle}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
