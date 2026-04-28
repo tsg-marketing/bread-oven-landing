@@ -271,18 +271,11 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
     setVisibleCount(6);
   }, [activeCat, search]);
 
-  /** Считаем заполненные параметры товара: name, vendor, performance, picture, price + ключи params */
+  /** Считаем только заполненные <param> из YML-фида */
   const countFilledParams = (p: Product): number => {
+    if (!p.params) return 0;
     let n = 0;
-    if (p.name && p.name.trim()) n++;
-    if (p.vendor && p.vendor.trim()) n++;
-    if (p.performance && p.performance.trim()) n++;
-    if (p.picture && p.picture.trim()) n++;
-    if (p.price && Number(p.price) > 0) n++;
-    if (p.description && p.description.trim()) n++;
-    if (p.params) {
-      for (const v of Object.values(p.params)) if (v && String(v).trim()) n++;
-    }
+    for (const v of Object.values(p.params)) if (v && String(v).trim()) n++;
     return n;
   };
 
@@ -313,7 +306,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
 
   const visibleItems = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
   const canShowMore = visibleCount < filtered.length;
-  const isExpanded = visibleCount >= filtered.length && filtered.length > 6;
+  const canShowLess = visibleCount > 6;
 
   return (
     <section id="catalog" className="relative py-24 bg-coal overflow-hidden">
@@ -478,9 +471,9 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                 })}
               </div>
 
-              {(canShowMore || isExpanded) && (
-                <div className="flex justify-center mt-10">
-                  {canShowMore ? (
+              {(canShowMore || canShowLess) && (
+                <div className="flex flex-wrap justify-center gap-3 mt-10">
+                  {canShowMore && (
                     <button
                       onClick={() => setVisibleCount(visibleCount + 6)}
                       className="px-8 py-4 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-bold text-base hover:shadow-2xl hover:shadow-fire/40 transition flex items-center gap-2"
@@ -488,13 +481,23 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                       Показать больше
                       <Icon name="ChevronDown" size={18} />
                     </button>
-                  ) : (
+                  )}
+                  {canShowLess && (
                     <button
-                      onClick={() => setVisibleCount(6)}
+                      onClick={() => setVisibleCount(Math.max(6, visibleCount - 6))}
                       className="px-8 py-4 rounded-xl bg-coal-mid border-2 border-fire text-fire font-bold text-base hover:bg-fire/10 transition flex items-center gap-2"
                     >
-                      Свернуть
+                      Показать меньше
                       <Icon name="ChevronUp" size={18} />
+                    </button>
+                  )}
+                  {canShowLess && !canShowMore && (
+                    <button
+                      onClick={() => setVisibleCount(6)}
+                      className="px-8 py-4 rounded-xl bg-coal border-2 border-coal-light text-white font-bold text-base hover:border-fire transition flex items-center gap-2"
+                    >
+                      Свернуть всё
+                      <Icon name="ChevronsUp" size={18} />
                     </button>
                   )}
                 </div>
