@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
-import func2url from '../../../backend/func2url.json';
+import { sendLead } from '@/lib/sendLead';
 import ConsentNote from './ConsentNote';
 
 const CONTACT_INFO = [
@@ -22,17 +22,12 @@ const Contacts = () => {
     setSubmitting(true);
     setErr('');
     try {
-      const res = await fetch(func2url.lead, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          email: form.email,
-          source: 'contacts',
-        }),
+      await sendLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        source: 'contacts',
       });
-      if (!res.ok) throw new Error('fail');
       setSent(true);
     } catch {
       setErr('Не удалось отправить. Попробуйте ещё раз или позвоните нам.');

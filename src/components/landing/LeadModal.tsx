@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
-import func2url from '../../../backend/func2url.json';
+import { sendLead } from '@/lib/sendLead';
 import ConsentNote from './ConsentNote';
 
 export type LeadModalProps = {
@@ -42,17 +42,12 @@ const LeadModal = ({
     setSubmitting(true);
     setErr('');
     try {
-      const res = await fetch(func2url.lead, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          source,
-          payload,
-        }),
+      await sendLead({
+        name: form.name,
+        phone: form.phone,
+        source,
+        payload,
       });
-      if (!res.ok) throw new Error('fail');
       setSent(true);
     } catch {
       setErr('Не удалось отправить. Попробуйте ещё раз или позвоните нам.');

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
-import func2url from '../../../backend/func2url.json';
+import { sendLead } from '@/lib/sendLead';
 import ConsentNote from './ConsentNote';
 
 type SingleQ = {
@@ -112,18 +112,13 @@ export const QuizInner = ({
     setSubmitting(true);
     setErrorMsg('');
     try {
-      const res = await fetch(func2url.lead, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          email: form.email,
-          source: 'quiz',
-          payload: { answers },
-        }),
+      await sendLead({
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        source: 'quiz',
+        payload: { answers },
       });
-      if (!res.ok) throw new Error('fail');
       setPhase('sent');
       onDone?.();
     } catch {
