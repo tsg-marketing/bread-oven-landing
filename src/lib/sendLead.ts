@@ -1,3 +1,5 @@
+import { getUtmData } from './utm';
+
 export type LeadInput = {
   name: string;
   phone: string;
@@ -16,6 +18,12 @@ export async function sendLead(data: LeadInput): Promise<void> {
     referrer: typeof document !== 'undefined' ? document.referrer : '',
     sent_at: new Date().toISOString(),
   };
+
+  const utm = getUtmData();
+  if (Object.keys(utm).length) {
+    Object.assign(body, utm);
+    body.utm = utm;
+  }
 
   if (data.payload && typeof data.payload === 'object') {
     Object.assign(body, data.payload);
