@@ -22,7 +22,25 @@ export type Product = {
 type Category = { id: string; name: string };
 
 const PLACEHOLDER =
-  'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/c1ea403c-627b-4ade-9eed-225abbe3518b.jpg';
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f4f1ec"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" fill="#9a8f80">Фото товара</text></svg>',
+  );
+
+/** Оборачиваем картинку с t-sib.ru в прокси-функцию (обход hotlink/смешанного контента на субдомене) */
+const proxify = (url: string): string => {
+  if (!url) return url;
+  try {
+    const u = new URL(url, window.location.origin);
+    const host = u.hostname.replace(/^www\./, '');
+    if (host === 't-sib.ru') {
+      return `${func2url['image-proxy']}?url=${encodeURIComponent(u.toString())}`;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+};
 
 /** Цена в рублях с разделением разрядов неразрывным пробелом */
 const formatPrice = (raw: string | number): string | null => {
@@ -51,7 +69,8 @@ const ProductGallery = ({
 }) => {
   const [idx, setIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
-  const src = pictures[idx] || PLACEHOLDER;
+  const raw = pictures[idx] || '';
+  const src = raw ? proxify(raw) : PLACEHOLDER;
 
   const handleClick = () => {
     if (onImageClick) onImageClick();

@@ -1,0 +1,22 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Missing url returns 400",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 400
+    },
+    {
+      "name": "Disallowed host returns 403",
+      "method": "GET",
+      "path": "/?url=https%3A%2F%2Fexample.com%2Fa.jpg",
+      "expectedStatus": 403
+    }
+  ]
+}
