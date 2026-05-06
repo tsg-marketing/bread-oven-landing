@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from typing import Any
 
 FEED_URL = 'https://t-sib.ru/upload/catalog.xml'
-TARGET_CATEGORY_IDS = {'530', '372', '371', '549', '365', '370'}
+TARGET_CATEGORY_IDS = {'530', '372', '371', '549', '365', '370', '373', '547', '548', '550', '551', '552'}
 
 CACHE: dict[str, Any] = {'data': None, 'ts': 0}
 CACHE_TTL = 600
