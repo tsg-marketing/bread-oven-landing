@@ -4,8 +4,8 @@ import { sendLead } from '@/lib/sendLead';
 import ConsentNote from './ConsentNote';
 
 const CONTACT_INFO = [
-  { icon: 'Phone', label: 'Телефон', value: '8-800-500-40-54', href: 'tel:+78005004054' },
-  { icon: 'Mail', label: 'Email', value: 'info@t-sib.ru', href: 'mailto:info@t-sib.ru' },
+  { icon: 'Phone', label: 'Телефон', value: '8-800-533-88-12', href: 'tel:+78005338812' },
+  { icon: 'Mail', label: 'Email', value: 'pekarnoe@t-sib.ru', href: 'mailto:pekarnoe@t-sib.ru' },
   { icon: 'MapPin', label: 'Москва', value: 'ш. Энтузиастов, д. 56, стр. 32, офис 115', href: null },
   { icon: 'MapPin', label: 'Новосибирск', value: 'ул. Электрозаводская, 2 к1, офис 304, 314', href: null },
 ];

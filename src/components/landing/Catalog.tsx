@@ -21,6 +21,12 @@ export type Product = {
 
 type Category = { id: string; name: string };
 
+/** Переименование названий категорий из YML-фида под нужды лендинга */
+const CATEGORY_NAME_OVERRIDES: Record<string, string> = {
+  'Печи для выпечки': 'Печи подовые (ярусные)',
+};
+const renameCategory = (name: string): string => CATEGORY_NAME_OVERRIDES[name] || name;
+
 const PLACEHOLDER =
   'data:image/svg+xml;utf8,' +
   encodeURIComponent(
@@ -191,7 +197,7 @@ const ProductModal = ({
         className="bg-coal-mid border border-coal-light rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
       >
         <div className="sticky top-0 bg-coal-mid/95 backdrop-blur border-b border-coal-light p-4 flex items-center justify-between z-10">
-          <div className="text-xs text-white/50 uppercase tracking-wider">{product.categoryName}</div>
+          <div className="text-xs text-white/50 uppercase tracking-wider">{renameCategory(product.categoryName)}</div>
           <button
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-coal border border-coal-light text-white hover:bg-fire transition flex items-center justify-center"
@@ -379,7 +385,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                       : 'bg-coal-mid text-white/70 border-coal-light hover:border-fire/40 hover:text-white'
                   }`}
                 >
-                  {c.name} ({count})
+                  {renameCategory(c.name)} ({count})
                 </button>
               );
             })}

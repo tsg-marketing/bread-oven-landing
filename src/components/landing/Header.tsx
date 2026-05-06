@@ -19,15 +19,9 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             alt="Техно-Сиб"
             className="h-12 md:h-14 w-auto bg-white rounded-lg p-1.5 shadow-md"
           />
-          <div className="hidden sm:flex flex-col leading-tight max-w-[200px]">
+          <div className="hidden sm:flex flex-col leading-tight max-w-[240px]">
             <span
-              className="text-[13px] uppercase tracking-[0.15em] font-bold"
-              style={{ color: 'hsl(var(--ink))' }}
-            >
-              Техно-Сиб
-            </span>
-            <span
-              className="text-[12px] md:text-[13px] mt-0.5"
+              className="text-[12px] md:text-[13px]"
               style={{ color: 'hsl(var(--ink) / 0.8)' }}
             >
               Профессиональное пищевое и упаковочное оборудование
@@ -67,20 +61,20 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
         <div className="hidden md:flex items-stretch gap-4 flex-shrink-0">
           <div className="flex flex-col items-end justify-center gap-1 leading-tight">
             <a
-              href="tel:+78005004054"
+              href="tel:+78005338812"
               className="text-[15px] font-bold hover:text-fire transition flex items-center gap-1.5 whitespace-nowrap"
               style={{ color: 'hsl(var(--ink))' }}
             >
               <Icon name="Phone" size={14} className="text-fire" />
-              8-800-500-40-54
+              8-800-533-88-12
             </a>
             <a
-              href="mailto:info@t-sib.ru"
+              href="mailto:pekarnoe@t-sib.ru"
               className="text-[13px] hover:text-fire transition flex items-center gap-1.5 whitespace-nowrap"
               style={{ color: 'hsl(var(--ink) / 0.75)' }}
             >
               <Icon name="Mail" size={13} className="text-fire/80" />
-              info@t-sib.ru
+              pekarnoe@t-sib.ru
             </a>
           </div>
           <button
@@ -131,20 +125,20 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             </a>
             <div className="pt-3 border-t" style={{ borderColor: 'hsl(var(--coal-light))' }}>
               <a
-                href="tel:+78005004054"
+                href="tel:+78005338812"
                 className="flex items-center gap-2 py-2 font-bold"
                 style={{ color: 'hsl(var(--ink))' }}
               >
                 <Icon name="Phone" size={16} className="text-fire" />
-                8-800-500-40-54
+                8-800-533-88-12
               </a>
               <a
-                href="mailto:info@t-sib.ru"
+                href="mailto:pekarnoe@t-sib.ru"
                 className="flex items-center gap-2 py-2"
                 style={{ color: 'hsl(var(--ink) / 0.85)' }}
               >
                 <Icon name="Mail" size={16} className="text-fire" />
-                info@t-sib.ru
+                pekarnoe@t-sib.ru
               </a>
             </div>
             <button

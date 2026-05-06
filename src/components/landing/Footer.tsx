@@ -28,14 +28,14 @@ const Footer = () => {
             </p>
             <div className="flex gap-3 mt-5">
               <a
-                href="tel:+78005004054"
+                href="tel:+78005338812"
                 className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
                 style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
               >
                 <Icon name="Phone" size={16} />
               </a>
               <a
-                href="mailto:info@t-sib.ru"
+                href="mailto:pekarnoe@t-sib.ru"
                 className="w-10 h-10 rounded-lg flex items-center justify-center border transition hover:border-fire hover:text-fire"
                 style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)' }}
               >
@@ -80,7 +80,11 @@ const Footer = () => {
               </div>
               <div className="flex gap-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
                 <Icon name="Phone" size={16} className="text-fire flex-shrink-0 mt-0.5" />
-                <a href="tel:+78005004054" className="hover:text-fire transition">8-800-500-40-54</a>
+                <a href="tel:+78005338812" className="hover:text-fire transition">8-800-533-88-12</a>
+              </div>
+              <div className="flex gap-2" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <Icon name="Mail" size={16} className="text-fire flex-shrink-0 mt-0.5" />
+                <a href="mailto:pekarnoe@t-sib.ru" className="hover:text-fire transition">pekarnoe@t-sib.ru</a>
               </div>
             </div>
           </div>

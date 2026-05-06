@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/2d2334c4-5b43-4c5e-bfb9-01feec608bc6.png';
+const HERO_IMG = 'https://cdn.poehali.dev/files/4e4f023a-7a02-4541-9c2c-ec42fbfff303.jpg';
 
 type Offer = { icon: string; title: string; subtitle: string };
 
