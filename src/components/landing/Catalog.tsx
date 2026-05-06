@@ -321,7 +321,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
   };
 
   const filtered = useMemo(() => {
-    let list = items.filter((i) => countFilledParams(i) > 3);
+    let list = items.slice();
     if (activeCat !== 'all') list = list.filter((i) => i.categoryId === activeCat);
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -373,10 +373,10 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   : 'bg-coal-mid text-white/70 border-coal-light hover:border-fire/40 hover:text-white'
               }`}
             >
-              Все ({items.filter((i) => countFilledParams(i) > 3).length})
+              Все ({items.length})
             </button>
             {categories.map((c) => {
-              const count = items.filter((i) => i.categoryId === c.id && countFilledParams(i) > 3).length;
+              const count = items.filter((i) => i.categoryId === c.id).length;
               return (
                 <button
                   key={c.id}
