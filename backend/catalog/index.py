@@ -93,6 +93,7 @@ def handler(event: dict, context) -> dict:
 
     qs = event.get('queryStringParameters') or {}
     force = qs.get('refresh') == '1'
+    summary_mode = qs.get('summary') == '1'
     now = time.time()
 
     try:
@@ -112,13 +113,36 @@ def handler(event: dict, context) -> dict:
 
     used_cats = []
     seen = set()
+    counts: dict[str, int] = {}
     for it in items:
         cid = it['categoryId']
+        counts[cid] = counts.get(cid, 0) + 1
         if cid in seen:
             continue
         seen.add(cid)
         if cid in cats:
             used_cats.append(cats[cid])
+
+    if summary_mode:
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+            'isBase64Encoded': False,
+            'body': json.dumps(
+                {
+                    'total': len(items),
+                    'counts': counts,
+                    'categories': used_cats,
+                    'allFeedCategories': [
+                        {'id': cid, 'name': c.get('name', ''), 'parentId': c.get('parentId', '')}
+                        for cid, c in cats.items()
+                        if cid in TARGET_CATEGORY_IDS
+                    ],
+                    'targetIds': sorted(TARGET_CATEGORY_IDS),
+                },
+                ensure_ascii=False,
+            ),
+        }
 
     return {
         'statusCode': 200,
