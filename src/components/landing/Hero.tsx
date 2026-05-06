@@ -98,7 +98,7 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
             <img
               src={HERO_IMG}
               alt="Профессиональная конвекционная печь"
-              className="w-full h-[420px] object-contain bg-white p-4"
+              className="w-full h-[520px] xl:h-[580px] object-contain bg-white p-1"
             />
           </div>
         </div>
