@@ -325,12 +325,14 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
     if (activeCat !== 'all') list = list.filter((i) => i.categoryId === activeCat);
     if (search.trim()) {
       const q = search.trim().toLowerCase();
-      list = list.filter(
-        (i) =>
-          i.name.toLowerCase().includes(q) ||
-          i.vendor.toLowerCase().includes(q) ||
-          (i.performance || '').toLowerCase().includes(q),
-      );
+      list = list.filter((i) => {
+        if (i.name.toLowerCase().includes(q)) return true;
+        if (i.vendor && i.vendor.toLowerCase().includes(q)) return true;
+        if ((i.performance || '').toLowerCase().includes(q)) return true;
+        const brand = findParamByKey(i.params, 'бренд') || findParamByKey(i.params, 'производител');
+        if (brand && brand.toLowerCase().includes(q)) return true;
+        return false;
+      });
     }
     // Сортировка: сначала с ценой по возрастанию, затем товары без цены
     return [...list].sort((a, b) => {
