@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { sendLead } from '@/lib/sendLead';
+import { ymGoal } from '@/lib/ym';
 import ConsentNote from './ConsentNote';
 
 const CONTACT_INFO = [
@@ -80,6 +81,10 @@ const Contacts = () => {
                   {c.href ? (
                     <a
                       href={c.href}
+                      onClick={() => {
+                        if (c.href?.startsWith('tel:')) ymGoal('click_phone', { place: 'contacts' });
+                        else if (c.href?.startsWith('mailto:')) ymGoal('click_email', { place: 'contacts' });
+                      }}
                       className="font-semibold hover:text-fire transition block truncate"
                       style={{ color: 'hsl(var(--ink))' }}
                     >

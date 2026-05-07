@@ -1,4 +1,5 @@
 import { getUtmData } from './utm';
+import { ymGoal } from './ym';
 
 export type LeadInput = {
   name: string;
@@ -41,4 +42,6 @@ export async function sendLead(data: LeadInput): Promise<void> {
   });
 
   if (!res.ok) throw new Error('fail');
+
+  ymGoal('send_form', { source: data.source });
 }

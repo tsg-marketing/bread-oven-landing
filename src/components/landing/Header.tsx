@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import { ymGoal } from '@/lib/ym';
 
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
   const [open, setOpen] = useState(false);
@@ -62,6 +63,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           <div className="flex flex-col items-end justify-center gap-1 leading-tight">
             <a
               href="tel:+78005338812"
+              onClick={() => ymGoal('click_phone', { place: 'header' })}
               className="text-[15px] font-bold hover:text-fire transition flex items-center gap-1.5 whitespace-nowrap"
               style={{ color: 'hsl(var(--ink))' }}
             >
@@ -70,6 +72,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             </a>
             <a
               href="mailto:pekarnoe@t-sib.ru"
+              onClick={() => ymGoal('click_email', { place: 'header' })}
               className="text-[13px] hover:text-fire transition flex items-center gap-1.5 whitespace-nowrap"
               style={{ color: 'hsl(var(--ink) / 0.75)' }}
             >
@@ -126,6 +129,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             <div className="pt-3 border-t" style={{ borderColor: 'hsl(var(--coal-light))' }}>
               <a
                 href="tel:+78005338812"
+                onClick={() => ymGoal('click_phone', { place: 'header-mobile' })}
                 className="flex items-center gap-2 py-2 font-bold"
                 style={{ color: 'hsl(var(--ink))' }}
               >
@@ -134,6 +138,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
               </a>
               <a
                 href="mailto:pekarnoe@t-sib.ru"
+                onClick={() => ymGoal('click_email', { place: 'header-mobile' })}
                 className="flex items-center gap-2 py-2"
                 style={{ color: 'hsl(var(--ink) / 0.85)' }}
               >
