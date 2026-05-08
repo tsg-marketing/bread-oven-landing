@@ -308,6 +308,26 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
       });
   }, []);
 
+  /** Открытие модалки по якорю #product-{id} (приход с фида / прямой ссылки) */
+  useEffect(() => {
+    if (!items.length) return;
+    const openFromHash = () => {
+      const hash = window.location.hash || '';
+      const m = hash.match(/^#product-(.+)$/);
+      if (!m) return;
+      const id = decodeURIComponent(m[1]);
+      const found = items.find((it) => it.id === id);
+      if (found) {
+        setModal(found);
+        const sec = document.getElementById('catalog');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    return () => window.removeEventListener('hashchange', openFromHash);
+  }, [items]);
+
   useEffect(() => {
     setVisibleCount(6);
   }, [activeCat, search]);
@@ -429,8 +449,9 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
                   return (
                     <article
                       key={p.id}
+                      id={`product-${p.id}`}
                       style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
-                      className="card-hover group bg-coal-mid rounded-2xl overflow-hidden border border-coal-light animate-fade-in-up flex flex-col"
+                      className="card-hover group bg-coal-mid rounded-2xl overflow-hidden border border-coal-light animate-fade-in-up flex flex-col scroll-mt-24"
                     >
                       <ProductGallery pictures={p.pictures} alt={p.name} onImageClick={() => setModal(p)} />
 
@@ -561,9 +582,17 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
       {modal && (
         <ProductModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            if (window.location.hash.startsWith('#product-')) {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+          }}
           onLead={(p) => {
             setModal(null);
+            if (window.location.hash.startsWith('#product-')) {
+              history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
             onLead('catalog-modal', { productId: p.id, productName: p.name });
           }}
         />

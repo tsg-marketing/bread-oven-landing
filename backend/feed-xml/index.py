@@ -1,4 +1,5 @@
 import time
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
@@ -7,6 +8,9 @@ from xml.sax.saxutils import escape as xml_escape
 
 FEED_URL = 'https://t-sib.ru/upload/catalog.xml'
 TARGET_CATEGORY_IDS = {'530', '372', '371', '549', '365', '370', '373', '547', '548', '550', '551', '552'}
+
+LANDING_BASE = 'https://pekarnoe.t-sib.ru/'
+IMAGE_PROXY_URL = 'https://functions.poehali.dev/a59d06d8-db13-4f74-8103-bb11abba3397'
 
 CACHE: dict[str, Any] = {'xml': None, 'ts': 0}
 
@@ -29,6 +33,45 @@ def cache_is_fresh(cache_ts: float) -> bool:
     return cache_ts >= last_scheduled_refresh_ts()
 
 
+def product_anchor_url(offer_id: str) -> str:
+    return f'{LANDING_BASE}#product-{offer_id}'
+
+
+def proxy_image_url(src: str) -> str:
+    if not src:
+        return src
+    try:
+        parsed = urllib.parse.urlparse(src)
+        host = (parsed.hostname or '').lower()
+        if host.startswith('www.'):
+            host = host[4:]
+        if host == 't-sib.ru':
+            return f'{IMAGE_PROXY_URL}?url={urllib.parse.quote(src, safe="")}'
+    except Exception:
+        pass
+    return src
+
+
+def serialize_offer(offer: ET.Element) -> str:
+    offer_id = offer.get('id') or ''
+    parts: list[str] = []
+    attrs = ' '.join(f'{k}="{xml_escape(v)}"' for k, v in offer.attrib.items())
+    parts.append(f'<offer {attrs}>' if attrs else '<offer>')
+    for child in list(offer):
+        tag = child.tag
+        if tag == 'url':
+            parts.append(f'<url>{xml_escape(product_anchor_url(offer_id))}</url>')
+            continue
+        if tag == 'picture':
+            src = (child.text or '').strip()
+            if src:
+                parts.append(f'<picture>{xml_escape(proxy_image_url(src))}</picture>')
+            continue
+        parts.append(ET.tostring(child, encoding='unicode'))
+    parts.append('</offer>')
+    return ''.join(parts)
+
+
 def build_yml() -> str:
     req = urllib.request.Request(FEED_URL, headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req, timeout=25) as resp:
@@ -47,7 +90,6 @@ def build_yml() -> str:
 
     shop_name = text_of(shop_src, 'name', 'ООО «Техно-Сиб Групп»')
     shop_company = text_of(shop_src, 'company', 't-sib.ru')
-    shop_url = text_of(shop_src, 'url', 'https://t-sib.ru')
     shop_platform = text_of(shop_src, 'platform', 'BSM/Yandex/Market')
     shop_version = text_of(shop_src, 'version', '2.5.6')
 
@@ -86,7 +128,7 @@ def build_yml() -> str:
     out.append('<shop>')
     out.append(f'<name>{xml_escape(shop_name)}</name>')
     out.append(f'<company>{xml_escape(shop_company)}</company>')
-    out.append(f'<url>{xml_escape(shop_url)}</url>')
+    out.append(f'<url>{xml_escape(LANDING_BASE)}</url>')
     out.append(f'<platform>{xml_escape(shop_platform)}</platform>')
     out.append(f'<version>{xml_escape(shop_version)}</version>')
     out.append('<currencies><currency id="RUR" rate="1"/></currencies>')
@@ -104,11 +146,7 @@ def build_yml() -> str:
 
     out.append('<offers>')
     for offer in offers_kept:
-        attrs = ' '.join(f'{k}="{xml_escape(v)}"' for k, v in offer.attrib.items())
-        out.append(f'<offer {attrs}>' if attrs else '<offer>')
-        for child in list(offer):
-            out.append(ET.tostring(child, encoding='unicode'))
-        out.append('</offer>')
+        out.append(serialize_offer(offer))
     out.append('</offers>')
 
     out.append('</shop>')
@@ -117,7 +155,7 @@ def build_yml() -> str:
 
 
 def handler(event: dict, context) -> dict:
-    '''YML-фид товаров лендинга в формате t-sib.ru. Обновляется в 11:30 по Новосибирску (GMT+7).'''
+    '''YML-фид товаров лендинга. Ссылки на товары — на pekarnoe.t-sib.ru с якорем #product-{id}. Обновляется в 11:30 по Новосибирску (GMT+7).'''
     method = event.get('httpMethod', 'GET')
     if method == 'OPTIONS':
         return {
