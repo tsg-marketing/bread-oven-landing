@@ -2,13 +2,32 @@ import json
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone, timedelta
 from typing import Any
 
 FEED_URL = 'https://t-sib.ru/upload/catalog.xml'
 TARGET_CATEGORY_IDS = {'530', '372', '371', '549', '365', '370', '373', '547', '548', '550', '551', '552'}
 
 CACHE: dict[str, Any] = {'data': None, 'ts': 0}
-CACHE_TTL = 600
+
+NSK_TZ = timezone(timedelta(hours=7))
+REFRESH_HOUR_NSK = 11
+REFRESH_MINUTE_NSK = 30
+
+
+def last_scheduled_refresh_ts() -> float:
+    '''Метка последнего планового обновления — 11:30 по Новосибирску (GMT+7).'''
+    now_nsk = datetime.now(NSK_TZ)
+    today_mark = now_nsk.replace(hour=REFRESH_HOUR_NSK, minute=REFRESH_MINUTE_NSK, second=0, microsecond=0)
+    if now_nsk < today_mark:
+        today_mark = today_mark - timedelta(days=1)
+    return today_mark.timestamp()
+
+
+def cache_is_fresh(cache_ts: float) -> bool:
+    if not cache_ts:
+        return False
+    return cache_ts >= last_scheduled_refresh_ts()
 
 
 def fetch_feed(url: str) -> tuple[list[dict], dict[str, dict]]:
@@ -97,7 +116,7 @@ def handler(event: dict, context) -> dict:
     now = time.time()
 
     try:
-        if not force and CACHE['data'] and (now - CACHE['ts']) < CACHE_TTL:
+        if not force and CACHE['data'] and cache_is_fresh(CACHE['ts']):
             items, cats = CACHE['data']
         else:
             items, cats = fetch_feed(FEED_URL)
