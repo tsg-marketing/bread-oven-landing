@@ -71,58 +71,160 @@ const pickParams = (params: Record<string, string>): [string, string][] => {
   return result.slice(0, 5);
 };
 
-const Gallery = ({ pictures, alt }: { pictures: string[]; alt: string }) => {
-  const [idx, setIdx] = useState(0);
-  const sources = useMemo(
-    () => (pictures.length ? pictures.map((p) => (p ? proxify(p) : PLACEHOLDER)) : [PLACEHOLDER]),
-    [pictures],
-  );
+/** Полноэкранный просмотр фото с листанием (картинка целиком, без обрезки) */
+const Lightbox = ({
+  sources,
+  alt,
+  startIdx,
+  onClose,
+}: {
+  sources: string[];
+  alt: string;
+  startIdx: number;
+  onClose: () => void;
+}) => {
+  const [idx, setIdx] = useState(startIdx);
+  const prev = () => setIdx((idx - 1 + sources.length) % sources.length);
+  const next = () => setIdx((idx + 1) % sources.length);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
   return (
-    <div className="relative aspect-square overflow-hidden bg-white group">
-      {sources.map((s, i) => (
-        <img
-          key={i}
-          src={s}
-          alt={alt}
-          loading="eager"
-          className={`absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-200 group-hover:scale-105 ${
-            i === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
-          }}
-        />
-      ))}
-      {pictures.length > 1 && (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[130] bg-black/95 backdrop-blur flex items-center justify-center p-4 md:p-10 animate-fade-in-up"
+    >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-4 right-4 z-10 px-4 py-2 rounded-full bg-gradient-to-r from-fire to-fire-dark text-white font-semibold flex items-center gap-2 shadow-lg shadow-fire/40 transition"
+      >
+        <Icon name="X" size={18} />
+        Закрыть
+      </button>
+
+      <img
+        src={sources[idx]}
+        alt={alt}
+        onClick={(e) => e.stopPropagation()}
+        className="max-w-[92vw] max-h-[85vh] w-auto h-auto object-contain rounded-xl bg-white"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
+        }}
+      />
+
+      {sources.length > 1 && (
         <>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setIdx((idx - 1 + pictures.length) % pictures.length);
+              prev();
             }}
-            style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
+            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-fire transition"
           >
-            <Icon name="ChevronLeft" size={16} />
+            <Icon name="ChevronLeft" size={26} />
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setIdx((idx + 1) % pictures.length);
+              next();
             }}
-            style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
+            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-fire transition"
           >
-            <Icon name="ChevronRight" size={16} />
+            <Icon name="ChevronRight" size={26} />
           </button>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-            {pictures.map((_, i) => (
-              <span key={i} className={`h-1.5 rounded-full transition ${i === idx ? 'bg-fire w-4' : 'bg-white/50 w-1.5'}`} />
-            ))}
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm">
+            {idx + 1} / {sources.length}
           </div>
         </>
       )}
     </div>
+  );
+};
+
+const Gallery = ({ pictures, alt }: { pictures: string[]; alt: string }) => {
+  const [idx, setIdx] = useState(0);
+  const [lightbox, setLightbox] = useState(false);
+  const sources = useMemo(
+    () => (pictures.length ? pictures.map((p) => (p ? proxify(p) : PLACEHOLDER)) : [PLACEHOLDER]),
+    [pictures],
+  );
+
+  return (
+    <>
+      <div className="relative aspect-square overflow-hidden bg-white group">
+        {sources.map((s, i) => (
+          <img
+            key={i}
+            src={s}
+            alt={alt}
+            loading="eager"
+            onClick={() => setLightbox(true)}
+            className={`absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-200 cursor-zoom-in group-hover:scale-105 ${
+              i === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
+            }}
+          />
+        ))}
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setLightbox(true);
+          }}
+          style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
+          className="absolute top-2 right-2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
+        >
+          <Icon name="Maximize2" size={15} />
+        </button>
+
+        {pictures.length > 1 && (
+          <>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIdx((idx - 1 + pictures.length) % pictures.length);
+              }}
+              style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
+            >
+              <Icon name="ChevronLeft" size={16} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIdx((idx + 1) % pictures.length);
+              }}
+              style={{ background: 'rgba(20,15,10,0.65)', color: '#fff' }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full backdrop-blur border border-white/20 flex items-center justify-center hover:!bg-fire transition"
+            >
+              <Icon name="ChevronRight" size={16} />
+            </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {pictures.map((_, i) => (
+                <span key={i} className={`h-1.5 rounded-full transition ${i === idx ? 'bg-fire w-4' : 'bg-white/50 w-1.5'}`} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {lightbox && (
+        <Lightbox sources={sources} alt={alt} startIdx={idx} onClose={() => setLightbox(false)} />
+      )}
+    </>
   );
 };
 
@@ -260,11 +362,9 @@ const Card = ({
 };
 
 const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<string, unknown>) => void }) => {
-  const [planetary, setPlanetary] = useState<MixerProduct[]>([]);
-  const [dough, setDough] = useState<MixerProduct[]>([]);
+  const [list, setList] = useState<MixerProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [tab, setTab] = useState<'planetary' | 'dough'>('planetary');
   const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<MixerProduct | null>(null);
 
@@ -272,8 +372,7 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
     fetch(func2url['mixers-catalog'])
       .then((r) => r.json())
       .then((data) => {
-        setPlanetary(data.planetary || []);
-        setDough(data.dough || []);
+        setList(data.planetary || []);
         setLoading(false);
       })
       .catch(() => {
@@ -282,9 +381,6 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       });
   }, []);
 
-  useEffect(() => setVisible(6), [tab]);
-
-  const list = tab === 'planetary' ? planetary : dough;
   const shown = useMemo(() => list.slice(0, visible), [list, visible]);
   const canMore = visible < list.length;
 
@@ -292,32 +388,12 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
     <section id="assortment" className="relative py-24 bg-coal overflow-hidden">
       <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-fire/10 blur-[140px]" />
       <div className="container relative">
-        <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-8">
+        <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-3">
           Ассортимент <span className="text-fire-gradient">миксеров</span>
         </h2>
-
-        <div className="flex gap-2 flex-wrap mb-8">
-          <button
-            onClick={() => setTab('planetary')}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition border ${
-              tab === 'planetary'
-                ? 'bg-gradient-to-r from-fire to-fire-dark text-white border-transparent shadow-lg shadow-fire/30'
-                : 'bg-coal-mid text-white/70 border-coal-light hover:border-fire/40 hover:text-white'
-            }`}
-          >
-            Планетарные миксеры ({planetary.length})
-          </button>
-          <button
-            onClick={() => setTab('dough')}
-            className={`px-5 py-2.5 rounded-full text-sm font-medium transition border ${
-              tab === 'dough'
-                ? 'bg-gradient-to-r from-fire to-fire-dark text-white border-transparent shadow-lg shadow-fire/30'
-                : 'bg-coal-mid text-white/70 border-coal-light hover:border-fire/40 hover:text-white'
-            }`}
-          >
-            Тестомесы ({dough.length})
-          </button>
-        </div>
+        <p className="text-white/70 text-lg mb-8">
+          Планетарные миксеры{!loading && !error ? ` — ${list.length} моделей` : ''} в наличии и под заказ.
+        </p>
 
         {loading && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
