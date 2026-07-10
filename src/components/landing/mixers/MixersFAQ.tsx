@@ -39,12 +39,12 @@ const MixersFAQ = () => {
             <AccordionItem
               key={i}
               value={`q-${i}`}
-              className="bg-white border border-coal-light rounded-2xl px-6 shadow-sm data-[state=open]:border-fire/40 transition"
+              className="bg-coal border border-coal-light rounded-2xl px-6 shadow-sm data-[state=open]:border-fire/40 transition"
             >
-              <AccordionTrigger className="text-white hover:text-fire text-left font-oswald text-lg py-5">
+              <AccordionTrigger className="text-white hover:text-fire text-left font-oswald text-xl md:text-2xl py-5 leading-snug">
                 {it.q}
               </AccordionTrigger>
-              <AccordionContent className="text-white/70 pb-5 leading-relaxed">{it.a}</AccordionContent>
+              <AccordionContent className="text-white/80 text-base md:text-lg pb-5 leading-relaxed">{it.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

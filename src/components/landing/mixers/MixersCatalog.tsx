@@ -71,6 +71,27 @@ const pickParams = (params: Record<string, string>): [string, string][] => {
   return result.slice(0, 5);
 };
 
+/** Цена в рублях с разделением разрядов неразрывным пробелом */
+const formatPrice = (raw: string | number): string | null => {
+  const n = Number(raw);
+  if (!raw || !Number.isFinite(n) || n <= 0) return null;
+  return `${new Intl.NumberFormat('ru-RU').format(Math.round(n)).replace(/\s/g, '\u00A0')}\u00A0₽`;
+};
+
+/** Первое значение параметра, чьё название содержит слово (без учёта регистра) */
+const paramByWord = (params: Record<string, string>, word: string): string => {
+  const w = word.toLowerCase();
+  for (const [k, v] of Object.entries(params || {})) {
+    if (k.toLowerCase().includes(w) && v && String(v).trim()) return String(v).trim();
+  }
+  return '';
+};
+
+const brandOf = (p: MixerProduct): string =>
+  p.vendor?.trim() || paramByWord(p.params, 'бренд') || paramByWord(p.params, 'производител');
+const volumeOf = (p: MixerProduct): string => paramByWord(p.params, 'объ') || paramByWord(p.params, 'дежа') || paramByWord(p.params, 'дежи');
+const powerOf = (p: MixerProduct): string => paramByWord(p.params, 'мощн');
+
 /** Полноэкранный просмотр фото с листанием (картинка целиком, без обрезки) */
 const Lightbox = ({
   sources,
@@ -269,6 +290,14 @@ const MixerModal = ({
                   {product.vendor}
                 </div>
               )}
+              <div className="mb-4">
+                <div className="text-xs text-white/50">Цена</div>
+                {formatPrice(product.price) ? (
+                  <div className="font-oswald text-3xl font-bold text-fire">{formatPrice(product.price)}</div>
+                ) : (
+                  <div className="font-oswald text-2xl font-bold text-white/70">По запросу</div>
+                )}
+              </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 <button
                   onClick={() => onLead(product)}
@@ -321,6 +350,7 @@ const Card = ({
   onLead: () => void;
 }) => {
   const params = pickParams(p.params);
+  const priceText = formatPrice(p.price);
   return (
     <article className="card-hover group bg-coal-mid rounded-2xl overflow-hidden border border-coal-light animate-fade-in-up flex flex-col">
       <Gallery pictures={p.pictures} alt={p.name} />
@@ -338,6 +368,13 @@ const Card = ({
                 </div>
               ))}
             </div>
+          )}
+        </div>
+        <div className="mt-3">
+          {priceText ? (
+            <div className="font-oswald text-2xl md:text-3xl font-bold text-fire">{priceText}</div>
+          ) : (
+            <div className="text-white/60 text-base">Цена по запросу</div>
           )}
         </div>
         <div className="mt-4 flex items-center gap-2">
@@ -361,12 +398,23 @@ const Card = ({
   );
 };
 
+const uniqSorted = (values: string[]): string[] => {
+  const set = new Set(values.filter((v) => v && v.trim()));
+  return Array.from(set).sort((a, b) =>
+    a.localeCompare(b, 'ru', { numeric: true, sensitivity: 'base' }),
+  );
+};
+
 const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<string, unknown>) => void }) => {
   const [list, setList] = useState<MixerProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<MixerProduct | null>(null);
+
+  const [fVolume, setFVolume] = useState('');
+  const [fBrand, setFBrand] = useState('');
+  const [fPower, setFPower] = useState('');
 
   useEffect(() => {
     fetch(func2url['mixers-catalog'])
@@ -381,8 +429,29 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       });
   }, []);
 
-  const shown = useMemo(() => list.slice(0, visible), [list, visible]);
-  const canMore = visible < list.length;
+  const volumeOptions = useMemo(() => uniqSorted(list.map(volumeOf)), [list]);
+  const brandOptions = useMemo(() => uniqSorted(list.map(brandOf)), [list]);
+  const powerOptions = useMemo(() => uniqSorted(list.map(powerOf)), [list]);
+
+  const filtered = useMemo(() => {
+    return list.filter((p) => {
+      if (fVolume && volumeOf(p) !== fVolume) return false;
+      if (fBrand && brandOf(p) !== fBrand) return false;
+      if (fPower && powerOf(p) !== fPower) return false;
+      return true;
+    });
+  }, [list, fVolume, fBrand, fPower]);
+
+  useEffect(() => setVisible(6), [fVolume, fBrand, fPower]);
+
+  const shown = useMemo(() => filtered.slice(0, visible), [filtered, visible]);
+  const canMore = visible < filtered.length;
+  const hasFilters = !!(fVolume || fBrand || fPower);
+  const resetFilters = () => {
+    setFVolume('');
+    setFBrand('');
+    setFPower('');
+  };
 
   return (
     <section id="assortment" className="relative py-24 bg-coal overflow-hidden">
@@ -392,8 +461,67 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
           Ассортимент <span className="text-fire-gradient">миксеров</span>
         </h2>
         <p className="text-white/70 text-lg mb-8">
-          Планетарные миксеры{!loading && !error ? ` — ${list.length} моделей` : ''} в наличии и под заказ.
+          Планетарные миксеры{!loading && !error ? ` — ${filtered.length} из ${list.length} моделей` : ''} в наличии и под заказ.
         </p>
+
+        {!loading && !error && (
+          <div className="flex flex-col md:flex-row gap-3 mb-8">
+            <div className="relative flex-1">
+              <Icon name="Ruler" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-fire pointer-events-none" />
+              <select
+                value={fVolume}
+                onChange={(e) => setFVolume(e.target.value)}
+                className="w-full appearance-none bg-coal-mid border border-coal-light focus:border-fire rounded-xl pl-9 pr-9 py-3 text-white outline-none transition cursor-pointer"
+              >
+                <option style={{ color: '#111' }} value="">Объём — любой</option>
+                {volumeOptions.map((v) => (
+                  <option style={{ color: '#111' }} key={v} value={v}>{v}</option>
+                ))}
+              </select>
+              <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+            </div>
+
+            <div className="relative flex-1">
+              <Icon name="BadgeCheck" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-fire pointer-events-none" />
+              <select
+                value={fBrand}
+                onChange={(e) => setFBrand(e.target.value)}
+                className="w-full appearance-none bg-coal-mid border border-coal-light focus:border-fire rounded-xl pl-9 pr-9 py-3 text-white outline-none transition cursor-pointer"
+              >
+                <option style={{ color: '#111' }} value="">Бренд — любой</option>
+                {brandOptions.map((v) => (
+                  <option style={{ color: '#111' }} key={v} value={v}>{v}</option>
+                ))}
+              </select>
+              <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+            </div>
+
+            <div className="relative flex-1">
+              <Icon name="Zap" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-fire pointer-events-none" />
+              <select
+                value={fPower}
+                onChange={(e) => setFPower(e.target.value)}
+                className="w-full appearance-none bg-coal-mid border border-coal-light focus:border-fire rounded-xl pl-9 pr-9 py-3 text-white outline-none transition cursor-pointer"
+              >
+                <option style={{ color: '#111' }} value="">Мощность — любая</option>
+                {powerOptions.map((v) => (
+                  <option style={{ color: '#111' }} key={v} value={v}>{v}</option>
+                ))}
+              </select>
+              <Icon name="ChevronDown" size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+            </div>
+
+            {hasFilters && (
+              <button
+                onClick={resetFilters}
+                className="px-4 py-3 rounded-xl border border-coal-light text-white/80 hover:border-fire hover:text-white transition flex items-center justify-center gap-2 whitespace-nowrap"
+              >
+                <Icon name="X" size={16} />
+                Сбросить
+              </button>
+            )}
+          </div>
+        )}
 
         {loading && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -407,10 +535,20 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
 
         {!loading && !error && (
           <>
-            {list.length === 0 ? (
+            {filtered.length === 0 ? (
               <div className="text-center text-white/50 py-20">
                 <Icon name="SearchX" size={40} className="mx-auto mb-3 text-fire/50" />
-                В этой категории пока нет товаров
+                {list.length === 0 ? 'В этой категории пока нет товаров' : 'По выбранным фильтрам ничего не найдено'}
+                {hasFilters && list.length > 0 && (
+                  <div className="mt-4">
+                    <button
+                      onClick={resetFilters}
+                      className="px-5 py-2.5 rounded-xl border border-coal-light text-white hover:border-fire transition"
+                    >
+                      Сбросить фильтры
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <>

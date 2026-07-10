@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/adeebbd2-ae60-497f-9c4f-92cc6af6f15a.jpg';
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/fb821cdb-ceb6-4681-a6b4-3e007b781d15.png';
 
 const facts = [
   { icon: 'CircleGauge', text: 'Объём дежи от 5 до 600 л' },
