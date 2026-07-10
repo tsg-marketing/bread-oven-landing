@@ -73,18 +73,26 @@ const pickParams = (params: Record<string, string>): [string, string][] => {
 
 const Gallery = ({ pictures, alt }: { pictures: string[]; alt: string }) => {
   const [idx, setIdx] = useState(0);
-  const raw = pictures[idx] || '';
-  const src = raw ? proxify(raw) : PLACEHOLDER;
+  const sources = useMemo(
+    () => (pictures.length ? pictures.map((p) => (p ? proxify(p) : PLACEHOLDER)) : [PLACEHOLDER]),
+    [pictures],
+  );
   return (
     <div className="relative aspect-square overflow-hidden bg-white group">
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
-        }}
-      />
+      {sources.map((s, i) => (
+        <img
+          key={i}
+          src={s}
+          alt={alt}
+          loading="eager"
+          className={`absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-200 group-hover:scale-105 ${
+            i === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
+          }}
+        />
+      ))}
       {pictures.length > 1 && (
         <>
           <button
