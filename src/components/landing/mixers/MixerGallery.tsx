@@ -16,8 +16,8 @@ const Lightbox = ({
   onClose: () => void;
 }) => {
   const [idx, setIdx] = useState(startIdx);
-  const prev = () => setIdx((idx - 1 + sources.length) % sources.length);
-  const next = () => setIdx((idx + 1) % sources.length);
+  const prev = () => setIdx((i) => (i - 1 + sources.length) % sources.length);
+  const next = () => setIdx((i) => (i + 1) % sources.length);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -32,7 +32,8 @@ const Lightbox = ({
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
     };
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sources.length]);
 
   return createPortal(
     <div
@@ -67,21 +68,38 @@ const Lightbox = ({
               e.stopPropagation();
               prev();
             }}
-            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-fire transition"
+            aria-label="Предыдущее фото"
+            className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center hover:bg-fire transition shadow-lg"
           >
-            <Icon name="ChevronLeft" size={26} />
+            <Icon name="ChevronLeft" size={28} />
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
               next();
             }}
-            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-fire transition"
+            aria-label="Следующее фото"
+            className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center hover:bg-fire transition shadow-lg"
           >
-            <Icon name="ChevronRight" size={26} />
+            <Icon name="ChevronRight" size={28} />
           </button>
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm">
-            {idx + 1} / {sources.length}
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-3">
+            <div className="px-4 py-1.5 rounded-full bg-white/15 text-white text-sm">
+              {idx + 1} / {sources.length}
+            </div>
+            <div className="flex gap-1.5">
+              {sources.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIdx(i);
+                  }}
+                  aria-label={`Фото ${i + 1}`}
+                  className={`h-2 rounded-full transition ${i === idx ? 'bg-fire w-5' : 'bg-white/40 w-2 hover:bg-white/70'}`}
+                />
+              ))}
+            </div>
           </div>
         </>
       )}

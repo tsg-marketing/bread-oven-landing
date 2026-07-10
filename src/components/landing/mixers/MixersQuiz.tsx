@@ -138,7 +138,7 @@ export const MixersQuizInner = ({
             <span className="text-base text-fire-gradient font-bold">{Math.round(progress)}%</span>
           </div>
           <h3
-            className={`font-oswald ${compact ? 'text-2xl' : 'text-2xl md:text-3xl'} font-bold mb-6`}
+            className={`font-oswald ${compact ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold mb-6`}
             style={{ color: '#000' }}
           >
             {current.q}
@@ -157,10 +157,10 @@ export const MixersQuizInner = ({
                     selected ? 'bg-fire/10 border-fire' : 'bg-white border-coal-light hover:border-fire/50'
                   }`}
                 >
-                  <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0">
-                    <Icon name={o.icon} size={22} className="text-fire" />
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-fire/20 to-ember/10 border border-fire/30 flex items-center justify-center flex-shrink-0">
+                    <Icon name={o.icon} size={24} className="text-fire" />
                   </div>
-                  <span className="font-semibold flex-1 text-sm md:text-base" style={{ color: '#000' }}>
+                  <span className="font-bold flex-1 text-base md:text-lg" style={{ color: '#000' }}>
                     {o.label}
                   </span>
                   {current.type === 'multi' ? (
@@ -172,7 +172,7 @@ export const MixersQuizInner = ({
                       {selected && <Icon name="Check" size={16} className="text-white" />}
                     </div>
                   ) : (
-                    <Icon name="ChevronRight" size={20} className="group-hover:text-fire transition flex-shrink-0" style={{ color: '#000' }} />
+                    <Icon name="ChevronRight" size={22} className="group-hover:text-fire transition flex-shrink-0" style={{ color: '#000' }} />
                   )}
                 </button>
               );
