@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Returns mixers catalog",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "OPTIONS returns 200 for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

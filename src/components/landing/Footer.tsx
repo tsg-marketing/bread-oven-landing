@@ -52,13 +52,14 @@ const Footer = () => {
               Навигация
             </div>
             <ul className="space-y-2 text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              <li><a href="#catalog" className="hover:text-fire transition">Каталог</a></li>
-              <li><a href="#tech" className="hover:text-fire transition">Технологии</a></li>
-              <li><a href="#quiz" className="hover:text-fire transition">Подбор печи</a></li>
-              <li><a href="#warranty" className="hover:text-fire transition">Гарантия</a></li>
-              <li><a href="#service" className="hover:text-fire transition">Сервис</a></li>
-              <li><a href="#faq" className="hover:text-fire transition">FAQ</a></li>
-              <li><a href="#contacts" className="hover:text-fire transition">Контакты</a></li>
+              <li><a href="/#catalog" className="hover:text-fire transition">Каталог</a></li>
+              <li><a href="/mixers" className="hover:text-fire transition">Миксеры</a></li>
+              <li><a href="/#tech" className="hover:text-fire transition">Технологии</a></li>
+              <li><a href="/#quiz" className="hover:text-fire transition">Подбор печи</a></li>
+              <li><a href="/#warranty" className="hover:text-fire transition">Гарантия</a></li>
+              <li><a href="/#service" className="hover:text-fire transition">Сервис</a></li>
+              <li><a href="/#faq" className="hover:text-fire transition">FAQ</a></li>
+              <li><a href="/#contacts" className="hover:text-fire transition">Контакты</a></li>
             </ul>
           </div>
 

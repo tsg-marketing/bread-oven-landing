@@ -14,7 +14,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
     >
       <div className="container flex items-center justify-between gap-6 h-24">
         {/* Логотип + слоган под ним */}
-        <a href="#home" className="flex items-center gap-3 flex-shrink-0">
+        <a href="/#home" className="flex items-center gap-3 flex-shrink-0">
           <img
             src="https://cdn.poehali.dev/files/ca89fddf-7bc6-4cd1-9d5f-5696c3edbc2d.jpg"
             alt="Техно-Сиб"
@@ -35,25 +35,28 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           className="hidden lg:flex items-center gap-5 xl:gap-7 text-[15px] font-medium flex-1 justify-center"
           style={{ color: 'hsl(var(--ink) / 0.85)' }}
         >
-          <a href="#catalog" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#catalog" className="nav-link hover:text-fire transition whitespace-nowrap">
             Каталог
           </a>
-          <a href="#tech" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/mixers" className="nav-link hover:text-fire transition whitespace-nowrap">
+            Миксеры
+          </a>
+          <a href="/#tech" className="nav-link hover:text-fire transition whitespace-nowrap">
             Технологии
           </a>
-          <a href="#warranty" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#warranty" className="nav-link hover:text-fire transition whitespace-nowrap">
             Гарантия
           </a>
-          <a href="#service" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#service" className="nav-link hover:text-fire transition whitespace-nowrap">
             Сервис
           </a>
-          <a href="#about" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#about" className="nav-link hover:text-fire transition whitespace-nowrap">
             О&nbsp;компании
           </a>
-          <a href="#faq" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#faq" className="nav-link hover:text-fire transition whitespace-nowrap">
             FAQ
           </a>
-          <a href="#contacts" className="nav-link hover:text-fire transition whitespace-nowrap">
+          <a href="/#contacts" className="nav-link hover:text-fire transition whitespace-nowrap">
             Контакты
           </a>
         </nav>
@@ -108,22 +111,25 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           style={{ background: 'hsl(var(--coal-mid))', borderColor: 'hsl(var(--coal-light))' }}
         >
           <div className="container py-5 flex flex-col gap-3 text-lg font-medium">
-            <a href="#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Каталог
             </a>
-            <a href="#tech" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/mixers" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+              Миксеры
+            </a>
+            <a href="/#tech" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Технологии
             </a>
-            <a href="#warranty" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/#warranty" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Гарантия
             </a>
-            <a href="#service" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/#service" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Сервис
             </a>
-            <a href="#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/#about" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               О компании
             </a>
-            <a href="#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+            <a href="/#contacts" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Контакты
             </a>
             <div className="pt-3 border-t" style={{ borderColor: 'hsl(var(--coal-light))' }}>
