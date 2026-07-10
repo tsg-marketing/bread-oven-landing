@@ -3,31 +3,31 @@ import Icon from '@/components/ui/icon';
 const types = [
   {
     icon: 'CupSoda',
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/997c8e82-5b86-4829-b2f0-6d691c1738ae.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/5f9c3fe2-c07b-48f9-a095-2b16ddfa576f.jpg',
     title: 'Настольные',
     volume: '5–10 л',
-    who: 'Кофейни, бары, малые кондитерские',
+    who: 'кофейнях, барах, малых кондитерских',
   },
   {
     icon: 'Store',
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/92ded23e-3f9b-4e75-bb2b-0cdb6baee899.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/50b58470-a222-4a34-ae7f-aa45551511f0.jpg',
     title: 'Компактные напольные',
     volume: '15–30 л',
-    who: 'Кафе, пекарни, кондитерские цеха',
+    who: 'кафе, ресторанах, кондитерских цехах',
   },
   {
     icon: 'Factory',
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/70ed738b-ece5-4f12-88e0-56545f73d884.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/a67c94e0-5461-41db-a533-21c6f0146cfa.jpg',
     title: 'Производственные',
     volume: '40–80 л',
-    who: 'Рестораны, хлебопекарни, цеха',
+    who: 'хлебопекарнях, ресторанах, цехах',
   },
   {
     icon: 'Building2',
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/efdee61a-21ff-4ed1-8bb0-47c8edc373b6.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/cbdbb417-a570-418a-896e-2c15f20f42c9.jpg',
     title: 'Промышленные',
     volume: '100–600 л',
-    who: 'Фабрики, крупные производства',
+    who: 'фабриках, крупных производствах',
   },
 ];
 
@@ -36,7 +36,7 @@ const MixersTypes = ({ onCatalog }: { onCatalog: () => void }) => {
     <section id="types" className="py-24 bg-coal-mid">
       <div className="container">
         <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-3">
-          Какой миксер <span className="text-fire-gradient">вам нужен</span>
+          Миксеры, <span className="text-fire-gradient">которые мы продаём</span>
         </h2>
         <p className="text-white/70 text-lg mb-10 max-w-2xl">
           Выберите класс оборудования под объём производства — от настольных моделей до промышленных линий.
@@ -67,7 +67,10 @@ const MixersTypes = ({ onCatalog }: { onCatalog: () => void }) => {
                   <Icon name="CircleGauge" size={14} />
                   {t.volume}
                 </div>
-                <div className="text-white/70 text-sm leading-snug">{t.who}</div>
+                <div className="text-white/70 text-sm leading-snug">
+                  <span className="text-white/50">Используется в </span>
+                  {t.who}
+                </div>
               </div>
             </button>
           ))}
