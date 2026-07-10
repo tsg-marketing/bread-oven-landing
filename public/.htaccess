@@ -1,0 +1,11 @@
+# SPA fallback для Apache: любой путь без файла отдаём index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # Не трогаем реально существующие файлы и папки
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  # Всё остальное — на index.html (React Router разрулит /mixers и др.)
+  RewriteRule ^ index.html [L]
+</IfModule>

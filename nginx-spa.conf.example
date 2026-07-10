@@ -1,0 +1,7 @@
+# Пример для nginx: чтобы прямой заход на /mixers (и любой SPA-путь)
+# отдавал index.html, а не 404. Добавьте этот location в server{} сайта
+# pekarnoe.t-sib.ru и перезагрузите nginx: nginx -s reload
+#
+# location / {
+#     try_files $uri $uri/ /index.html;
+# }
