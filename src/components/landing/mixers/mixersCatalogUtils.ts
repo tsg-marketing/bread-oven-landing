@@ -90,6 +90,23 @@ export const brandOf = (p: MixerProduct): string =>
 export const volumeOf = (p: MixerProduct): string => paramByWord(p.params, 'объ') || paramByWord(p.params, 'дежа') || paramByWord(p.params, 'дежи');
 export const powerOf = (p: MixerProduct): string => paramByWord(p.params, 'мощн');
 
+/** Извлекает первое число из строки (поддерживает запятую как разделитель), иначе null */
+export const numFromStr = (raw: string): number | null => {
+  if (!raw) return null;
+  const m = String(raw).replace(',', '.').match(/-?\d+(\.\d+)?/);
+  if (!m) return null;
+  const n = Number(m[0]);
+  return Number.isFinite(n) ? n : null;
+};
+
+export const volumeNumOf = (p: MixerProduct): number | null => numFromStr(volumeOf(p));
+export const powerNumOf = (p: MixerProduct): number | null => numFromStr(powerOf(p));
+
+export const priceNumOf = (p: MixerProduct): number | null => {
+  const n = Number(p.price);
+  return Number.isFinite(n) && n > 0 ? n : null;
+};
+
 export const uniqSorted = (values: string[]): string[] => {
   const set = new Set(values.filter((v) => v && v.trim()));
   return Array.from(set).sort((a, b) =>

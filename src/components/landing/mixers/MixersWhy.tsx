@@ -46,12 +46,12 @@ const MixersWhy = () => {
               style={{ animationDelay: `${i * 70}ms` }}
               className="animate-fade-in-up bg-coal-mid rounded-2xl border border-coal-light overflow-hidden hover:border-fire/40 transition flex flex-col"
             >
-              <div className="aspect-video bg-white overflow-hidden">
+              <div className="aspect-square bg-white overflow-hidden flex items-center justify-center p-4 max-w-[200px] mx-auto w-full">
                 <img
                   src={p.img}
                   alt={p.title}
                   loading="lazy"
-                  className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                  className="max-w-full max-h-full object-contain hover:scale-105 transition duration-500"
                 />
               </div>
               <div className="p-6">

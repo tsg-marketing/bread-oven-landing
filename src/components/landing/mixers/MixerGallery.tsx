@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from '@/components/ui/icon';
 import { PLACEHOLDER, proxify } from './mixersCatalogUtils';
 
@@ -25,10 +26,15 @@ const Lightbox = ({
       if (e.key === 'ArrowRight') next();
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
   });
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="fixed inset-0 z-[130] bg-black/95 backdrop-blur flex items-center justify-center p-4 md:p-10 animate-fade-in-up"
@@ -79,7 +85,8 @@ const Lightbox = ({
           </div>
         </>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useMeta } from '@/lib/useMeta';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -16,6 +17,14 @@ import MixersFAQ from '@/components/landing/mixers/MixersFAQ';
 import MixersLeadForm from '@/components/landing/mixers/MixersLeadForm';
 
 const Mixers = () => {
+  useMeta({
+    title: 'Планетарные миксеры для пекарен и производств — ТЕХНОСИБ',
+    description:
+      '100+ моделей планетарных миксеров: объём дежи 5–600 л, бренды Starmix, Hurakan, Danler, Miratek, Hualian. Гарантия до 12 месяцев, официальная поставка и сервис.',
+    image: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/7246909b-b43f-4ce6-b0a9-2b3e6b1eced9.jpg',
+    url: 'https://pekarnoe.t-sib.ru/mixers',
+  });
+
   const [leadOpen, setLeadOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [leadSource, setLeadSource] = useState('mixers');

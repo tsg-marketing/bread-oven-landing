@@ -7,8 +7,9 @@ import MixerFilters from './MixerFilters';
 import {
   MixerProduct,
   brandOf,
-  volumeOf,
-  powerOf,
+  volumeNumOf,
+  powerNumOf,
+  priceNumOf,
   uniqSorted,
 } from './mixersCatalogUtils';
 
@@ -21,9 +22,11 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
   const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<MixerProduct | null>(null);
 
-  const [fVolume, setFVolume] = useState('');
+  const [fVolumeMin, setFVolumeMin] = useState('');
+  const [fVolumeMax, setFVolumeMax] = useState('');
+  const [fPowerMin, setFPowerMin] = useState('');
+  const [fPowerMax, setFPowerMax] = useState('');
   const [fBrand, setFBrand] = useState('');
-  const [fPower, setFPower] = useState('');
 
   useEffect(() => {
     fetch(func2url['mixers-catalog'])
@@ -38,28 +41,56 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       });
   }, []);
 
-  const volumeOptions = useMemo(() => uniqSorted(list.map(volumeOf)), [list]);
   const brandOptions = useMemo(() => uniqSorted(list.map(brandOf)), [list]);
-  const powerOptions = useMemo(() => uniqSorted(list.map(powerOf)), [list]);
 
   const filtered = useMemo(() => {
-    return list.filter((p) => {
-      if (fVolume && volumeOf(p) !== fVolume) return false;
+    const vMin = fVolumeMin !== '' ? Number(fVolumeMin) : null;
+    const vMax = fVolumeMax !== '' ? Number(fVolumeMax) : null;
+    const pMin = fPowerMin !== '' ? Number(fPowerMin) : null;
+    const pMax = fPowerMax !== '' ? Number(fPowerMax) : null;
+
+    const result = list.filter((p) => {
       if (fBrand && brandOf(p) !== fBrand) return false;
-      if (fPower && powerOf(p) !== fPower) return false;
+
+      if (vMin !== null || vMax !== null) {
+        const v = volumeNumOf(p);
+        if (v === null) return false;
+        if (vMin !== null && v < vMin) return false;
+        if (vMax !== null && v > vMax) return false;
+      }
+
+      if (pMin !== null || pMax !== null) {
+        const pw = powerNumOf(p);
+        if (pw === null) return false;
+        if (pMin !== null && pw < pMin) return false;
+        if (pMax !== null && pw > pMax) return false;
+      }
+
       return true;
     });
-  }, [list, fVolume, fBrand, fPower]);
 
-  useEffect(() => setVisible(6), [fVolume, fBrand, fPower]);
+    // Сортировка по цене по возрастанию; товары без цены — в конце
+    return [...result].sort((a, b) => {
+      const pa = priceNumOf(a);
+      const pb = priceNumOf(b);
+      if (pa !== null && pb !== null) return pa - pb;
+      if (pa !== null) return -1;
+      if (pb !== null) return 1;
+      return 0;
+    });
+  }, [list, fVolumeMin, fVolumeMax, fPowerMin, fPowerMax, fBrand]);
+
+  useEffect(() => setVisible(6), [fVolumeMin, fVolumeMax, fPowerMin, fPowerMax, fBrand]);
 
   const shown = useMemo(() => filtered.slice(0, visible), [filtered, visible]);
   const canMore = visible < filtered.length;
-  const hasFilters = !!(fVolume || fBrand || fPower);
+  const hasFilters = !!(fVolumeMin || fVolumeMax || fPowerMin || fPowerMax || fBrand);
   const resetFilters = () => {
-    setFVolume('');
+    setFVolumeMin('');
+    setFVolumeMax('');
+    setFPowerMin('');
+    setFPowerMax('');
     setFBrand('');
-    setFPower('');
   };
 
   return (
@@ -75,15 +106,17 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
 
         {!loading && !error && (
           <MixerFilters
-            fVolume={fVolume}
+            fVolumeMin={fVolumeMin}
+            fVolumeMax={fVolumeMax}
+            fPowerMin={fPowerMin}
+            fPowerMax={fPowerMax}
             fBrand={fBrand}
-            fPower={fPower}
-            setFVolume={setFVolume}
+            setFVolumeMin={setFVolumeMin}
+            setFVolumeMax={setFVolumeMax}
+            setFPowerMin={setFPowerMin}
+            setFPowerMax={setFPowerMax}
             setFBrand={setFBrand}
-            setFPower={setFPower}
-            volumeOptions={volumeOptions}
             brandOptions={brandOptions}
-            powerOptions={powerOptions}
             hasFilters={hasFilters}
             resetFilters={resetFilters}
           />
