@@ -95,7 +95,19 @@ const Footer = () => {
         </div>
 
         <div
-          className="pt-6 border-t flex flex-col md:flex-row items-center justify-between gap-4 text-sm"
+          className="pt-6 border-t text-sm leading-relaxed"
+          style={{ borderColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
+        >
+          <div className="mb-1" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            Общество с ограниченной ответственностью «Техно-Сиб Групп»
+          </div>
+          <div>
+            630005, г. Новосибирск, ул. Крылова, д. 36, этаж 8, офис 81 · ИНН 5406804844 · ОГРН 1205400012146 · КПП 540601001
+          </div>
+        </div>
+
+        <div
+          className="pt-6 mt-6 border-t flex flex-col md:flex-row items-center justify-between gap-4 text-sm"
           style={{ borderColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)' }}
         >
           <div>© {new Date().getFullYear()} Техно-Сиб. Все права защищены.</div>
