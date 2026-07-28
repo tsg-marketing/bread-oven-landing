@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { sendLead } from '@/lib/sendLead';
-import ConsentNote from '../ConsentNote';
+import ConsentCheckbox from '../ConsentCheckbox';
 
 type Question = {
   id: string;
@@ -69,6 +69,7 @@ export const MixersQuizInner = ({
   const [phase, setPhase] = useState<'quiz' | 'form' | 'sent'>('quiz');
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [agree, setAgree] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const progress = ((step + (phase !== 'quiz' ? 1 : 0)) / (questions.length + 1)) * 100;
@@ -242,6 +243,7 @@ export const MixersQuizInner = ({
               style={{ color: '#000' }}
             />
             {errorMsg && <div className="text-sm text-red-500">{errorMsg}</div>}
+            <ConsentCheckbox checked={agree} onChange={setAgree} />
             <button
               type="submit"
               disabled={submitting}
@@ -257,7 +259,6 @@ export const MixersQuizInner = ({
             <button type="button" onClick={reset} className="w-full text-sm hover:text-fire" style={{ color: '#000' }}>
               Пройти заново
             </button>
-            <ConsentNote className="text-center" />
           </form>
         </div>
       )}

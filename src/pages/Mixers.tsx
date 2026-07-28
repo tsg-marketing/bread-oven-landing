@@ -29,12 +29,12 @@ const Mixers = () => {
   const [quizOpen, setQuizOpen] = useState(false);
   const [leadSource, setLeadSource] = useState('mixers');
   const [leadPayload, setLeadPayload] = useState<Record<string, unknown> | undefined>();
-  const [leadTitle, setLeadTitle] = useState('Оставьте заявку');
+  const [leadTitle, setLeadTitle] = useState('Оставить заявку');
 
   const openLead = (source: string, payload?: Record<string, unknown>, title?: string) => {
     setLeadSource(source);
     setLeadPayload(payload);
-    setLeadTitle(title || 'Оставьте заявку');
+    setLeadTitle(title || 'Оставить заявку');
     setLeadOpen(true);
   };
 
@@ -58,7 +58,7 @@ const Mixers = () => {
       <main>
         <MixersHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
         <MixersTypes onCatalog={scrollToCatalog} />
-        <MixersCatalog onLead={(src, payload) => openLead(src, payload, 'Оставьте заявку')} />
+        <MixersCatalog onLead={(src, payload) => openLead(src, payload, 'Оставить заявку')} />
         <MixersWhy />
         <MixersBrands />
         <MixersQuiz />

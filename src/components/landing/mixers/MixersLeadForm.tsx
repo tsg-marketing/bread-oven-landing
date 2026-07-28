@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { sendLead } from '@/lib/sendLead';
-import ConsentNote from '../ConsentNote';
+import ConsentCheckbox from '../ConsentCheckbox';
 
 const MixersLeadForm = () => {
-  const [form, setForm] = useState({ name: '', phone: '', volume: '', comment: '' });
+  const [form, setForm] = useState({ name: '', phone: '', email: '', volume: '', comment: '' });
+  const [agree, setAgree] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
@@ -17,6 +18,7 @@ const MixersLeadForm = () => {
       await sendLead({
         name: form.name,
         phone: form.phone,
+        email: form.email,
         source: 'mixers-form',
         payload: {
           volume: form.volume,
@@ -51,38 +53,61 @@ const MixersLeadForm = () => {
                 Оставьте контакты — подберём оптимальную модель по объёму, продукту и бюджету.
               </p>
 
-              <form onSubmit={submit} className="space-y-3">
-                <div className="grid sm:grid-cols-2 gap-3">
+              <form onSubmit={submit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-white/55">
+                      Имя <span className="text-fire">*</span>
+                    </label>
+                    <input
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Иван Петров"
+                      className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-white/55">
+                      Телефон <span className="text-fire">*</span>
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      placeholder="+7 (___) ___-__-__"
+                      className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-white/55">
+                    Email
+                  </label>
                   <input
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Имя"
-                    className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition"
-                  />
-                  <input
-                    required
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    placeholder="Телефон"
-                    className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="your@email.com"
+                    className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
                   />
                 </div>
                 <input
                   value={form.volume}
                   onChange={(e) => setForm({ ...form, volume: e.target.value })}
                   placeholder="Объём производства (кг/смену) или нужный объём дежи"
-                  className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition"
+                  className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
                 />
                 <textarea
                   value={form.comment}
                   onChange={(e) => setForm({ ...form, comment: e.target.value })}
                   placeholder="Комментарий"
                   rows={3}
-                  className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition resize-none"
+                  className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition resize-none placeholder:text-white/35"
                 />
                 {err && <div className="text-sm text-red-400">{err}</div>}
+                <ConsentCheckbox checked={agree} onChange={setAgree} tone="light" />
                 <button
                   type="submit"
                   disabled={submitting}
@@ -95,7 +120,6 @@ const MixersLeadForm = () => {
                   <Icon name="Clock" size={14} className="text-fire" />
                   Перезвоним в течение 15 минут в рабочее время.
                 </div>
-                <ConsentNote className="text-center" tone="light" />
               </form>
             </>
           ) : (

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { sendLead } from '@/lib/sendLead';
 import { ymGoal } from '@/lib/ym';
-import ConsentNote from './ConsentNote';
+import ConsentCheckbox from './ConsentCheckbox';
 
 const CONTACT_INFO = [
   { icon: 'Phone', label: 'Телефон', value: '8-800-533-88-12', href: 'tel:+78005338812' },
@@ -13,6 +13,7 @@ const CONTACT_INFO = [
 
 const Contacts = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
+  const [agree, setAgree] = useState(false);
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState('');
@@ -114,45 +115,49 @@ const Contacts = () => {
                 <p className="text-sm mb-4" style={{ color: 'hsl(var(--ink) / 0.6)' }}>
                   Оставьте контакты — технолог-эксперт перезвонит и подберёт оптимальное решение.
                 </p>
-                <input
-                  ref={nameRef}
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Имя"
-                  className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition"
-                  style={{
-                    background: 'hsl(var(--coal-mid))',
-                    borderColor: 'hsl(var(--coal-light))',
-                    color: 'hsl(var(--ink))',
-                  }}
-                />
-                <input
-                  required
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="Телефон"
-                  className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition"
-                  style={{
-                    background: 'hsl(var(--coal-mid))',
-                    borderColor: 'hsl(var(--coal-light))',
-                    color: 'hsl(var(--ink))',
-                  }}
-                />
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="Email"
-                  className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition"
-                  style={{
-                    background: 'hsl(var(--coal-mid))',
-                    borderColor: 'hsl(var(--coal-light))',
-                    color: 'hsl(var(--ink))',
-                  }}
-                />
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'hsl(var(--ink) / 0.55)' }}>
+                    Имя <span className="text-fire">*</span>
+                  </label>
+                  <input
+                    ref={nameRef}
+                    required
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Иван Петров"
+                    className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition placeholder:text-black/35"
+                    style={{ background: '#fff', borderColor: 'hsl(var(--coal-light))', color: 'hsl(var(--ink))' }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'hsl(var(--ink) / 0.55)' }}>
+                    Телефон <span className="text-fire">*</span>
+                  </label>
+                  <input
+                    required
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="+7 (___) ___-__-__"
+                    className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition placeholder:text-black/35"
+                    style={{ background: '#fff', borderColor: 'hsl(var(--coal-light))', color: 'hsl(var(--ink))' }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: 'hsl(var(--ink) / 0.55)' }}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="your@email.com"
+                    className="w-full border-2 focus:border-fire rounded-xl px-4 py-3.5 outline-none transition placeholder:text-black/35"
+                    style={{ background: '#fff', borderColor: 'hsl(var(--coal-light))', color: 'hsl(var(--ink))' }}
+                  />
+                </div>
                 {err && <div className="text-sm text-red-500">{err}</div>}
+                <ConsentCheckbox checked={agree} onChange={setAgree} />
                 <button
                   type="submit"
                   disabled={submitting}
@@ -161,7 +166,6 @@ const Contacts = () => {
                 >
                   {submitting ? 'Отправляем...' : 'Отправить'} <Icon name="Send" size={18} />
                 </button>
-                <ConsentNote className="text-center" />
               </form>
             ) : (
               <div className="text-center py-10 animate-fade-in-up">
