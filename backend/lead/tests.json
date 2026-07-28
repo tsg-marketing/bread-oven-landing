@@ -16,6 +16,15 @@
       "bodyMatcher": "partial"
     },
     {
+      "name": "POST with yaClientId accepted",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Пётр", "phone": "+79990002233", "source": "callback", "yaClientId": "1700000000000000000"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    },
+    {
       "name": "POST without phone/email rejected",
       "method": "POST",
       "path": "/",

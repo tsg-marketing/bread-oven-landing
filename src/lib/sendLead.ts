@@ -1,5 +1,5 @@
 import { getUtmData } from './utm';
-import { ymGoal } from './ym';
+import { getYaClientId, ymGoal } from './ym';
 
 export type LeadInput = {
   name: string;
@@ -33,6 +33,16 @@ export async function sendLead(data: LeadInput): Promise<void> {
     if (p.productName) body.product_name = p.productName;
     if (p.productId) body.product_id = p.productId;
     if (p.answers) body.quiz_answers = p.answers;
+  }
+
+  // ClientID Метрики — опционально, не блокирует отправку при сбое
+  const yaClientId = await getYaClientId().catch(() => '');
+  if (yaClientId) {
+    body.yaClientId = yaClientId;
+    const prevMessage = typeof body.message === 'string' ? body.message : '';
+    body.message = prevMessage
+      ? `${prevMessage}\nClientID: ${yaClientId}`
+      : `ClientID: ${yaClientId}`;
   }
 
   const res = await fetch('/api/b24-send-lead.php', {

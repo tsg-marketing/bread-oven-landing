@@ -35,6 +35,7 @@ def handler(event: dict, context) -> dict:
     phone = (body.get('phone') or '').strip()[:40]
     email = (body.get('email') or '').strip()[:120]
     source = (body.get('source') or 'form').strip()[:40]
+    ya_client_id = (str(body.get('yaClientId') or '')).strip()[:64]
     payload = body.get('payload') or {}
 
     if not phone and not email:
@@ -50,10 +51,21 @@ def handler(event: dict, context) -> dict:
         'phone': phone,
         'email': email,
         'source': source,
+        'ya_client_id': ya_client_id,
         'payload': payload,
         'request_id': getattr(context, 'request_id', ''),
     }
     LEADS.append(lead)
+
+    message = '\n'.join([
+        f'Новая заявка ({source})',
+        f'Имя: {name}',
+        f'Телефон: {phone}',
+        f'Email: {email}',
+    ])
+    if ya_client_id:
+        message += f'\nClientID: {ya_client_id}'
+    print(message)
 
     return {
         'statusCode': 200,
