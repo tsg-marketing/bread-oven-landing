@@ -49,7 +49,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
   const [query, setQuery] = useState('');
-  const [vol, setVol] = useState('');
+  const [vol, setVol] = useState('v2');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<DoughProduct | null>(null);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -109,8 +109,9 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
 
   useEffect(() => setVisible(8), [cat, brand, query, vol]);
   useEffect(() => {
+    if (loading) return;
     if (vol && !volumes.some((v) => v.id === vol)) setVol('');
-  }, [volumes, vol]);
+  }, [volumes, vol, loading]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
