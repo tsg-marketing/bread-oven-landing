@@ -54,3 +54,39 @@ export const keyParams = (params: Record<string, string>): [string, string][] =>
   }
   return out;
 };
+
+const VOL_WORDS = [
+  'объем дежи',
+  'емкость дежи',
+  'объем емкости',
+  'емкость месильного корыта',
+  'объем чаши',
+  'объем (л)',
+  'объем корыта',
+  'объем бункера',
+];
+
+/** Объём дежи в литрах или null */
+export const volumeOf = (p: DoughProduct): number | null => {
+  for (const [k, v] of Object.entries(p.params || {})) {
+    const kl = k.toLowerCase().replace(/ё/g, 'е');
+    if (!VOL_WORDS.some((w) => kl.includes(w))) continue;
+    const m = String(v).match(/\d+(?:[.,]\d+)?/);
+    if (m) return parseFloat(m[0].replace(',', '.'));
+  }
+  return null;
+};
+
+export const VOLUME_RANGES: { id: string; label: string; min: number; max: number }[] = [
+  { id: 'v1', label: 'до 30 л', min: 0, max: 30 },
+  { id: 'v2', label: '30–60 л', min: 30, max: 60 },
+  { id: 'v3', label: '60–100 л', min: 60, max: 100 },
+  { id: 'v4', label: '100–200 л', min: 100, max: 200 },
+  { id: 'v5', label: 'от 200 л', min: 200, max: Infinity },
+];
+
+export const volumeRangeOf = (p: DoughProduct): string => {
+  const v = volumeOf(p);
+  if (v === null) return 'none';
+  return VOLUME_RANGES.find((r) => v >= r.min && v < r.max)?.id || 'none';
+};

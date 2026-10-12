@@ -4,7 +4,7 @@ import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
 import MixerModal from '../mixers/MixerModal';
 import DoughCard from './DoughCard';
-import { DoughProduct, brandOf, categoryLabel } from './doughUtils';
+import { DoughProduct, VOLUME_RANGES, brandOf, categoryLabel, volumeRangeOf } from './doughUtils';
 
 type Cat = { id: string; name: string; count: number };
 
@@ -49,6 +49,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
   const [query, setQuery] = useState('');
+  const [vol, setVol] = useState('');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<DoughProduct | null>(null);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -81,8 +82,21 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
     return Array.from(m.entries()).sort((a, b) => b[1] - a[1]);
   }, [byCat]);
 
+  const byBrand = useMemo(() => (brand ? byCat.filter((p) => brandOf(p) === brand) : byCat), [byCat, brand]);
+
+  const volumes = useMemo(() => {
+    const m = new Map<string, number>();
+    byBrand.forEach((p) => {
+      const r = volumeRangeOf(p);
+      m.set(r, (m.get(r) || 0) + 1);
+    });
+    const res = VOLUME_RANGES.filter((r) => m.get(r.id)).map((r) => ({ id: r.id, label: r.label, count: m.get(r.id) || 0 }));
+    if (m.get('none')) res.push({ id: 'none', label: 'Не указан', count: m.get('none') || 0 });
+    return res;
+  }, [byBrand]);
+
   const filtered = useMemo(() => {
-    const res = brand ? byCat.filter((p) => brandOf(p) === brand) : byCat;
+    const res = vol ? byBrand.filter((p) => volumeRangeOf(p) === vol) : byBrand;
     return [...res].sort((a, b) => {
       const pa = priceNum(a);
       const pb = priceNum(b);
@@ -91,9 +105,12 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
       if (pb) return 1;
       return 0;
     });
-  }, [byCat, brand]);
+  }, [byBrand, vol]);
 
-  useEffect(() => setVisible(8), [cat, brand, query]);
+  useEffect(() => setVisible(8), [cat, brand, query, vol]);
+  useEffect(() => {
+    if (vol && !volumes.some((v) => v.id === vol)) setVol('');
+  }, [volumes, vol]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
@@ -170,6 +187,21 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
                   {brands.map(([b, n]) => (
                     <Tab small key={b} active={brand === b} onClick={() => setBrand(b)}>
                       {b} <span className="opacity-70">({n})</span>
+                    </Tab>
+                  ))}
+                </div>
+              </div>
+            )}
+            {volumes.length > 1 && (
+              <div>
+                <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Объём дежи</div>
+                <div className="flex flex-wrap gap-2">
+                  <Tab small active={!vol} onClick={() => setVol('')}>
+                    Любой объём
+                  </Tab>
+                  {volumes.map((v) => (
+                    <Tab small key={v.id} active={vol === v.id} onClick={() => setVol(v.id)}>
+                      {v.label} <span className="opacity-70">({v.count})</span>
                     </Tab>
                   ))}
                 </div>
