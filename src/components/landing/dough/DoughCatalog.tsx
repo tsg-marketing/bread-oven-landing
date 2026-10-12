@@ -49,7 +49,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
   const [query, setQuery] = useState('');
-  const [visible, setVisible] = useState(9);
+  const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<DoughProduct | null>(null);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
     });
   }, [byCat, brand]);
 
-  useEffect(() => setVisible(9), [cat, brand, query]);
+  useEffect(() => setVisible(6), [cat, brand, query]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
@@ -205,7 +205,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
             {visible < filtered.length && (
               <div className="flex justify-center mt-10">
                 <button
-                  onClick={() => setVisible(visible + 9)}
+                  onClick={() => setVisible(visible + 6)}
                   className="px-8 py-4 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-xl hover:shadow-fire/40 transition flex items-center gap-2"
                 >
                   Показать ещё
