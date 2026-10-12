@@ -27,6 +27,7 @@ const DoughMixers = () => {
   const [leadOpen, setLeadOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [leadSource, setLeadSource] = useState('dough');
+  const [catFilter, setCatFilter] = useState('');
   const [leadPayload, setLeadPayload] = useState<Record<string, unknown> | undefined>();
 
   const openLead = (source: string, payload?: Record<string, unknown>) => {
@@ -53,8 +54,13 @@ const DoughMixers = () => {
       <Header onLead={() => openLead('dough-header')} />
       <main>
         <DoughHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
-        <DoughTypes onCatalog={scrollToCatalog} />
-        <DoughCatalog onLead={openLead} />
+        <DoughTypes
+          onCatalog={(c) => {
+            setCatFilter(c);
+            scrollToCatalog();
+          }}
+        />
+        <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <DoughWhy />
         <DoughQuiz />
         <Service />

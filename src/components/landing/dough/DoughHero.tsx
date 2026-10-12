@@ -5,7 +5,7 @@ const HERO_IMG =
 
 const facts = [
   { icon: 'CircleGauge', text: 'Дежа от 10 до 420 л' },
-  { icon: 'Award', text: 'Logiudice Forni, Apach, Hurakan, Danler' },
+  { icon: 'Award', text: 'Продукция ведущих мировых производителей' },
   { icon: 'ShieldCheck', text: 'Официальная гарантия' },
   { icon: 'Wrench', text: 'Собственный сервисный центр' },
 ];
@@ -35,7 +35,10 @@ const DoughHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: () =>
           </h1>
           <p className="text-lg md:text-xl mb-6 max-w-xl" style={{ color: 'hsl(var(--ink) / 0.8)' }}>
             Спиральные, лопастные, горизонтальные и вакуумные тестомесы — для дрожжевого, сдобного, крутого,
-            пельменного теста и пиццы. Около 180 моделей в наличии и под заказ.
+            пельменного теста и пиццы.
+          </p>
+          <p className="font-oswald text-2xl md:text-4xl font-bold uppercase mb-6 text-fire-gradient">
+            170+ моделей в наличии и под заказ
           </p>
 
           <div className="grid sm:grid-cols-2 gap-2.5 mb-7">

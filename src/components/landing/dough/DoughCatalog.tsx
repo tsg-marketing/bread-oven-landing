@@ -13,10 +13,20 @@ const priceNum = (p: DoughProduct) => {
   return Number.isFinite(n) && n > 0 ? n : 0;
 };
 
-const Tab = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
+const Tab = ({
+  active,
+  onClick,
+  children,
+  small = false,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  small?: boolean;
+}) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2.5 rounded-xl text-sm md:text-base font-semibold border-2 transition whitespace-nowrap ${
+    className={`${small ? 'px-3 py-1.5 rounded-lg text-sm' : 'px-4 py-2.5 rounded-xl text-sm md:text-base'} font-semibold border-2 transition whitespace-nowrap ${
       active
         ? 'bg-gradient-to-r from-fire to-fire-dark border-transparent text-white shadow-lg shadow-fire/30'
         : 'bg-coal-mid border-coal-light text-white/80 hover:border-fire/60'
@@ -26,12 +36,17 @@ const Tab = ({ active, onClick, children }: { active: boolean; onClick: () => vo
   </button>
 );
 
-const DoughCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<string, unknown>) => void }) => {
+type Props = {
+  onLead: (source: string, payload?: Record<string, unknown>) => void;
+  cat: string;
+  setCat: (c: string) => void;
+};
+
+const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [list, setList] = useState<DoughProduct[]>([]);
   const [cats, setCats] = useState<Cat[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [cat, setCat] = useState('');
   const [brand, setBrand] = useState('');
   const [visible, setVisible] = useState(9);
   const [modal, setModal] = useState<DoughProduct | null>(null);
@@ -63,7 +78,14 @@ const DoughCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<st
 
   const filtered = useMemo(() => {
     const res = brand ? byCat.filter((p) => brandOf(p) === brand) : byCat;
-    return [...res].sort((a, b) => priceNum(b) - priceNum(a));
+    return [...res].sort((a, b) => {
+      const pa = priceNum(a);
+      const pb = priceNum(b);
+      if (pa && pb) return pa - pb;
+      if (pa) return -1;
+      if (pb) return 1;
+      return 0;
+    });
   }, [byCat, brand]);
 
   useEffect(() => setVisible(9), [cat, brand]);
@@ -103,12 +125,12 @@ const DoughCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<st
             {brands.length > 1 && (
               <div>
                 <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Бренд</div>
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  <Tab active={!brand} onClick={() => setBrand('')}>
+                <div className="flex flex-wrap gap-2">
+                  <Tab small active={!brand} onClick={() => setBrand('')}>
                     Все бренды
                   </Tab>
                   {brands.map(([b, n]) => (
-                    <Tab key={b} active={brand === b} onClick={() => setBrand(b)}>
+                    <Tab small key={b} active={brand === b} onClick={() => setBrand(b)}>
                       {b} <span className="opacity-70">({n})</span>
                     </Tab>
                   ))}

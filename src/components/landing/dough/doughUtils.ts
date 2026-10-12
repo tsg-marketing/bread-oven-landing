@@ -20,6 +20,7 @@ export const brandOf = (p: DoughProduct): string => {
   const raw = (p.vendor || p.params?.['Бренд'] || '').trim();
   if (!raw) return '';
   const base = raw.replace(/\s*\(.*?\)\s*/g, '').replace(/["«»]/g, '').trim();
+  if (/сарапульск/i.test(raw)) return 'СЭГЗ';
   if (!base) return '';
   if (base === base.toUpperCase() && base.length > 3) return base.charAt(0) + base.slice(1).toLowerCase();
   return base;

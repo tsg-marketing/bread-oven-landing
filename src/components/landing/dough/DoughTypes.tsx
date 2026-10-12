@@ -3,25 +3,28 @@ import Icon from '@/components/ui/icon';
 const types = [
   {
     img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/155147c6-a2df-4750-bf62-ddf2f0f61e80.jpg',
+    cat: '380',
     title: 'Спиральные',
     text: 'Спираль и дежа вращаются навстречу друг другу — тесто промешивается равномерно по всему объёму. Для дрожжевого, сдобного, опарного и безопарного теста влажностью от 55%.',
     tags: ['Хлеб и булочки', 'Пицца', 'Сдоба'],
   },
   {
     img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/61f7e1cd-2a8b-4d4e-90aa-c623d046eb1b.jpg',
+    cat: '379',
     title: 'Лопастные и горизонтальные',
     text: 'Z-образные месильные органы имитируют ручной замес. Справляются с крутым и вязким тестом: пельменным, песочным, пряничным, бараночным.',
     tags: ['Пельмени', 'Пряники', 'Баранки'],
   },
   {
     img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/9653a395-7b49-426a-900f-fd930fb992a0.jpg',
+    cat: '378',
     title: 'Вакуумные',
     text: 'Замес в вакууме даёт плотное, эластичное тесто без пузырьков воздуха. Решение для промышленного выпуска лапши, пельменей и макаронных изделий.',
     tags: ['Лапша', 'Пельмени', 'Промышленность'],
   },
 ];
 
-const DoughTypes = ({ onCatalog }: { onCatalog: () => void }) => (
+const DoughTypes = ({ onCatalog }: { onCatalog: (cat: string) => void }) => (
   <section id="types" className="py-24 bg-coal-mid">
     <div className="container">
       <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-3">
@@ -50,7 +53,7 @@ const DoughTypes = ({ onCatalog }: { onCatalog: () => void }) => (
                 ))}
               </div>
               <button
-                onClick={onCatalog}
+                onClick={() => onCatalog(t.cat)}
                 className="self-start text-fire font-semibold flex items-center gap-1.5 hover:gap-2.5 transition-all"
               >
                 Смотреть модели <Icon name="ArrowRight" size={16} />
