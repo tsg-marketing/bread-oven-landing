@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
@@ -49,8 +49,9 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
   const [query, setQuery] = useState('');
-  const [visible, setVisible] = useState(12);
+  const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<DoughProduct | null>(null);
+  const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch(func2url['dough-catalog'])
@@ -92,12 +93,26 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
     });
   }, [byCat, brand]);
 
-  useEffect(() => setVisible(12), [cat, brand, query]);
+  useEffect(() => setVisible(8), [cat, brand, query]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
 
   const shown = filtered.slice(0, visible);
+  const hasMore = visible < filtered.length;
+
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el || !hasMore) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setVisible((v) => v + 8);
+      },
+      { rootMargin: '600px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasMore, visible]);
 
   return (
     <section id="assortment" className="relative py-24 bg-coal overflow-hidden">
@@ -164,8 +179,8 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
         )}
 
         {loading && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4">
-            {[...Array(12)].map((_, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+            {[...Array(8)].map((_, i) => (
               <div key={i} className="bg-coal-mid rounded-2xl h-80 animate-pulse" />
             ))}
           </div>
@@ -191,7 +206,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
                 {shown.map((p) => (
                   <DoughCard
                     key={p.id}
@@ -202,16 +217,10 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
                 ))}
               </div>
             )}
-            {visible < filtered.length && (
-              <div className="flex justify-center mt-10">
-                <button
-                  onClick={() => setVisible(visible + 12)}
-                  className="px-8 py-4 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-xl hover:shadow-fire/40 transition flex items-center gap-2"
-                >
-                  Показать ещё
-                  <span className="opacity-70">({filtered.length - visible})</span>
-                  <Icon name="ChevronDown" size={18} />
-                </button>
+            {hasMore && (
+              <div ref={sentinel} className="flex justify-center items-center gap-2 mt-8 py-4 text-white/50 text-sm">
+                <Icon name="Loader2" size={18} className="animate-spin text-fire" />
+                Загружаем ещё модели…
               </div>
             )}
           </>

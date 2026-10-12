@@ -4,14 +4,14 @@ import { formatPrice } from '../mixers/mixersCatalogUtils';
 import { DoughProduct, brandOf, categoryLabel, keyParams } from './doughUtils';
 
 const DoughCard = ({ p, onOpen, onLead }: { p: DoughProduct; onOpen: () => void; onLead: () => void }) => {
-  const params = keyParams(p.params).slice(0, 3);
+  const params = keyParams(p.params).slice(0, 4);
   const priceText = formatPrice(p.price);
   const brand = brandOf(p);
 
   return (
     <article className="card-hover group bg-coal-mid rounded-xl overflow-hidden border border-coal-light animate-fade-in-up flex flex-col">
       <MixerGallery pictures={p.pictures} alt={p.name} />
-      <div className="p-3 flex flex-col flex-1">
+      <div className="p-4 flex flex-col flex-1">
         <div className="flex flex-wrap gap-1 mb-2">
           <span className="text-[11px] px-2 py-0.5 rounded-full bg-fire/10 text-fire font-semibold">
             {categoryLabel(p.categoryId, p.categoryName)}
@@ -20,7 +20,7 @@ const DoughCard = ({ p, onOpen, onLead }: { p: DoughProduct; onOpen: () => void;
             <span className="text-[11px] px-2 py-0.5 rounded-full border border-coal-light text-white/70">{brand}</span>
           )}
         </div>
-        <h3 className="font-oswald text-base text-white mb-2 leading-tight line-clamp-2 min-h-[2.5em]">{p.name}</h3>
+        <h3 className="font-oswald text-lg text-white mb-2 leading-tight line-clamp-2 min-h-[2.5em]">{p.name}</h3>
         <div className="flex-1">
           {params.length > 0 && (
             <div className="grid grid-cols-1 gap-1 mb-2">
@@ -35,7 +35,7 @@ const DoughCard = ({ p, onOpen, onLead }: { p: DoughProduct; onOpen: () => void;
         </div>
         <div className="mt-2">
           {priceText ? (
-            <div className="font-oswald text-lg md:text-xl font-bold text-fire">{priceText}</div>
+            <div className="font-oswald text-xl md:text-2xl font-bold text-fire">{priceText}</div>
           ) : (
             <div className="text-white/60 text-sm">Цена по запросу</div>
           )}
