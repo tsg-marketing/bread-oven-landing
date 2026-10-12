@@ -49,7 +49,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
   const [query, setQuery] = useState('');
-  const [visible, setVisible] = useState(6);
+  const [visible, setVisible] = useState(12);
   const [modal, setModal] = useState<DoughProduct | null>(null);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
     });
   }, [byCat, brand]);
 
-  useEffect(() => setVisible(6), [cat, brand, query]);
+  useEffect(() => setVisible(12), [cat, brand, query]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
@@ -164,9 +164,9 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
         )}
 
         {loading && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-coal-mid rounded-2xl h-96 animate-pulse" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4">
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className="bg-coal-mid rounded-2xl h-80 animate-pulse" />
             ))}
           </div>
         )}
@@ -191,7 +191,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
                 )}
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4">
                 {shown.map((p) => (
                   <DoughCard
                     key={p.id}
@@ -205,7 +205,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
             {visible < filtered.length && (
               <div className="flex justify-center mt-10">
                 <button
-                  onClick={() => setVisible(visible + 6)}
+                  onClick={() => setVisible(visible + 12)}
                   className="px-8 py-4 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-white font-semibold hover:shadow-xl hover:shadow-fire/40 transition flex items-center gap-2"
                 >
                   Показать ещё
