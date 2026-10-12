@@ -2,6 +2,11 @@ import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { ymGoal } from '@/lib/ym';
 
+const EQUIPMENT = [
+  { href: '/mixers', label: 'Планетарные миксеры', icon: 'CakeSlice' },
+  { href: '/dough-mixers', label: 'Тестомесы', icon: 'Wheat' },
+];
+
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -38,9 +43,30 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           <a href="/#catalog" className="nav-link hover:text-fire transition whitespace-nowrap">
             Каталог
           </a>
-          <a href="/mixers" className="nav-link hover:text-fire transition whitespace-nowrap">
-            Миксеры
-          </a>
+          <div className="relative group">
+            <button className="nav-link hover:text-fire transition whitespace-nowrap flex items-center gap-1">
+              Оборудование
+              <Icon name="ChevronDown" size={14} className="group-hover:rotate-180 transition" />
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 hidden group-hover:block group-focus-within:block z-50">
+              <div
+                className="min-w-[230px] rounded-xl border shadow-xl p-2 bg-white"
+                style={{ borderColor: 'hsl(var(--coal-light))' }}
+              >
+                {EQUIPMENT.map((e) => (
+                  <a
+                    key={e.href}
+                    href={e.href}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-fire/10 hover:text-fire transition whitespace-nowrap"
+                    style={{ color: 'hsl(var(--ink))' }}
+                  >
+                    <Icon name={e.icon} size={16} className="text-fire" />
+                    {e.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
           <a href="/#tech" className="nav-link hover:text-fire transition whitespace-nowrap">
             Технологии
           </a>
@@ -114,9 +140,16 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
             <a href="/#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Каталог
             </a>
-            <a href="/mixers" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
-              Миксеры
-            </a>
+            <div>
+              <div style={{ color: 'hsl(var(--ink) / 0.9)' }}>Оборудование</div>
+              <div className="mt-2 pl-4 flex flex-col gap-2 text-base border-l-2 border-fire/40">
+                {EQUIPMENT.map((e) => (
+                  <a key={e.href} href={e.href} onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.8)' }}>
+                    {e.label}
+                  </a>
+                ))}
+              </div>
+            </div>
             <a href="/#tech" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
               Технологии
             </a>

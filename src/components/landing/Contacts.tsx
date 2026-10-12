@@ -11,7 +11,9 @@ const CONTACT_INFO = [
   { icon: 'MapPin', label: 'Новосибирск', value: 'ул. Электрозаводская, 2 к1, офис 304, 314', href: null },
 ];
 
-const Contacts = () => {
+type ContactsProps = { what?: string; source?: string };
+
+const Contacts = ({ what = 'печь', source = 'contacts' }: ContactsProps = {}) => {
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
   const [agree, setAgree] = useState(false);
   const [sent, setSent] = useState(false);
@@ -28,7 +30,7 @@ const Contacts = () => {
         name: form.name,
         phone: form.phone,
         email: form.email,
-        source: 'contacts',
+        source,
       });
       setSent(true);
     } catch {
@@ -55,7 +57,7 @@ const Contacts = () => {
       <div className="container relative max-w-6xl">
         <div className="text-center mb-10">
           <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase mb-4" style={{ color: 'hsl(var(--ink))' }}>
-            Не знаете, какую печь выбрать? <br />
+            Не знаете, какую {what} выбрать? <br />
             <span className="text-fire-gradient">Мы поможем</span>
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: 'hsl(var(--ink) / 0.7)' }}>
@@ -110,7 +112,7 @@ const Contacts = () => {
             {!sent ? (
               <form onSubmit={submit} className="space-y-4">
                 <h3 className="font-oswald text-2xl font-bold mb-2" style={{ color: 'hsl(var(--ink))' }}>
-                  Получите подбор печи
+                  Получите подбор {what === 'печь' ? 'печи' : 'оборудования'}
                 </h3>
                 <p className="text-sm mb-4" style={{ color: 'hsl(var(--ink) / 0.6)' }}>
                   Оставьте контакты — технолог-эксперт перезвонит и подберёт оптимальное решение.
