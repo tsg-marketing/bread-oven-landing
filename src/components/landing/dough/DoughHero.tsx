@@ -1,6 +1,7 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG =
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/22361491-67e9-4946-9982-23b69c05757d.png';
+const WORK_IMG =
   'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/155147c6-a2df-4750-bf62-ddf2f0f61e80.jpg';
 
 const facts = [
@@ -79,7 +80,13 @@ const DoughHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: () =>
             className="relative rounded-3xl overflow-hidden border bg-white shadow-2xl shadow-fire/10"
             style={{ borderColor: 'hsl(var(--coal-light))' }}
           >
-            <img src={HERO_IMG} alt="Спиральный тестомес" className="w-full aspect-square object-cover" />
+            <img src={HERO_IMG} alt="Вакуумный тестомес" className="w-full aspect-[4/3] object-contain p-6" />
+          </div>
+          <div className="absolute -bottom-6 -left-4 md:-left-8 w-40 md:w-56 rounded-2xl overflow-hidden border-4 border-white shadow-2xl">
+            <img src={WORK_IMG} alt="Тестомес в работе" className="w-full aspect-square object-cover" />
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2">
+              <span className="text-xs md:text-sm font-semibold" style={{ color: '#fff' }}>Замес в работе</span>
+            </div>
           </div>
         </div>
       </div>

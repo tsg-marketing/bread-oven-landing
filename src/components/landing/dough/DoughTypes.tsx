@@ -2,21 +2,21 @@ import Icon from '@/components/ui/icon';
 
 const types = [
   {
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/155147c6-a2df-4750-bf62-ddf2f0f61e80.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/f4c76515-47af-446c-bdc3-a5caeff65ff1.png',
     cat: '380',
     title: 'Спиральные',
     text: 'Спираль и дежа вращаются навстречу друг другу — тесто промешивается равномерно по всему объёму. Для дрожжевого, сдобного, опарного и безопарного теста влажностью от 55%.',
     tags: ['Хлеб и булочки', 'Пицца', 'Сдоба'],
   },
   {
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/61f7e1cd-2a8b-4d4e-90aa-c623d046eb1b.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/b96ab263-cf53-4c73-92c7-4c31f8a4f054.png',
     cat: '379',
     title: 'Лопастные и горизонтальные',
     text: 'Z-образные месильные органы имитируют ручной замес. Справляются с крутым и вязким тестом: пельменным, песочным, пряничным, бараночным.',
     tags: ['Пельмени', 'Пряники', 'Баранки'],
   },
   {
-    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/9653a395-7b49-426a-900f-fd930fb992a0.jpg',
+    img: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/22361491-67e9-4946-9982-23b69c05757d.png',
     cat: '378',
     title: 'Вакуумные',
     text: 'Замес в вакууме даёт плотное, эластичное тесто без пузырьков воздуха. Решение для промышленного выпуска лапши, пельменей и макаронных изделий.',
@@ -41,7 +41,7 @@ const DoughTypes = ({ onCatalog }: { onCatalog: (cat: string) => void }) => (
             style={{ animationDelay: `${i * 80}ms` }}
             className="card-hover bg-coal rounded-2xl overflow-hidden border border-coal-light flex flex-col animate-fade-in-up"
           >
-            <img src={t.img} alt={t.title} className="w-full aspect-[4/3] object-cover" />
+            <img src={t.img} alt={t.title} className="w-full aspect-[4/3] object-contain bg-white p-4" />
             <div className="p-6 flex flex-col flex-1">
               <h3 className="font-oswald text-2xl text-white mb-3">{t.title}</h3>
               <p className="text-white/70 mb-4 flex-1">{t.text}</p>

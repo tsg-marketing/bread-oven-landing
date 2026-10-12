@@ -48,6 +48,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
+  const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(9);
   const [modal, setModal] = useState<DoughProduct | null>(null);
 
@@ -65,7 +66,10 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
       });
   }, []);
 
-  const byCat = useMemo(() => (cat ? list.filter((p) => p.categoryId === cat) : list), [list, cat]);
+  const byCat = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return list.filter((p) => (!cat || p.categoryId === cat) && (!q || p.name.toLowerCase().includes(q)));
+  }, [list, cat, query]);
 
   const brands = useMemo(() => {
     const m = new Map<string, number>();
@@ -88,7 +92,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
     });
   }, [byCat, brand]);
 
-  useEffect(() => setVisible(9), [cat, brand]);
+  useEffect(() => setVisible(9), [cat, brand, query]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
@@ -109,17 +113,36 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
 
         {!loading && !error && (
           <div className="space-y-4 mb-8">
+            <div className="relative max-w-md">
+              <Icon name="Search" size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Поиск по названию, например IRIS или ZHM"
+                className="w-full bg-white border-2 border-coal-light focus:border-fire rounded-xl pl-11 pr-10 py-3 outline-none transition"
+                style={{ color: 'hsl(var(--ink))' }}
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery('')}
+                  aria-label="Очистить"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-fire"
+                >
+                  <Icon name="X" size={18} />
+                </button>
+              )}
+            </div>
             <div>
               <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Тип</div>
               <div className="flex gap-2 overflow-x-auto pb-1">
-                <Tab active={!cat} onClick={() => setCat('')}>
-                  Все <span className="opacity-70">({list.length})</span>
-                </Tab>
                 {cats.map((c) => (
                   <Tab key={c.id} active={cat === c.id} onClick={() => setCat(c.id)}>
                     {categoryLabel(c.id, c.name)} <span className="opacity-70">({c.count})</span>
                   </Tab>
                 ))}
+                <Tab active={!cat} onClick={() => setCat('')}>
+                  Все <span className="opacity-70">({list.length})</span>
+                </Tab>
               </div>
             </div>
             {brands.length > 1 && (
@@ -156,6 +179,16 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
               <div className="text-center text-white/50 py-20">
                 <Icon name="SearchX" size={40} className="mx-auto mb-3 text-fire/50" />
                 Ничего не найдено
+                {cat && query && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => setCat('')}
+                      className="px-5 py-2.5 rounded-xl border-2 border-coal-light text-white hover:border-fire transition"
+                    >
+                      Искать во всех типах
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

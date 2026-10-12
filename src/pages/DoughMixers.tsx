@@ -27,7 +27,7 @@ const DoughMixers = () => {
   const [leadOpen, setLeadOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [leadSource, setLeadSource] = useState('dough');
-  const [catFilter, setCatFilter] = useState('');
+  const [catFilter, setCatFilter] = useState('380');
   const [leadPayload, setLeadPayload] = useState<Record<string, unknown> | undefined>();
 
   const openLead = (source: string, payload?: Record<string, unknown>) => {
