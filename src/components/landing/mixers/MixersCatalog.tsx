@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
+import { withCleanParams } from '@/lib/cleanParams';
 import MixerModal from './MixerModal';
 import MixerCard from './MixerCard';
 import MixerFilters from './MixerFilters';
@@ -32,7 +33,7 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
     fetch(func2url['mixers-catalog'])
       .then((r) => r.json())
       .then((data) => {
-        setList(data.planetary || []);
+        setList(withCleanParams(data.planetary || []));
         setLoading(false);
       })
       .catch(() => {

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
+import { withCleanParams } from '@/lib/cleanParams';
 
 export type Product = {
   id: string;
@@ -298,7 +299,7 @@ const Catalog = ({ onLead }: { onLead: (source: string, payload?: Record<string,
     fetch(func2url.catalog)
       .then((r) => r.json())
       .then((data) => {
-        setItems(data.items || []);
+        setItems(withCleanParams(data.items || []));
         setCategories(data.categories || []);
         setLoading(false);
       })
