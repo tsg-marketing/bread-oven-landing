@@ -54,13 +54,13 @@ const Testoraskatka = () => {
       <Header onLead={() => openLead('rolling-header')} />
       <main>
         <RollingHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
+        <RollingCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <RollingTypes
           onCatalog={(c) => {
             setCatFilter(c);
             scrollToCatalog();
           }}
         />
-        <RollingCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <RollingWhy />
         <RollingQuiz />
         <Service />

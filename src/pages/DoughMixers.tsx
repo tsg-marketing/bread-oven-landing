@@ -54,13 +54,13 @@ const DoughMixers = () => {
       <Header onLead={() => openLead('dough-header')} />
       <main>
         <DoughHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
+        <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <DoughTypes
           onCatalog={(c) => {
             setCatFilter(c);
             scrollToCatalog();
           }}
         />
-        <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <DoughWhy />
         <DoughQuiz />
         <Service />

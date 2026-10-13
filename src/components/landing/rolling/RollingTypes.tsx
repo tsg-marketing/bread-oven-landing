@@ -49,7 +49,7 @@ const RollingTypes = ({ onCatalog }: { onCatalog: (cat: string) => void }) => (
   <section id="types" className="py-24 bg-coal-mid">
     <div className="container">
       <h2 className="font-oswald text-4xl md:text-5xl font-bold uppercase text-white mb-3">
-        Какие бывают <span className="text-fire-gradient">тестораскатки</span>
+        Мы предлагаем следующие виды <span className="text-fire-gradient">тестораскаток</span>
       </h2>
       <p className="text-white/70 text-lg mb-10 max-w-2xl">
         Выбор зависит от вида теста, объёма выпуска и свободного места на кухне или в цехе.
