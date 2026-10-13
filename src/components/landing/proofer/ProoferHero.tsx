@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = '/proofer/hero.webp';
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/fd2c6038-f168-4471-8800-0ad590c6bf61.png';
 
 const facts = [
   { icon: 'Thermometer', text: 'Температура 25–45 °С, влажность до 95%' },
@@ -78,7 +78,7 @@ const ProoferHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: () 
             className="relative rounded-3xl overflow-hidden border bg-white shadow-2xl shadow-fire/10"
             style={{ borderColor: 'hsl(var(--coal-light))' }}
           >
-            <img src={HERO_IMG} alt="Расстоечный шкаф ЭлСи РОСА" className="w-full aspect-square object-contain p-6" />
+            <img src={HERO_IMG} alt="Расстоечный шкаф в пекарне" className="w-full aspect-square object-cover" />
           </div>
         </div>
       </div>
