@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = '/depositor/hero.webp';
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/6b3a9de8-8f66-4f85-9662-a7db7cb603e7.png';
 
 const facts = [
   { icon: 'Gauge', text: 'До 6000 изделий в час' },
@@ -77,8 +77,8 @@ const DepositorHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: (
           >
             <img
               src={HERO_IMG}
-              alt="Тестоотсадочная машина Danler Droplet 400 UNIVERSAL"
-              className="w-full aspect-square object-contain p-6"
+              alt="Отсадочная машина в кондитерском цехе"
+              className="w-full aspect-square object-cover"
             />
           </div>
         </div>
