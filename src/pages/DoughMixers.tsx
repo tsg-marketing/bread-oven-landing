@@ -19,8 +19,8 @@ const DoughMixers = () => {
   useMeta({
     title: 'Тестомесы для пекарен, пиццерий и производств — ТЕХНОСИБ',
     description:
-      'Спиральные, лопастные, горизонтальные и вакуумные тестомесы: дежа от 10 до 420 л. Logiudice Forni, Apach, Hurakan, Danler, Miratek. Официальная гарантия и сервис.',
-    image: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/155147c6-a2df-4750-bf62-ddf2f0f61e80.jpg',
+      'Спиральные, лопастные, горизонтальные и вакуумные тестомесы с дежой от 10 до 420 л. Подбор под ваш объём теста, официальная гарантия, доставка по России и сервис.',
+    image: 'https://pekarnoe.t-sib.ru/og/dough-mixers.jpg',
     url: 'https://pekarnoe.t-sib.ru/dough-mixers',
   });
 

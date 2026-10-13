@@ -29,7 +29,16 @@ export function useMeta({ title, description, image, url }: MetaOptions) {
     setTag('meta[name="twitter:title"]', 'name', 'twitter:title', title);
     setTag('meta[name="twitter:description"]', 'name', 'twitter:description', description);
 
-    if (url) setTag('meta[property="og:url"]', 'property', 'og:url', url);
+    if (url) {
+      setTag('meta[property="og:url"]', 'property', 'og:url', url);
+      let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'canonical';
+        document.head.appendChild(link);
+      }
+      link.href = url;
+    }
     if (image) {
       setTag('meta[property="og:image"]', 'property', 'og:image', image);
       setTag('meta[name="twitter:image"]', 'name', 'twitter:image', image);

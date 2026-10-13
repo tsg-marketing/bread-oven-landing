@@ -20,8 +20,8 @@ const Mixers = () => {
   useMeta({
     title: 'Планетарные миксеры для пекарен и производств — ТЕХНОСИБ',
     description:
-      '100+ моделей планетарных миксеров: объём дежи 5–600 л, бренды Starmix, Hurakan, Danler, Miratek, Hualian. Гарантия до 12 месяцев, официальная поставка и сервис.',
-    image: 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/files/7246909b-b43f-4ce6-b0a9-2b3e6b1eced9.jpg',
+      'Более 100 моделей планетарных миксеров с дежой от 5 до 600 л для пекарен, кондитерских и производств. Подбор под задачу, гарантия до 12 месяцев, доставка по России и сервис.',
+    image: 'https://pekarnoe.t-sib.ru/og/mixers.jpg',
     url: 'https://pekarnoe.t-sib.ru/mixers',
   });
 

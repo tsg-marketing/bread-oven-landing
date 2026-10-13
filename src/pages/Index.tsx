@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useMeta } from '@/lib/useMeta';
 import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import Advantages from '@/components/landing/Advantages';
@@ -17,6 +18,14 @@ import QuizModal from '@/components/landing/QuizModal';
 import QuizTeaser from '@/components/landing/QuizTeaser';
 
 const Index = () => {
+  useMeta({
+    title: 'ТЕХНОСИБ — Профессиональные печи для пекарен и пиццерий',
+    description:
+      '150+ моделей хлебопекарных и кондитерских печей: подовые, ротационные, конвекционные. Доставка по РФ, гарантия до 3 лет, собственный сервис.',
+    image: 'https://pekarnoe.t-sib.ru/og/ovens.jpg',
+    url: 'https://pekarnoe.t-sib.ru/',
+  });
+
   const [leadOpen, setLeadOpen] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [leadSource, setLeadSource] = useState('lead');

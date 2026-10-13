@@ -19,8 +19,8 @@ const Testoraskatka = () => {
   useMeta({
     title: 'Тестораскаточные машины для пекарен, кафе и производств — ТЕХНОСИБ',
     description:
-      'Напольные, настольные и автоматические тестораскатки, машины для крутого теста и лапшерезки. Flamic, Danler, Hualian, Foodatlas, Miratek. Официальная гарантия и сервис.',
-    image: 'https://pekarnoe.t-sib.ru/rolling/hero.webp',
+      'Напольные, настольные и автоматические тестораскатки, машины для крутого теста и лапшерезки. Подбор под задачу, официальная гарантия, доставка по России и сервис.',
+    image: 'https://pekarnoe.t-sib.ru/og/rolling.jpg',
     url: 'https://pekarnoe.t-sib.ru/testoraskatka',
   });
 
