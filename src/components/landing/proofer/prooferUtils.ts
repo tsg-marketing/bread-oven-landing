@@ -6,13 +6,6 @@ export type ProoferProduct = MixerProduct & {
   capacityGroup?: string;
 };
 
-export const CATEGORY_LABELS: Record<string, string> = {
-  compact: 'Под конвекционную печь',
-  cabinet: 'Шкафы на противни',
-  trolley: 'Под тележки',
-  stand: 'Подставки под печи',
-};
-
 export const CAPACITY_LABELS: Record<string, string> = {
   small: 'До 8 противней',
   large: '10–18 противней',
@@ -20,8 +13,6 @@ export const CAPACITY_LABELS: Record<string, string> = {
 };
 
 export const CAPACITY_ORDER = ['small', 'large', 'trolley'];
-
-export const categoryLabel = (id: string, fallback: string) => CATEGORY_LABELS[id] || fallback;
 
 export const brandOf = (p: ProoferProduct): string => (p.vendor || '').trim();
 

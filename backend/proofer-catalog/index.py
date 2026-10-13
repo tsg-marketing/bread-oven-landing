@@ -84,9 +84,6 @@ def capacity_of(name: str, params: dict, desc: str, t: str) -> tuple[str, int]:
     if t == 'trolley':
         m = re.search(r'(\d+)\s*тележ', desc)
         return (f'{m.group(1)} тележки', int(m.group(1)) * 100) if m else ('', 0)
-    if params.get('Вместимость по хлебным формам №7 (шт)'):
-        n = first_int(params['Вместимость по хлебным формам №7 (шт)'])
-        return f'{n} хлебных форм', 0
     for k in ('Количество противней (шт)', 'Количество устанавливаемых противней', 'Количество уровней'):
         if params.get(k):
             n = first_int(params[k])
@@ -96,6 +93,9 @@ def capacity_of(name: str, params: dict, desc: str, t: str) -> tuple[str, int]:
         n = int(m.group(1))
         word = {'уровн': 'уровней', 'противн': 'противней', 'лотк': 'лотков', 'решет': 'уровней'}[m.group(2)]
         return f'{n} {word}', n
+    if params.get('Вместимость по хлебным формам №7 (шт)'):
+        n = first_int(params['Вместимость по хлебным формам №7 (шт)'])
+        return f'{n} хлебных форм', 12
     m = re.search(r'шрт[\s-]*(\d+)', name.lower())
     if m:
         return plural(int(m.group(1)), 'уровень', 'уровня', 'уровней'), int(m.group(1))
@@ -162,6 +162,8 @@ def fetch_feed(url: str) -> dict:
         description = (offer.findtext('description') or '').strip()
         plain = re.sub(r'<[^>]+>', ' ', description)
         t = type_of(name)
+        if t == 'stand':
+            continue
         cap_label, cap_num = capacity_of(name, params, plain, t)
         vendor = brand_of(name, vendor, params)
         items.append({

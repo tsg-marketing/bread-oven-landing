@@ -1,7 +1,7 @@
 import Icon from '@/components/ui/icon';
 import MixerGallery from '../mixers/MixerGallery';
 import { formatPrice } from '../mixers/mixersCatalogUtils';
-import { ProoferProduct, brandOf, categoryLabel, keyParams } from './prooferUtils';
+import { CAPACITY_LABELS, ProoferProduct, brandOf, keyParams } from './prooferUtils';
 
 const ProoferCard = ({ p, onOpen, onLead }: { p: ProoferProduct; onOpen: () => void; onLead: () => void }) => {
   const params = keyParams(p).slice(0, 4);
@@ -13,9 +13,11 @@ const ProoferCard = ({ p, onOpen, onLead }: { p: ProoferProduct; onOpen: () => v
       <MixerGallery pictures={p.pictures} alt={p.name} />
       <div className="p-4 flex flex-col flex-1">
         <div className="flex flex-wrap gap-1 mb-2">
-          <span className="text-[11px] px-2 py-0.5 rounded-full bg-fire/10 text-fire font-semibold">
-            {categoryLabel(p.categoryId, p.categoryName)}
-          </span>
+          {p.capacityGroup && CAPACITY_LABELS[p.capacityGroup] && (
+            <span className="text-[11px] px-2 py-0.5 rounded-full bg-fire/10 text-fire font-semibold">
+              {CAPACITY_LABELS[p.capacityGroup]}
+            </span>
+          )}
           {brand && (
             <span className="text-[11px] px-2 py-0.5 rounded-full border border-coal-light text-white/70">{brand}</span>
           )}

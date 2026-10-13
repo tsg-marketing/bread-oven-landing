@@ -4,9 +4,7 @@ import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
 import MixerModal from '../mixers/MixerModal';
 import ProoferCard from './ProoferCard';
-import { CAPACITY_LABELS, CAPACITY_ORDER, ProoferProduct, brandOf, categoryLabel } from './prooferUtils';
-
-type Cat = { id: string; name: string; count: number };
+import { CAPACITY_LABELS, CAPACITY_ORDER, ProoferProduct, brandOf } from './prooferUtils';
 
 const priceNum = (p: ProoferProduct) => {
   const n = Number(p.price);
@@ -38,17 +36,15 @@ const Tab = ({
 
 type Props = {
   onLead: (source: string, payload?: Record<string, unknown>) => void;
-  cat: string;
-  setCat: (c: string) => void;
+  capacity: string;
+  setCapacity: (c: string) => void;
 };
 
-const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
+const ProoferCatalog = ({ onLead, capacity, setCapacity }: Props) => {
   const [list, setList] = useState<ProoferProduct[]>([]);
-  const [cats, setCats] = useState<Cat[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [brand, setBrand] = useState('');
-  const [capacity, setCapacity] = useState('');
   const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<ProoferProduct | null>(null);
@@ -59,7 +55,6 @@ const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
       .then((r) => r.json())
       .then((data) => {
         setList(withCleanParams(data.items || []));
-        setCats(data.categories || []);
         setLoading(false);
       })
       .catch(() => {
@@ -70,8 +65,8 @@ const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
 
   const byCat = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return list.filter((p) => (!cat || p.categoryId === cat) && (!q || p.name.toLowerCase().includes(q)));
-  }, [list, cat, query]);
+    return list.filter((p) => !q || p.name.toLowerCase().includes(q));
+  }, [list, query]);
 
   const brands = useMemo(() => {
     const m = new Map<string, number>();
@@ -109,13 +104,13 @@ const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
     });
   }, [byCapacity]);
 
-  useEffect(() => setVisible(8), [cat, brand, capacity, query]);
+  useEffect(() => setVisible(8), [brand, capacity, query]);
   useEffect(() => {
     if (brand && !brands.some(([b]) => b === brand)) setBrand('');
   }, [brands, brand]);
   useEffect(() => {
     if (capacity && !capacities.some(([c]) => c === capacity)) setCapacity('');
-  }, [capacities, capacity]);
+  }, [capacities, capacity, setCapacity]);
 
   const shown = filtered.slice(0, visible);
   const hasMore = visible < filtered.length;
@@ -166,19 +161,6 @@ const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
                 </button>
               )}
             </div>
-            <div>
-              <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Тип</div>
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {cats.map((c) => (
-                  <Tab key={c.id} active={cat === c.id} onClick={() => setCat(c.id)}>
-                    {categoryLabel(c.id, c.name)} <span className="opacity-70">({c.count})</span>
-                  </Tab>
-                ))}
-                <Tab active={!cat} onClick={() => setCat('')}>
-                  Все <span className="opacity-70">({list.length})</span>
-                </Tab>
-              </div>
-            </div>
             {brands.length > 1 && (
               <div>
                 <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Бренд</div>
@@ -228,13 +210,16 @@ const ProoferCatalog = ({ onLead, cat, setCat }: Props) => {
               <div className="text-center text-white/50 py-20">
                 <Icon name="SearchX" size={40} className="mx-auto mb-3 text-fire/50" />
                 Ничего не найдено
-                {cat && query && (
+                {(capacity || brand) && (
                   <div className="mt-4">
                     <button
-                      onClick={() => setCat('')}
+                      onClick={() => {
+                        setCapacity('');
+                        setBrand('');
+                      }}
                       className="px-5 py-2.5 rounded-xl border-2 border-coal-light text-white hover:border-fire transition"
                     >
-                      Искать во всех типах
+                      Сбросить фильтры
                     </button>
                   </div>
                 )}

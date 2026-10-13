@@ -54,7 +54,7 @@ const Proofers = () => {
       <Header onLead={() => openLead('proofer-header')} />
       <main>
         <ProoferHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
-        <ProoferCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
+        <ProoferCatalog onLead={openLead} capacity={catFilter} setCapacity={setCatFilter} />
         <ProoferTypes
           onCatalog={(c) => {
             setCatFilter(c);
