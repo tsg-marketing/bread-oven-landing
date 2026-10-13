@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = '/rolling/hero.webp';
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/2445eb85-8498-4943-aec0-c8a760d892c3.png';
 
 const facts = [
   { icon: 'Ruler', text: 'Толщина пласта от 0,2 до 50 мм' },
@@ -78,7 +78,7 @@ const RollingHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: () 
             className="relative rounded-3xl overflow-hidden border bg-white shadow-2xl shadow-fire/10"
             style={{ borderColor: 'hsl(var(--coal-light))' }}
           >
-            <img src={HERO_IMG} alt="Автоматическая тестораскаточная машина" className="w-full aspect-square object-contain p-4" />
+            <img src={HERO_IMG} alt="Тестораскаточная машина в пекарне" className="w-full aspect-square object-cover" />
           </div>
         </div>
       </div>
