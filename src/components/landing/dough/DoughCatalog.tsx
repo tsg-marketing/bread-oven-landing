@@ -268,10 +268,6 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
             setModal(null);
             onLead('dough-catalog-modal', { productId: p.id, productName: p.name });
           }}
-          onRequest={(p) => {
-            setModal(null);
-            onLead('dough-catalog-modal-request', { productId: p.id, productName: p.name });
-          }}
         />
       )}
     </section>

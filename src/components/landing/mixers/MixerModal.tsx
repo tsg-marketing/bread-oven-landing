@@ -6,12 +6,10 @@ const MixerModal = ({
   product,
   onClose,
   onLead,
-  onRequest,
 }: {
   product: MixerProduct;
   onClose: () => void;
   onLead: (p: MixerProduct) => void;
-  onRequest?: (p: MixerProduct) => void;
 }) => {
   return (
     <div
@@ -62,15 +60,6 @@ const MixerModal = ({
                   <Icon name="Phone" size={18} style={{ color: '#fff' }} />
                   <span style={{ color: '#fff' }}>Получить консультацию</span>
                 </button>
-                {onRequest && (
-                  <button
-                    onClick={() => onRequest(product)}
-                    className="px-6 py-3.5 rounded-xl font-bold text-base uppercase tracking-wide border-2 border-fire text-fire bg-white hover:bg-fire/5 hover:scale-[1.03] transition flex items-center gap-2"
-                  >
-                    <Icon name="Send" size={18} />
-                    Оставить заявку
-                  </button>
-                )}
               </div>
             </div>
           </div>
