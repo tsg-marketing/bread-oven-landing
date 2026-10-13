@@ -6,6 +6,7 @@ const EQUIPMENT = [
   { href: '/mixers', label: 'Планетарные миксеры', icon: 'CakeSlice' },
   { href: '/dough-mixers', label: 'Тестомесы', icon: 'Wheat' },
   { href: '/testoraskatka', label: 'Тестораскаточные машины', icon: 'Layers' },
+  { href: '/rasstoechnye-shkafy', label: 'Расстоечные шкафы', icon: 'Thermometer' },
 ];
 
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
