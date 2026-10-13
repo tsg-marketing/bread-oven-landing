@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Mixers from "./pages/Mixers";
 import DoughMixers from "./pages/DoughMixers";
+import Testoraskatka from "./pages/Testoraskatka";
 import NotFound from "./pages/NotFound";
 import { captureUtmFromUrl } from "@/lib/utm";
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/" element={<Index />} />
           <Route path="/mixers" element={<Mixers />} />
           <Route path="/dough-mixers" element={<DoughMixers />} />
+          <Route path="/testoraskatka" element={<Testoraskatka />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

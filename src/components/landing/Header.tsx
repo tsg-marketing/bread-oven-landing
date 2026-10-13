@@ -5,6 +5,7 @@ import { ymGoal } from '@/lib/ym';
 const EQUIPMENT = [
   { href: '/mixers', label: 'Планетарные миксеры', icon: 'CakeSlice' },
   { href: '/dough-mixers', label: 'Тестомесы', icon: 'Wheat' },
+  { href: '/testoraskatka', label: 'Тестораскаточные машины', icon: 'Layers' },
 ];
 
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
