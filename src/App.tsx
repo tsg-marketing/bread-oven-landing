@@ -10,6 +10,7 @@ import Mixers from "./pages/Mixers";
 import DoughMixers from "./pages/DoughMixers";
 import Testoraskatka from "./pages/Testoraskatka";
 import Proofers from "./pages/Proofers";
+import Depositors from "./pages/Depositors";
 import NotFound from "./pages/NotFound";
 import { captureUtmFromUrl } from "@/lib/utm";
 
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/dough-mixers" element={<DoughMixers />} />
           <Route path="/testoraskatka" element={<Testoraskatka />} />
           <Route path="/rasstoechnye-shkafy" element={<Proofers />} />
+          <Route path="/otsadochnye-mashiny" element={<Depositors />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
