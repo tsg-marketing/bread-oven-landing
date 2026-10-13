@@ -36,9 +36,6 @@ const DepositorHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: (
             Автоматическая отсадка печенья, пряников, эклеров, безе и начинок. Одинаковые форма и вес каждого
             изделия, сотни программ в памяти и минимум ручного труда.
           </p>
-          <p className="font-oswald text-2xl md:text-4xl font-bold uppercase mb-6 text-fire-gradient">
-            Машины Danler, Сура, ТЕХНОСИБ и других брендов
-          </p>
 
           <div className="grid sm:grid-cols-2 gap-2.5 mb-7">
             {facts.map((f) => (
@@ -58,7 +55,7 @@ const DepositorHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: (
               style={{ color: '#fff' }}
             >
               <Icon name="Sparkles" size={18} />
-              Подобрать машину
+              Подобрать оборудование
               <Icon name="ArrowRight" size={18} className="group-hover:translate-x-1 transition" />
             </button>
             <button

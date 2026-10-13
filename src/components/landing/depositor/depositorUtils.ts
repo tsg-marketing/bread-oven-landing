@@ -9,7 +9,7 @@ export type DepositorProduct = MixerProduct & {
 export const PERF_LABELS: Record<string, string> = {
   low: 'До 25 циклов/мин',
   mid: '30–40 циклов/мин, до 200 кг/ч',
-  high: 'От 90 циклов/мин',
+  high: 'От 40 циклов/мин',
 };
 
 export const PERF_ORDER = ['low', 'mid', 'high'];

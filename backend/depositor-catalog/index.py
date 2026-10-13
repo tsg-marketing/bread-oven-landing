@@ -13,7 +13,7 @@ TARGET_CATEGORY_IDS = {'369'}
 PERF_LABELS = {
     'low': 'До 25 циклов/мин',
     'mid': '30–40 циклов/мин или до 200 кг/ч',
-    'high': 'От 90 циклов/мин',
+    'high': 'От 40 циклов/мин',
 }
 PERF_ORDER = ['low', 'mid', 'high']
 
@@ -40,7 +40,7 @@ def perf_of(params: dict, desc: str) -> tuple[str, str]:
             n = max(nums(v) or [0])
             if not n:
                 continue
-            group = 'low' if n <= 25 else ('mid' if n < 90 else 'high')
+            group = 'low' if n <= 25 else ('mid' if n <= 40 else 'high')
             return f'до {n} циклов/мин', group
     kg = [max(nums(v) or [0]) for k, v in params.items() if 'производительн' in k.lower() and 'кг' in k.lower()]
     if kg and max(kg):
