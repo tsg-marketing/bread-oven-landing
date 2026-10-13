@@ -237,6 +237,10 @@ const RollingCatalog = ({ onLead, cat, setCat }: Props) => {
             setModal(null);
             onLead('rolling-catalog-modal', { productId: p.id, productName: p.name });
           }}
+          onRequest={(p) => {
+            setModal(null);
+            onLead('rolling-catalog-modal-request', { productId: p.id, productName: p.name });
+          }}
         />
       )}
     </section>
