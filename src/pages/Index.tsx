@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
+import { useSessionPopup } from '@/lib/useSessionPopup';
 import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import Advantages from '@/components/landing/Advantages';
@@ -31,6 +32,8 @@ const Index = () => {
   const [leadSource, setLeadSource] = useState('lead');
   const [leadPayload, setLeadPayload] = useState<Record<string, unknown> | undefined>();
   const [leadTitle, setLeadTitle] = useState('Оставить заявку');
+
+  useSessionPopup(() => setQuizOpen(true));
 
   const openLead = (source: string, payload?: Record<string, unknown>, title?: string) => {
     setLeadSource(source);

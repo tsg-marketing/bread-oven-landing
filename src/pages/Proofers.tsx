@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
+import { useSessionPopup } from '@/lib/useSessionPopup';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -40,14 +41,7 @@ const Proofers = () => {
     document.getElementById('assortment')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  useEffect(() => {
-    if (sessionStorage.getItem('proofer_quiz_shown')) return;
-    const t = setTimeout(() => {
-      sessionStorage.setItem('proofer_quiz_shown', '1');
-      setQuizOpen(true);
-    }, 30000);
-    return () => clearTimeout(t);
-  }, []);
+  useSessionPopup(() => setQuizOpen(true));
 
   return (
     <div className="min-h-screen" style={{ background: 'hsl(var(--coal))', color: 'hsl(var(--ink))' }}>
