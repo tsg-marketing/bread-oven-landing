@@ -10,6 +10,7 @@ import Contacts from '@/components/landing/Contacts';
 import DepositorHero from '@/components/landing/depositor/DepositorHero';
 import DepositorTypes from '@/components/landing/depositor/DepositorTypes';
 import DepositorCatalog from '@/components/landing/depositor/DepositorCatalog';
+import DepositorBenefits from '@/components/landing/depositor/DepositorBenefits';
 import DepositorWhy from '@/components/landing/depositor/DepositorWhy';
 import DepositorQuiz from '@/components/landing/depositor/DepositorQuiz';
 import DepositorQuizModal from '@/components/landing/depositor/DepositorQuizModal';
@@ -55,6 +56,7 @@ const Depositors = () => {
             scrollToCatalog();
           }}
         />
+        <DepositorBenefits />
         <DepositorWhy />
         <DepositorQuiz />
         <Service />

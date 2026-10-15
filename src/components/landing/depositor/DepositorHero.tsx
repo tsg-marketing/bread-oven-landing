@@ -1,6 +1,6 @@
 import Icon from '@/components/ui/icon';
 
-const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/6b3a9de8-8f66-4f85-9662-a7db7cb603e7.png';
+const HERO_IMG = 'https://cdn.poehali.dev/projects/dd4f9dfb-21af-43ef-9911-ef437189e13f/bucket/4cda6795-143a-41ef-abe4-9bb30a080530.png';
 
 const facts = [
   { icon: 'Gauge', text: 'До 6000 изделий в час' },
