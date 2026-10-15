@@ -10,6 +10,7 @@ import Contacts from '@/components/landing/Contacts';
 import ProoferHero from '@/components/landing/proofer/ProoferHero';
 import ProoferTypes from '@/components/landing/proofer/ProoferTypes';
 import ProoferCatalog from '@/components/landing/proofer/ProoferCatalog';
+import ProoferBenefits from '@/components/landing/proofer/ProoferBenefits';
 import ProoferWhy from '@/components/landing/proofer/ProoferWhy';
 import ProoferQuiz from '@/components/landing/proofer/ProoferQuiz';
 import ProoferQuizModal from '@/components/landing/proofer/ProoferQuizModal';
@@ -48,13 +49,14 @@ const Proofers = () => {
       <Header onLead={() => openLead('proofer-header')} />
       <main>
         <ProoferHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
-        <ProoferCatalog onLead={openLead} capacity={catFilter} setCapacity={setCatFilter} />
         <ProoferTypes
           onCatalog={(c) => {
             setCatFilter(c);
             scrollToCatalog();
           }}
         />
+        <ProoferCatalog onLead={openLead} capacity={catFilter} setCapacity={setCatFilter} />
+        <ProoferBenefits />
         <ProoferWhy />
         <ProoferQuiz />
         <Service />
