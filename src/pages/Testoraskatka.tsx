@@ -10,6 +10,7 @@ import Contacts from '@/components/landing/Contacts';
 import RollingHero from '@/components/landing/rolling/RollingHero';
 import RollingTypes from '@/components/landing/rolling/RollingTypes';
 import RollingCatalog from '@/components/landing/rolling/RollingCatalog';
+import RollingBenefits from '@/components/landing/rolling/RollingBenefits';
 import RollingWhy from '@/components/landing/rolling/RollingWhy';
 import RollingQuiz from '@/components/landing/rolling/RollingQuiz';
 import RollingQuizModal from '@/components/landing/rolling/RollingQuizModal';
@@ -48,13 +49,14 @@ const Testoraskatka = () => {
       <Header onLead={() => openLead('rolling-header')} />
       <main>
         <RollingHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
-        <RollingCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <RollingTypes
           onCatalog={(c) => {
             setCatFilter(c);
             scrollToCatalog();
           }}
         />
+        <RollingCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
+        <RollingBenefits />
         <RollingWhy />
         <RollingQuiz />
         <Service />

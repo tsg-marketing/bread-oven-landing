@@ -33,7 +33,7 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
               className="text-[12px] md:text-[13px]"
               style={{ color: 'hsl(var(--ink) / 0.8)' }}
             >
-              Профессиональное пищевое и упаковочное оборудование
+              Профессиональное хлебопекарное и пищевое оборудование
             </span>
           </div>
         </a>
