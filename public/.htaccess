@@ -2,6 +2,8 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+  # Старый адрес страницы тестомесов
+  RewriteRule ^dough-mixers/?$ /testomesi [R=301,L]
   # Не трогаем реально существующие файлы и папки
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d

@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Mixers from "./pages/Mixers";
 import DoughMixers from "./pages/DoughMixers";
@@ -30,7 +30,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/mixers" element={<Mixers />} />
-          <Route path="/dough-mixers" element={<DoughMixers />} />
+          <Route path="/testomesi" element={<DoughMixers />} />
+          <Route path="/dough-mixers" element={<Navigate to="/testomesi" replace />} />
           <Route path="/testoraskatka" element={<Testoraskatka />} />
           <Route path="/rasstoechnye-shkafy" element={<Proofers />} />
           <Route path="/otsadochnye-mashiny" element={<Depositors />} />

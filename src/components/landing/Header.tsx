@@ -4,7 +4,7 @@ import { ymGoal } from '@/lib/ym';
 
 const EQUIPMENT = [
   { href: '/mixers', label: 'Планетарные миксеры', icon: 'CakeSlice' },
-  { href: '/dough-mixers', label: 'Тестомесы', icon: 'Wheat' },
+  { href: '/testomesi', label: 'Тестомесы', icon: 'Wheat' },
   { href: '/testoraskatka', label: 'Тестораскаточные машины', icon: 'Layers' },
   { href: '/rasstoechnye-shkafy', label: 'Расстоечные шкафы', icon: 'Thermometer' },
   { href: '/otsadochnye-mashiny', label: 'Отсадочные машины', icon: 'Cookie' },

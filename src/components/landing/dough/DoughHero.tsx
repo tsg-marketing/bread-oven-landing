@@ -26,7 +26,7 @@ const DoughHero = ({ onQuiz, onCatalog }: { onQuiz: () => void; onCatalog: () =>
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <div className="animate-fade-in-up">
           <h1
-            className="font-oswald text-3xl md:text-5xl font-bold uppercase leading-[1.05] mb-4"
+            className="font-oswald text-3xl md:text-5xl font-bold uppercase leading-[1.2] mb-4"
             style={{ color: 'hsl(var(--ink))' }}
           >
             Тестомесы для{' '}

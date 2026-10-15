@@ -10,6 +10,7 @@ import Contacts from '@/components/landing/Contacts';
 import DoughHero from '@/components/landing/dough/DoughHero';
 import DoughTypes from '@/components/landing/dough/DoughTypes';
 import DoughCatalog from '@/components/landing/dough/DoughCatalog';
+import DoughBenefits from '@/components/landing/dough/DoughBenefits';
 import DoughWhy from '@/components/landing/dough/DoughWhy';
 import DoughQuiz from '@/components/landing/dough/DoughQuiz';
 import DoughQuizModal from '@/components/landing/dough/DoughQuizModal';
@@ -21,8 +22,8 @@ const DoughMixers = () => {
     title: 'Тестомесы для пекарен, пиццерий и производств — ТЕХНОСИБ',
     description:
       'Спиральные, лопастные, горизонтальные и вакуумные тестомесы с дежой от 10 до 420 л. Подбор под ваш объём теста, официальная гарантия, доставка по России и сервис.',
-    image: 'https://pekarnoe.t-sib.ru/og/dough-mixers.jpg',
-    url: 'https://pekarnoe.t-sib.ru/dough-mixers',
+    image: 'https://pekarnoe.t-sib.ru/og/testomesi.jpg',
+    url: 'https://pekarnoe.t-sib.ru/testomesi',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);
@@ -48,13 +49,14 @@ const DoughMixers = () => {
       <Header onLead={() => openLead('dough-header')} />
       <main>
         <DoughHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
-        <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
         <DoughTypes
           onCatalog={(c) => {
             setCatFilter(c);
             scrollToCatalog();
           }}
         />
+        <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
+        <DoughBenefits />
         <DoughWhy />
         <DoughQuiz />
         <Service />
