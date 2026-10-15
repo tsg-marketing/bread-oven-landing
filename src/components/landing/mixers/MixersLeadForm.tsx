@@ -93,19 +93,29 @@ const MixersLeadForm = () => {
                     className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-white/55">
+                    Объём производства или дежи
+                  </label>
                 <input
                   value={form.volume}
                   onChange={(e) => setForm({ ...form, volume: e.target.value })}
-                  placeholder="Объём производства (кг/смену) или нужный объём дежи"
+                  placeholder="Например: 50 кг теста в смену или дежа 40 литров"
                   className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition placeholder:text-white/35"
                 />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-white/55">
+                    Комментарий
+                  </label>
                 <textarea
                   value={form.comment}
                   onChange={(e) => setForm({ ...form, comment: e.target.value })}
-                  placeholder="Комментарий"
+                  placeholder="Что планируете готовить, сроки, пожелания"
                   rows={3}
                   className="w-full bg-coal-mid border-2 border-coal-light focus:border-fire rounded-xl px-4 py-3.5 text-white outline-none transition resize-none placeholder:text-white/35"
                 />
+                </div>
                 {err && <div className="text-sm text-red-400">{err}</div>}
                 <ConsentCheckbox checked={agree} onChange={setAgree} tone="light" />
                 <button

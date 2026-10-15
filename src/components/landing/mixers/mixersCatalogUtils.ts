@@ -87,7 +87,8 @@ const paramByWord = (params: Record<string, string>, word: string): string => {
 
 export const brandOf = (p: MixerProduct): string =>
   p.vendor?.trim() || paramByWord(p.params, 'бренд') || paramByWord(p.params, 'производител');
-export const volumeOf = (p: MixerProduct): string => paramByWord(p.params, 'объ') || paramByWord(p.params, 'дежа') || paramByWord(p.params, 'дежи');
+export const volumeOf = (p: MixerProduct): string =>
+  p.params?.['Объем дежи'] || paramByWord(p.params, 'объем дежи') || paramByWord(p.params, 'емкость дежи') || p.params?.['Объем'] || '';
 export const powerOf = (p: MixerProduct): string => paramByWord(p.params, 'мощн');
 
 /** Извлекает первое число из строки (поддерживает запятую как разделитель), иначе null */
@@ -113,3 +114,63 @@ export const uniqSorted = (values: string[]): string[] => {
     a.localeCompare(b, 'ru', { numeric: true, sensitivity: 'base' }),
   );
 };
+
+const plural = (n: number, one: string, few: string, many: string) => {
+  if (!Number.isInteger(n)) return few;
+  const m10 = n % 10;
+  const m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+};
+
+/** «5.0000» → «5», «7.5000» → «7,5» */
+export const cleanNum = (v: string): string =>
+  String(v).replace(/\d+\.\d+/g, (m) => String(Number(m)).replace('.', ','));
+
+export const formatLiters = (n: number): string =>
+  `${String(n).replace('.', ',')} ${plural(n, 'литр', 'литра', 'литров')}`;
+
+const isVolumeKey = (k: string) => {
+  const kl = k.toLowerCase();
+  return /\(л\.?\)/.test(kl) && (kl.includes('объ') || kl.includes('емк') || kl.includes('ёмк'));
+};
+
+/** Приводит параметры к единому виду: без «.0000», объём — «5 литров» */
+export const normalizeParams = (params: Record<string, string>): Record<string, string> => {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(params || {})) {
+    if (isVolumeKey(k)) {
+      const n = numFromStr(v);
+      const key = k.replace(/\s*\(л\.?\)\s*$/i, '').trim();
+      if (key.toLowerCase() === 'объем' && out['Объем дежи']) continue;
+      out[key] = n !== null && /^\s*\d+([.,]\d+)?\s*$/.test(v) ? formatLiters(n) : cleanNum(v);
+    } else {
+      out[k] = cleanNum(v);
+    }
+  }
+  if (out['Объем'] && out['Объем дежи']) delete out['Объем'];
+  if (out['Емкость дежи'] && !out['Объем дежи']) {
+    out['Объем дежи'] = out['Емкость дежи'];
+    delete out['Емкость дежи'];
+  }
+  return out;
+};
+
+export const VOLUME_SEGMENTS: { id: string; label: string; min: number; max: number }[] = [
+  { id: 's', label: 'до 10 литров', min: 0, max: 12 },
+  { id: 'm1', label: '15–30 литров', min: 12, max: 35 },
+  { id: 'm', label: '40–60 литров', min: 35, max: 70 },
+  { id: 'l', label: '80–120 литров', min: 70, max: 150 },
+  { id: 'xl', label: 'от 200 литров', min: 150, max: Infinity },
+];
+export const DEFAULT_SEGMENT = 'm';
+
+export const segmentOf = (p: MixerProduct): string => {
+  const v = volumeNumOf(p);
+  if (v === null) return 'none';
+  return VOLUME_SEGMENTS.find((s) => v >= s.min && v < s.max)?.id || 'none';
+};
+
+/** Короткое имя бренда: «Starmix (Стармикс)» → «Starmix» */
+export const brandLabel = (b: string): string => b.replace(/\s*\(.*\)\s*$/, '').trim() || b;

@@ -4,17 +4,39 @@ import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
 import MixerModal from './MixerModal';
 import MixerCard from './MixerCard';
-import MixerFilters from './MixerFilters';
 import {
   MixerProduct,
   brandOf,
-  volumeNumOf,
-  powerNumOf,
   priceNumOf,
-  uniqSorted,
+  normalizeParams,
+  segmentOf,
+  brandLabel,
+  VOLUME_SEGMENTS,
+  DEFAULT_SEGMENT,
 } from './mixersCatalogUtils';
 
 export type { MixerProduct } from './mixersCatalogUtils';
+
+const Tab = ({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <button
+    onClick={onClick}
+    className={`px-3.5 py-2 rounded-lg text-sm md:text-base font-semibold border-2 transition whitespace-nowrap ${
+      active
+        ? 'bg-gradient-to-r from-fire to-fire-dark border-transparent text-white shadow-lg shadow-fire/30'
+        : 'bg-coal-mid border-coal-light text-white/80 hover:border-fire/60'
+    }`}
+  >
+    {children}
+  </button>
+);
 
 const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<string, unknown>) => void }) => {
   const [list, setList] = useState<MixerProduct[]>([]);
@@ -23,17 +45,15 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
   const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<MixerProduct | null>(null);
 
-  const [fVolumeMin, setFVolumeMin] = useState('');
-  const [fVolumeMax, setFVolumeMax] = useState('');
-  const [fPowerMin, setFPowerMin] = useState('');
-  const [fPowerMax, setFPowerMax] = useState('');
-  const [fBrand, setFBrand] = useState('');
+  const [seg, setSeg] = useState(DEFAULT_SEGMENT);
+  const [brand, setBrand] = useState('');
 
   useEffect(() => {
     fetch(func2url['mixers-catalog'])
       .then((r) => r.json())
       .then((data) => {
-        setList(withCleanParams(data.planetary || []));
+        const items: MixerProduct[] = withCleanParams(data.planetary || []);
+        setList(items.map((p) => ({ ...p, params: normalizeParams(p.params) })));
         setLoading(false);
       })
       .catch(() => {
@@ -42,36 +62,33 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       });
   }, []);
 
-  const brandOptions = useMemo(() => uniqSorted(list.map(brandOf)), [list]);
+  const segments = useMemo(() => {
+    const m = new Map<string, number>();
+    list.forEach((p) => {
+      const s = segmentOf(p);
+      m.set(s, (m.get(s) || 0) + 1);
+    });
+    return VOLUME_SEGMENTS.filter((s) => m.get(s.id)).map((s) => ({ ...s, count: m.get(s.id) || 0 }));
+  }, [list]);
+
+  const bySeg = useMemo(() => (seg ? list.filter((p) => segmentOf(p) === seg) : list), [list, seg]);
+
+  const brands = useMemo(() => {
+    const m = new Map<string, number>();
+    bySeg.forEach((p) => {
+      const b = brandOf(p);
+      if (b) m.set(b, (m.get(b) || 0) + 1);
+    });
+    return Array.from(m.entries()).sort((a, b) => b[1] - a[1]);
+  }, [bySeg]);
+
+  useEffect(() => {
+    if (brand && !brands.some(([b]) => b === brand)) setBrand('');
+  }, [brands, brand]);
 
   const filtered = useMemo(() => {
-    const vMin = fVolumeMin !== '' ? Number(fVolumeMin) : null;
-    const vMax = fVolumeMax !== '' ? Number(fVolumeMax) : null;
-    const pMin = fPowerMin !== '' ? Number(fPowerMin) : null;
-    const pMax = fPowerMax !== '' ? Number(fPowerMax) : null;
-
-    const result = list.filter((p) => {
-      if (fBrand && brandOf(p) !== fBrand) return false;
-
-      if (vMin !== null || vMax !== null) {
-        const v = volumeNumOf(p);
-        if (v === null) return false;
-        if (vMin !== null && v < vMin) return false;
-        if (vMax !== null && v > vMax) return false;
-      }
-
-      if (pMin !== null || pMax !== null) {
-        const pw = powerNumOf(p);
-        if (pw === null) return false;
-        if (pMin !== null && pw < pMin) return false;
-        if (pMax !== null && pw > pMax) return false;
-      }
-
-      return true;
-    });
-
-    // Сортировка по цене по возрастанию; товары без цены — в конце
-    return [...result].sort((a, b) => {
+    const res = brand ? bySeg.filter((p) => brandOf(p) === brand) : bySeg;
+    return [...res].sort((a, b) => {
       const pa = priceNumOf(a);
       const pb = priceNumOf(b);
       if (pa !== null && pb !== null) return pa - pb;
@@ -79,19 +96,16 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       if (pb !== null) return 1;
       return 0;
     });
-  }, [list, fVolumeMin, fVolumeMax, fPowerMin, fPowerMax, fBrand]);
+  }, [bySeg, brand]);
 
-  useEffect(() => setVisible(6), [fVolumeMin, fVolumeMax, fPowerMin, fPowerMax, fBrand]);
+  useEffect(() => setVisible(6), [seg, brand]);
 
   const shown = useMemo(() => filtered.slice(0, visible), [filtered, visible]);
   const canMore = visible < filtered.length;
-  const hasFilters = !!(fVolumeMin || fVolumeMax || fPowerMin || fPowerMax || fBrand);
+  const hasFilters = !!brand || seg !== DEFAULT_SEGMENT;
   const resetFilters = () => {
-    setFVolumeMin('');
-    setFVolumeMax('');
-    setFPowerMin('');
-    setFPowerMax('');
-    setFBrand('');
+    setSeg(DEFAULT_SEGMENT);
+    setBrand('');
   };
 
   return (
@@ -106,21 +120,36 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
         </p>
 
         {!loading && !error && (
-          <MixerFilters
-            fVolumeMin={fVolumeMin}
-            fVolumeMax={fVolumeMax}
-            fPowerMin={fPowerMin}
-            fPowerMax={fPowerMax}
-            fBrand={fBrand}
-            setFVolumeMin={setFVolumeMin}
-            setFVolumeMax={setFVolumeMax}
-            setFPowerMin={setFPowerMin}
-            setFPowerMax={setFPowerMax}
-            setFBrand={setFBrand}
-            brandOptions={brandOptions}
-            hasFilters={hasFilters}
-            resetFilters={resetFilters}
-          />
+          <div className="space-y-5 mb-8">
+            <div>
+              <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Объём дежи</div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {segments.map((s) => (
+                  <Tab key={s.id} active={seg === s.id} onClick={() => setSeg(s.id)}>
+                    {s.label} <span className="opacity-70">({s.count})</span>
+                  </Tab>
+                ))}
+                <Tab active={!seg} onClick={() => setSeg('')}>
+                  Все <span className="opacity-70">({list.length})</span>
+                </Tab>
+              </div>
+            </div>
+            {brands.length > 1 && (
+              <div>
+                <div className="text-xs uppercase tracking-wider text-white/50 mb-2 font-semibold">Бренд</div>
+                <div className="flex flex-wrap gap-2">
+                  <Tab active={!brand} onClick={() => setBrand('')}>
+                    Все бренды
+                  </Tab>
+                  {brands.map(([b, n]) => (
+                    <Tab key={b} active={brand === b} onClick={() => setBrand(b)}>
+                      {brandLabel(b)} <span className="opacity-70">({n})</span>
+                    </Tab>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {loading && (
