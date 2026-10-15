@@ -23,13 +23,13 @@ export const PLACEHOLDER =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f4f1ec"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" fill="#9a8f80">Фото товара</text></svg>',
   );
 
-export const proxify = (url: string): string => {
+export const proxify = (url: string, width = 600): string => {
   if (!url) return url;
   try {
     const u = new URL(url, window.location.origin);
     const host = u.hostname.replace(/^www\./, '');
     if (host === 't-sib.ru') {
-      return `${func2url['image-proxy']}?url=${encodeURIComponent(u.toString())}`;
+      return `${func2url['image-proxy']}?w=${width}&url=${encodeURIComponent(u.toString())}`;
     }
     return url;
   } catch {

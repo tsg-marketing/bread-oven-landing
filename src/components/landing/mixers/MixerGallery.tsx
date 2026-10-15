@@ -111,20 +111,36 @@ const Lightbox = ({
 const MixerGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) => {
   const [idx, setIdx] = useState(0);
   const [lightbox, setLightbox] = useState(false);
+  const [seen, setSeen] = useState<Set<number>>(() => new Set([0]));
   const sources = useMemo(
-    () => (pictures.length ? pictures.map((p) => (p ? proxify(p) : PLACEHOLDER)) : [PLACEHOLDER]),
+    () => (pictures.length ? pictures.map((p) => (p ? proxify(p, 600) : PLACEHOLDER)) : [PLACEHOLDER]),
     [pictures],
   );
+  const bigSources = useMemo(
+    () => (pictures.length ? pictures.map((p) => (p ? proxify(p, 1600) : PLACEHOLDER)) : [PLACEHOLDER]),
+    [pictures],
+  );
+
+  useEffect(() => {
+    setSeen((prev) => {
+      if (prev.has(idx)) return prev;
+      const next = new Set(prev);
+      next.add(idx);
+      return next;
+    });
+  }, [idx]);
 
   return (
     <>
       <div className="relative aspect-square overflow-hidden bg-white group">
-        {sources.map((s, i) => (
+        {sources.map((s, i) =>
+          seen.has(i) ? (
           <img
             key={i}
             src={s}
             alt={alt}
-            loading="eager"
+            loading={i === 0 ? 'lazy' : 'eager'}
+            decoding="async"
             onClick={() => setLightbox(true)}
             className={`absolute inset-0 w-full h-full object-contain p-4 transition-opacity duration-200 cursor-zoom-in group-hover:scale-105 ${
               i === idx ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -133,7 +149,8 @@ const MixerGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) =>
               (e.currentTarget as HTMLImageElement).src = PLACEHOLDER;
             }}
           />
-        ))}
+          ) : null,
+        )}
 
         <button
           onClick={(e) => {
@@ -178,7 +195,7 @@ const MixerGallery = ({ pictures, alt }: { pictures: string[]; alt: string }) =>
       </div>
 
       {lightbox && (
-        <Lightbox sources={sources} alt={alt} startIdx={idx} onClose={() => setLightbox(false)} />
+        <Lightbox sources={bigSources} alt={alt} startIdx={idx} onClose={() => setLightbox(false)} />
       )}
     </>
   );
