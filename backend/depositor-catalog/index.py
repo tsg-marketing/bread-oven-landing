@@ -72,16 +72,18 @@ def first_int(text: str) -> int:
 CACHE: dict[str, Any] = {'data': None, 'ts': 0}
 
 NSK_TZ = timezone(timedelta(hours=7))
-REFRESH_HOUR_NSK = 11
-REFRESH_MINUTE_NSK = 30
+REFRESH_HOURS_NSK = (6, 13, 18)
 
 
 def last_scheduled_refresh_ts() -> float:
+    '''Метка последнего планового обновления — 06:00, 13:00 или 18:00 по Новосибирску (GMT+7).'''
     now_nsk = datetime.now(NSK_TZ)
-    mark = now_nsk.replace(hour=REFRESH_HOUR_NSK, minute=REFRESH_MINUTE_NSK, second=0, microsecond=0)
-    if now_nsk < mark:
-        mark = mark - timedelta(days=1)
-    return mark.timestamp()
+    for hour in sorted(REFRESH_HOURS_NSK, reverse=True):
+        mark = now_nsk.replace(hour=hour, minute=0, second=0, microsecond=0)
+        if now_nsk >= mark:
+            return mark.timestamp()
+    prev_day = now_nsk - timedelta(days=1)
+    return prev_day.replace(hour=max(REFRESH_HOURS_NSK), minute=0, second=0, microsecond=0).timestamp()
 
 
 def cache_is_fresh(ts: float) -> bool:

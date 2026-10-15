@@ -15,16 +15,18 @@ IMAGE_PROXY_URL = 'https://functions.poehali.dev/a59d06d8-db13-4f74-8103-bb11abb
 CACHE: dict[str, Any] = {'xml': None, 'ts': 0}
 
 NSK_TZ = timezone(timedelta(hours=7))
-REFRESH_HOUR_NSK = 11
-REFRESH_MINUTE_NSK = 30
+REFRESH_HOURS_NSK = (6, 13, 18)
 
 
 def last_scheduled_refresh_ts() -> float:
+    '''Метка последнего планового обновления — 06:00, 13:00 или 18:00 по Новосибирску (GMT+7).'''
     now_nsk = datetime.now(NSK_TZ)
-    today_mark = now_nsk.replace(hour=REFRESH_HOUR_NSK, minute=REFRESH_MINUTE_NSK, second=0, microsecond=0)
-    if now_nsk < today_mark:
-        today_mark = today_mark - timedelta(days=1)
-    return today_mark.timestamp()
+    for hour in sorted(REFRESH_HOURS_NSK, reverse=True):
+        mark = now_nsk.replace(hour=hour, minute=0, second=0, microsecond=0)
+        if now_nsk >= mark:
+            return mark.timestamp()
+    prev_day = now_nsk - timedelta(days=1)
+    return prev_day.replace(hour=max(REFRESH_HOURS_NSK), minute=0, second=0, microsecond=0).timestamp()
 
 
 def cache_is_fresh(cache_ts: float) -> bool:
@@ -155,7 +157,7 @@ def build_yml() -> str:
 
 
 def handler(event: dict, context) -> dict:
-    '''YML-фид товаров лендинга. Ссылки на товары — на pekarnoe.t-sib.ru с якорем #product-{id}. Обновляется в 11:30 по Новосибирску (GMT+7).'''
+    '''YML-фид товаров лендинга. Ссылки на товары — на pekarnoe.t-sib.ru с якорем #product-{id}. Обновляется в 06:00, 13:00 и 18:00 по Новосибирску (GMT+7).'''
     method = event.get('httpMethod', 'GET')
     if method == 'OPTIONS':
         return {
