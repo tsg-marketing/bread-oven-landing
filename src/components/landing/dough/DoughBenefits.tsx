@@ -9,12 +9,6 @@ const rows = [
   { icon: 'HeartPulse', label: 'Нагрузка на сотрудников', hand: 'Тяжёлый ручной труд, риск травм', auto: 'Только загрузка сырья и выгрузка теста' },
 ];
 
-const highlights = [
-  { icon: 'Zap', v: 'в 4–5 раз', t: 'быстрее ручного замеса' },
-  { icon: 'Wallet', v: 'до 1 ставки', t: 'экономии на персонале' },
-  { icon: 'CalendarCheck', v: '6–12 мес.', t: 'типичная окупаемость' },
-];
-
 const WHITE = { color: '#fff' };
 
 const DoughBenefits = () => (
@@ -33,26 +27,6 @@ const DoughBenefits = () => (
         <p className="text-white/70 text-lg max-w-2xl mx-auto">
           Разница видна уже в первую смену — быстрее, стабильнее и без тяжёлого ручного труда.
         </p>
-      </div>
-
-      <div className="grid sm:grid-cols-3 gap-5 mb-10">
-        {highlights.map((h) => (
-          <div
-            key={h.t}
-            className="relative rounded-2xl p-6 bg-gradient-to-br from-fire to-fire-dark shadow-xl shadow-fire/25 overflow-hidden card-hover"
-          >
-            <div className="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-white/10" />
-            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
-              <Icon name={h.icon} size={24} style={WHITE} />
-            </div>
-            <div className="font-oswald text-4xl font-bold mb-1" style={WHITE}>
-              {h.v}
-            </div>
-            <div className="text-base" style={{ color: 'rgba(255,255,255,0.9)' }}>
-              {h.t}
-            </div>
-          </div>
-        ))}
       </div>
 
       <div className="rounded-3xl bg-white border border-coal-light shadow-2xl shadow-black/5 overflow-hidden">
