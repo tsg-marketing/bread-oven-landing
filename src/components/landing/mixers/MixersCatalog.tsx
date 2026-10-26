@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
+import { clearProductHash, useProductHash } from '@/hooks/use-product-hash';
 import MixerModal from './MixerModal';
 import MixerCard from './MixerCard';
 import {
@@ -44,6 +45,7 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
   const [error, setError] = useState('');
   const [visible, setVisible] = useState(6);
   const [modal, setModal] = useState<MixerProduct | null>(null);
+  useProductHash(list, setModal);
 
   const [seg, setSeg] = useState(DEFAULT_SEGMENT);
   const [brand, setBrand] = useState('');
@@ -211,9 +213,13 @@ const MixersCatalog = ({ onLead }: { onLead: (source: string, payload?: Record<s
       {modal && (
         <MixerModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            clearProductHash();
+          }}
           onLead={(p) => {
             setModal(null);
+            clearProductHash();
             onLead('mixers-modal', { productId: p.id, productName: p.name });
           }}
         />

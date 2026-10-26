@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
+import { clearProductHash, useProductHash } from '@/hooks/use-product-hash';
 import MixerModal from '../mixers/MixerModal';
 import DepositorCard from './DepositorCard';
 import { DepositorProduct, PERF_LABELS, PERF_ORDER, SERIES, brandOf, seriesOf } from './depositorUtils';
@@ -54,6 +55,7 @@ const DepositorCatalog = ({ onLead, perf, setPerf }: Props) => {
   const [series, setSeries] = useState('');
   const [query, setQuery] = useState('');
   const [modal, setModal] = useState<DepositorProduct | null>(null);
+  useProductHash(list, setModal);
 
   useEffect(() => {
     fetch(func2url['depositor-catalog'])
@@ -224,9 +226,13 @@ const DepositorCatalog = ({ onLead, perf, setPerf }: Props) => {
       {modal && (
         <MixerModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            clearProductHash();
+          }}
           onLead={(p) => {
             setModal(null);
+            clearProductHash();
             onLead('depositor-catalog-modal', { productId: p.id, productName: p.name });
           }}
         />

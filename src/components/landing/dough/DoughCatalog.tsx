@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
+import { clearProductHash, useProductHash } from '@/hooks/use-product-hash';
 import MixerModal from '../mixers/MixerModal';
 import DoughCard from './DoughCard';
 import { DoughProduct, VOLUME_RANGES, brandOf, categoryLabel, volumeRangeOf } from './doughUtils';
@@ -52,6 +53,7 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
   const [vol, setVol] = useState('v2');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<DoughProduct | null>(null);
+  useProductHash(list, setModal);
   const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -263,9 +265,13 @@ const DoughCatalog = ({ onLead, cat, setCat }: Props) => {
       {modal && (
         <MixerModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            clearProductHash();
+          }}
           onLead={(p) => {
             setModal(null);
+            clearProductHash();
             onLead('dough-catalog-modal', { productId: p.id, productName: p.name });
           }}
         />

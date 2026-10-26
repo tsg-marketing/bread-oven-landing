@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
+import { clearProductHash, useProductHash } from '@/hooks/use-product-hash';
 import MixerModal from '../mixers/MixerModal';
 import ProoferCard from './ProoferCard';
 import { CAPACITY_LABELS, CAPACITY_ORDER, ProoferProduct, brandOf } from './prooferUtils';
@@ -48,6 +49,7 @@ const ProoferCatalog = ({ onLead, capacity, setCapacity }: Props) => {
   const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<ProoferProduct | null>(null);
+  useProductHash(list, setModal);
   const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -249,9 +251,13 @@ const ProoferCatalog = ({ onLead, capacity, setCapacity }: Props) => {
       {modal && (
         <MixerModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            clearProductHash();
+          }}
           onLead={(p) => {
             setModal(null);
+            clearProductHash();
             onLead('proofer-catalog-modal', { productId: p.id, productName: p.name });
           }}
         />

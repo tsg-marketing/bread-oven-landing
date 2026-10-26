@@ -7,9 +7,23 @@ from typing import Any
 from xml.sax.saxutils import escape as xml_escape
 
 FEED_URL = 'https://t-sib.ru/upload/catalog.xml'
-TARGET_CATEGORY_IDS = {'530', '372', '371', '549', '365', '370', '373', '547', '548', '550', '551', '552'}
-
 LANDING_BASE = 'https://pekarnoe.t-sib.ru/'
+
+# Категории фида → страница лендинга, где показан товар
+LANDING_CATEGORIES: list[tuple[str, set[str]]] = [
+    ('', {'530', '372', '371', '549', '365', '370', '373', '547', '548', '550', '551', '552'}),
+    ('mixers', {'367', '526', '744', '258'}),
+    ('testomesi', {
+        '378', '379', '380', '512', '513', '514', '515', '516', '517',
+        '518', '519', '520', '521', '522', '523', '553',
+    }),
+    ('testoraskatka', {'381', '382', '383', '384', '533', '534', '535', '536', '537', '538'}),
+    ('rasstoechnye-shkafy', {'376'}),
+    ('otsadochnye-mashiny', {'369'}),
+]
+
+CATEGORY_TO_PAGE: dict[str, str] = {cid: page for page, ids in LANDING_CATEGORIES for cid in ids}
+TARGET_CATEGORY_IDS = set(CATEGORY_TO_PAGE)
 IMAGE_PROXY_URL = 'https://functions.poehali.dev/a59d06d8-db13-4f74-8103-bb11abba3397'
 
 CACHE: dict[str, Any] = {'xml': None, 'ts': 0}
@@ -35,8 +49,15 @@ def cache_is_fresh(cache_ts: float) -> bool:
     return cache_ts >= last_scheduled_refresh_ts()
 
 
-def product_anchor_url(offer_id: str) -> str:
-    return f'{LANDING_BASE}#product-{offer_id}'
+def product_anchor_url(offer_id: str, cat_id: str) -> str:
+    page = CATEGORY_TO_PAGE.get(cat_id, '')
+    return f'{LANDING_BASE}{page}#product-{offer_id}'
+
+
+def is_hidden_on_landing(offer: ET.Element, cat_id: str) -> bool:
+    '''Товары, которые не показываются на лендингах (подставки под расстоечные шкафы).'''
+    name = (offer.findtext('name') or offer.findtext('model') or '').lower()
+    return cat_id == '376' and 'подставк' in name
 
 
 def proxy_image_url(src: str) -> str:
@@ -56,13 +77,14 @@ def proxy_image_url(src: str) -> str:
 
 def serialize_offer(offer: ET.Element) -> str:
     offer_id = offer.get('id') or ''
+    cat_id = (offer.findtext('categoryId') or '').strip()
     parts: list[str] = []
     attrs = ' '.join(f'{k}="{xml_escape(v)}"' for k, v in offer.attrib.items())
     parts.append(f'<offer {attrs}>' if attrs else '<offer>')
     for child in list(offer):
         tag = child.tag
         if tag == 'url':
-            parts.append(f'<url>{xml_escape(product_anchor_url(offer_id))}</url>')
+            parts.append(f'<url>{xml_escape(product_anchor_url(offer_id, cat_id))}</url>')
             continue
         if tag == 'picture':
             src = (child.text or '').strip()
@@ -112,7 +134,7 @@ def build_yml() -> str:
     if offers_src is not None:
         for offer in offers_src.findall('offer'):
             cat_id = (offer.findtext('categoryId') or '').strip()
-            if cat_id not in TARGET_CATEGORY_IDS:
+            if cat_id not in TARGET_CATEGORY_IDS or is_hidden_on_landing(offer, cat_id):
                 continue
             offers_kept.append(offer)
             needed_cat_ids.add(cat_id)
@@ -157,7 +179,7 @@ def build_yml() -> str:
 
 
 def handler(event: dict, context) -> dict:
-    '''YML-фид товаров лендинга. Ссылки на товары — на pekarnoe.t-sib.ru с якорем #product-{id}. Обновляется в 06:00, 13:00 и 18:00 по Новосибирску (GMT+7).'''
+    '''YML-фид товаров лендинга. Все категории лендингов; ссылка ведёт на страницу своего лендинга с якорем #product-{id}. Обновляется в 06:00, 13:00 и 18:00 по Новосибирску (GMT+7).'''
     method = event.get('httpMethod', 'GET')
     if method == 'OPTIONS':
         return {

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import func2url from '../../../../backend/func2url.json';
 import { withCleanParams } from '@/lib/cleanParams';
+import { clearProductHash, useProductHash } from '@/hooks/use-product-hash';
 import MixerModal from '../mixers/MixerModal';
 import RollingCard from './RollingCard';
 import { RollingProduct, brandOf, categoryLabel } from './rollingUtils';
@@ -51,6 +52,7 @@ const RollingCatalog = ({ onLead, cat, setCat }: Props) => {
   const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(8);
   const [modal, setModal] = useState<RollingProduct | null>(null);
+  useProductHash(list, setModal);
   const sentinel = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -232,9 +234,13 @@ const RollingCatalog = ({ onLead, cat, setCat }: Props) => {
       {modal && (
         <MixerModal
           product={modal}
-          onClose={() => setModal(null)}
+          onClose={() => {
+            setModal(null);
+            clearProductHash();
+          }}
           onLead={(p) => {
             setModal(null);
+            clearProductHash();
             onLead('rolling-catalog-modal', { productId: p.id, productName: p.name });
           }}
         />
