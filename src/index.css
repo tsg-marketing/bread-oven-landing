@@ -78,6 +78,9 @@
 }
 
 @layer base {
+  section[id] {
+    scroll-margin-top: 104px;
+  }
   * {
     @apply border-border;
   }

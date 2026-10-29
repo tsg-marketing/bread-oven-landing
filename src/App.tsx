@@ -14,6 +14,12 @@ import Depositors from "./pages/Depositors";
 import NotFound from "./pages/NotFound";
 import MailTemplates from "./pages/MailTemplates";
 import { captureUtmFromUrl } from "@/lib/utm";
+import { useHashScroll } from "@/hooks/use-hash-scroll";
+
+const HashScroll = () => {
+  useHashScroll();
+  return null;
+};
 
 const queryClient = new QueryClient();
 
@@ -28,6 +34,7 @@ const App = () => {
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <HashScroll />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/mixers" element={<Mixers />} />

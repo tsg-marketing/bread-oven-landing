@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 
 const SITE = 'https://pekarnoe.t-sib.ru';
-const utm = (path: string, n: number) =>
-  `${SITE}${path}${path.includes('?') ? '&' : '?'}utm_source=email&utm_medium=cold&utm_campaign=new_arrivals&utm_content=letter${n}`;
+const utm = (path: string, n: number) => {
+  const [base, hash] = path.split('#');
+  const q = `utm_source=email&utm_medium=cold&utm_campaign=new_arrivals&utm_content=letter${n}`;
+  return `${SITE}${base}${base.includes('?') ? '&' : '?'}${q}${hash ? `#${hash}` : ''}`;
+};
 
 const SIGNATURE = `{С уважением,|С уважением и пожеланием отличных продаж,|Хорошего дня!}
 Сметанина Елена Викторовна
