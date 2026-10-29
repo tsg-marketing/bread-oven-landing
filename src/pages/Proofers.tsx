@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
 import { useSessionPopup } from '@/lib/useSessionPopup';
+import NewArrivals from '@/components/landing/NewArrivals';
+import { PROOFER_ARRIVALS } from '@/components/landing/newArrivalsData';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -56,6 +58,7 @@ const Proofers = () => {
           }}
         />
         <ProoferCatalog onLead={openLead} capacity={catFilter} setCapacity={setCatFilter} />
+        <NewArrivals items={PROOFER_ARRIVALS} catalogKey="proofer-catalog" source="proofer-new-arrivals" />
         <ProoferBenefits />
         <ProoferWhy />
         <ProoferQuiz />

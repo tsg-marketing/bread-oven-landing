@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
 import { useSessionPopup } from '@/lib/useSessionPopup';
+import NewArrivals from '@/components/landing/NewArrivals';
+import { DEPOSITOR_ARRIVALS } from '@/components/landing/newArrivalsData';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -50,6 +52,7 @@ const Depositors = () => {
       <main>
         <DepositorHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
         <DepositorCatalog onLead={openLead} perf={catFilter} setPerf={setCatFilter} />
+        <NewArrivals items={DEPOSITOR_ARRIVALS} catalogKey="depositor-catalog" source="depositor-new-arrivals" />
         <DepositorTypes
           onCatalog={(c) => {
             setCatFilter(c);
