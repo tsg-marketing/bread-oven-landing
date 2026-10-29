@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { ymGoal } from '@/lib/ym';
 
@@ -12,6 +13,8 @@ const EQUIPMENT = [
 
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
   const [open, setOpen] = useState(false);
+  const isHome = useLocation().pathname === '/';
+  const firstLink = isHome ? { href: '/#catalog', label: 'Каталог' } : { href: '/', label: 'Печи' };
   return (
     <header
       className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b"
@@ -43,8 +46,8 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           className="hidden lg:flex items-center gap-5 xl:gap-7 text-[15px] font-medium flex-1 justify-center"
           style={{ color: 'hsl(var(--ink) / 0.85)' }}
         >
-          <a href="/#catalog" className="nav-link hover:text-fire transition whitespace-nowrap">
-            Каталог
+          <a href={firstLink.href} className="nav-link hover:text-fire transition whitespace-nowrap">
+            {firstLink.label}
           </a>
           <div className="relative group">
             <button className="nav-link hover:text-fire transition whitespace-nowrap flex items-center gap-1">
@@ -140,8 +143,8 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           style={{ background: 'hsl(var(--coal-mid))', borderColor: 'hsl(var(--coal-light))' }}
         >
           <div className="container py-5 flex flex-col gap-3 text-lg font-medium">
-            <a href="/#catalog" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
-              Каталог
+            <a href={firstLink.href} onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+              {firstLink.label}
             </a>
             <div>
               <div style={{ color: 'hsl(var(--ink) / 0.9)' }}>Оборудование</div>
