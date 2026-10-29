@@ -9,6 +9,8 @@ import About from '@/components/landing/About';
 import MixersHero from '@/components/landing/mixers/MixersHero';
 import MixersTypes from '@/components/landing/mixers/MixersTypes';
 import MixersCatalog from '@/components/landing/mixers/MixersCatalog';
+import NewArrivals from '@/components/landing/NewArrivals';
+import { MIXER_ARRIVALS } from '@/components/landing/newArrivalsData';
 import MixersWhy from '@/components/landing/mixers/MixersWhy';
 import MixersBrands from '@/components/landing/mixers/MixersBrands';
 import MixersQuiz from '@/components/landing/mixers/MixersQuiz';
@@ -52,6 +54,7 @@ const Mixers = () => {
         <MixersHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
         <MixersTypes onCatalog={scrollToCatalog} />
         <MixersCatalog onLead={(src, payload) => openLead(src, payload, 'Оставить заявку')} />
+        <NewArrivals items={MIXER_ARRIVALS} catalogKey="mixers-catalog" source="mixers-new-arrivals" />
         <MixersWhy />
         <MixersBrands />
         <MixersQuiz />

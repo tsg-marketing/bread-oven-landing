@@ -3,17 +3,8 @@ import Icon from '@/components/ui/icon';
 import func2url from '../../../backend/func2url.json';
 import { sendLead } from '@/lib/sendLead';
 import ConsentCheckbox from './ConsentCheckbox';
+import { Arrival } from './newArrivalsData';
 
-type Arrival = {
-  id: string;
-  name: string;
-  short: string;
-  tag: string;
-  image: string;
-  description: string;
-  specs: { icon: string; label: string; value: string }[];
-  highlights: string[];
-};
 
 const proxify = (url: string) => {
   try {
@@ -27,56 +18,6 @@ const proxify = (url: string) => {
   return url;
 };
 
-const ARRIVALS: Arrival[] = [
-  {
-    id: '9029',
-    name: 'Печь ротационно-конвекционная электрическая HM-710ER (10 ур.)',
-    short: 'HOMAT HM-710ER',
-    tag: 'Ротационная',
-    image: 'https://t-sib.ru/upload/iblock/5e6/pdt7plv5cys4ac3r6ms1yd909idlsbak.jpg',
-    description:
-      'Компактная ротационная печь на 10 противней 400×600 мм. Вращающийся стеллаж, принудительная конвекция и встроенное пароувлажнение дают равномерную выпечку хлеба, багетов и кондитерки на всех уровнях. Помещается даже в небольшой цех.',
-    specs: [
-      { icon: 'Layers', label: 'Уровней', value: '10' },
-      { icon: 'LayoutGrid', label: 'Противень', value: '400×600 мм' },
-      { icon: 'Zap', label: 'Мощность', value: '18 кВт / 380 В' },
-      { icon: 'Settings', label: 'Программ', value: '60' },
-    ],
-    highlights: ['60 программ до 5 этапов каждая', 'Встроенная стеллажная тележка', 'Автооткрытие дверцы после выпечки'],
-  },
-  {
-    id: '9030',
-    name: 'Печь подовая MW32',
-    short: 'HOMAT MW-32',
-    tag: 'Подовая',
-    image: 'https://t-sib.ru/upload/iblock/ab4/z1802xwz5jul1x3vmrdqiazs71jlq3ve.jpg',
-    description:
-      'Трёхъярусная подовая печь на 6 противней. В каждом ярусе своя панель управления, раздельный верхний и нижний нагрев и собственный парогенератор — можно одновременно печь хлеб, сдобу и кондитерку по разным рецептам.',
-    specs: [
-      { icon: 'Layers', label: 'Ярусов / противней', value: '3 / 6' },
-      { icon: 'LayoutGrid', label: 'Противень', value: '400×600 мм' },
-      { icon: 'Zap', label: 'Мощность', value: '19 кВт / 380 В' },
-      { icon: 'Droplets', label: 'Пар', value: 'В каждом ярусе' },
-    ],
-    highlights: ['Независимое управление каждым ярусом', 'Пар по таймеру в каждой камере', 'Подсветка камер и система вытяжки'],
-  },
-  {
-    id: '9048',
-    name: 'Печь подовая электрическая TSZEO-2C+P (с расстоечным шкафом)',
-    short: 'ТЕХНОСИБ TSZEO-2C+P',
-    tag: 'Печь + расстойка',
-    image: 'https://t-sib.ru/upload/iblock/15f/7brc4bqfm1mrwekiu3co0ezmg45qbiky.jpg',
-    description:
-      'Готовый мини-цех в одном корпусе: конвекционная печь с пароувлажнением сверху и расстоечный шкаф снизу. Тесто подходит, пока выпекается предыдущая партия — идеальное решение для пекарен у дома, кафе и кофеен. Багеты, круассаны и хлеб с хрустящей корочкой.',
-    specs: [
-      { icon: 'Layers', label: 'Уровней / противней', value: '2 / 4' },
-      { icon: 'Thermometer', label: 'Управление', value: 'Цифровое' },
-      { icon: 'Zap', label: 'Мощность', value: '11,1 кВт / 380 В' },
-      { icon: 'Box', label: 'Расстойка', value: 'В комплекте' },
-    ],
-    highlights: ['Расстоечный шкаф в комплекте', 'Цифровой контроль температуры', 'Корпус из нержавеющей стали'],
-  },
-];
 
 const PhotoSlider = ({ pictures, alt, tag, className = '' }: { pictures: string[]; alt: string; tag: string; className?: string }) => {
   const [i, setI] = useState(0);
@@ -137,7 +78,7 @@ const PhotoSlider = ({ pictures, alt, tag, className = '' }: { pictures: string[
   );
 };
 
-const ArrivalForm = ({ item }: { item: Arrival }) => {
+const ArrivalForm = ({ item, source }: { item: Arrival; source: string }) => {
   const [form, setForm] = useState({ name: '', phone: '' });
   const [agree, setAgree] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -152,7 +93,7 @@ const ArrivalForm = ({ item }: { item: Arrival }) => {
       await sendLead({
         name: form.name,
         phone: form.phone,
-        source: 'new-arrivals',
+        source,
         payload: { productId: item.id, productName: item.name },
       });
       setSent(true);
@@ -215,15 +156,21 @@ const ArrivalForm = ({ item }: { item: Arrival }) => {
   );
 };
 
-const NewArrivals = () => {
+type Props = {
+  items: Arrival[];
+  catalogKey: keyof typeof func2url;
+  source?: string;
+};
+
+const NewArrivals = ({ items: ARRIVALS, catalogKey, source = 'new-arrivals' }: Props) => {
   const [pics, setPics] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
-    fetch(func2url['catalog'])
+    fetch(func2url[catalogKey])
       .then((r) => r.json())
       .then((data) => {
         const map: Record<string, string[]> = {};
-        (data.items || []).forEach((it: { id: string; pictures?: string[] }) => {
+        [...(data.items || []), ...(data.planetary || []), ...(data.dough || [])].forEach((it: { id: string; pictures?: string[] }) => {
           if (ARRIVALS.some((a) => a.id === String(it.id)) && it.pictures?.length) {
             map[String(it.id)] = Array.from(new Set(it.pictures));
           }
@@ -231,7 +178,7 @@ const NewArrivals = () => {
         setPics(map);
       })
       .catch(() => undefined);
-  }, []);
+  }, [catalogKey, ARRIVALS]);
 
   return (
     <section id="new-arrivals" className="relative py-14 md:py-16 bg-coal-mid overflow-hidden">
@@ -315,7 +262,7 @@ const NewArrivals = () => {
                       </a>
 
                       <div className="mt-auto">
-                        <ArrivalForm item={item} />
+                        <ArrivalForm item={item} source={source} />
                       </div>
                     </div>
                   </div>
