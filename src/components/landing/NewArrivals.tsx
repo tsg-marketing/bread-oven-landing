@@ -192,7 +192,7 @@ const NewArrivals = ({ items: ARRIVALS, catalogKey, source = 'new-arrivals' }: P
               <Icon name="Sparkles" size={14} style={{ color: '#fff' }} /> Новые поступления
             </span>
             <h2 className="font-oswald text-3xl md:text-4xl font-bold uppercase">
-              Уникальное <span className="text-fire-gradient">оборудование</span>
+              Новое оборудование <span className="text-fire-gradient">на складе</span>
             </h2>
           </div>
           <p className="max-w-md text-base" style={{ color: 'hsl(var(--ink) / 0.65)' }}>
