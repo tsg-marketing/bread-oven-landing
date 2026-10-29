@@ -14,7 +14,7 @@ const EQUIPMENT = [
 const Header = ({ onLead }: { onLead: (source: string) => void }) => {
   const [open, setOpen] = useState(false);
   const isHome = useLocation().pathname === '/';
-  const firstLink = isHome ? { href: '/#catalog', label: 'Каталог' } : { href: '/', label: 'Печи' };
+  const catalogHref = isHome ? '/#catalog' : '#assortment';
   return (
     <header
       className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl border-b"
@@ -46,9 +46,14 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           className="hidden lg:flex items-center gap-5 xl:gap-7 text-[15px] font-medium flex-1 justify-center"
           style={{ color: 'hsl(var(--ink) / 0.85)' }}
         >
-          <a href={firstLink.href} className="nav-link hover:text-fire transition whitespace-nowrap">
-            {firstLink.label}
+          <a href={catalogHref} className="nav-link hover:text-fire transition whitespace-nowrap">
+            Каталог
           </a>
+          {!isHome && (
+            <a href="/" className="nav-link hover:text-fire transition whitespace-nowrap">
+              Печи
+            </a>
+          )}
           <div className="relative group">
             <button className="nav-link hover:text-fire transition whitespace-nowrap flex items-center gap-1">
               Оборудование
@@ -143,9 +148,14 @@ const Header = ({ onLead }: { onLead: (source: string) => void }) => {
           style={{ background: 'hsl(var(--coal-mid))', borderColor: 'hsl(var(--coal-light))' }}
         >
           <div className="container py-5 flex flex-col gap-3 text-lg font-medium">
-            <a href={firstLink.href} onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
-              {firstLink.label}
+            <a href={catalogHref} onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+              Каталог
             </a>
+            {!isHome && (
+              <a href="/" onClick={() => setOpen(false)} style={{ color: 'hsl(var(--ink) / 0.9)' }}>
+                Печи
+              </a>
+            )}
             <div>
               <div style={{ color: 'hsl(var(--ink) / 0.9)' }}>Оборудование</div>
               <div className="mt-2 pl-4 flex flex-col gap-2 text-base border-l-2 border-fire/40">
