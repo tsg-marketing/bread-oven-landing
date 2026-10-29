@@ -12,6 +12,7 @@ import Testoraskatka from "./pages/Testoraskatka";
 import Proofers from "./pages/Proofers";
 import Depositors from "./pages/Depositors";
 import NotFound from "./pages/NotFound";
+import MailTemplates from "./pages/MailTemplates";
 import { captureUtmFromUrl } from "@/lib/utm";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/rasstoechnye-shkafy" element={<Proofers />} />
           <Route path="/otsadochnye-mashiny" element={<Depositors />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/mail-new-arrivals-x7k2" element={<MailTemplates />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
