@@ -4,6 +4,7 @@ import { useSessionPopup } from '@/lib/useSessionPopup';
 import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import Advantages from '@/components/landing/Advantages';
+import NewArrivals from '@/components/landing/NewArrivals';
 import Catalog from '@/components/landing/Catalog';
 import Comparison from '@/components/landing/Comparison';
 import Quiz from '@/components/landing/Quiz';
@@ -50,6 +51,7 @@ const Index = () => {
       <main>
         <Hero onQuiz={openQuiz} onKp={() => openLead('hero-kp', undefined, 'Запросить КП')} />
         <Advantages />
+        <NewArrivals />
         <Catalog onLead={(src, payload) => openLead(src, payload, 'Оставить заявку')} />
         <Comparison />
         <Quiz />
