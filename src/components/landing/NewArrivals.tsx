@@ -162,23 +162,75 @@ type Props = {
   source?: string;
 };
 
-const NewArrivals = ({ items: ARRIVALS, catalogKey, source = 'new-arrivals' }: Props) => {
-  const [pics, setPics] = useState<Record<string, string[]>>({});
+type FeedItem = { id: string; name?: string; pictures?: string[]; params?: Record<string, string> };
+
+const clean = (v: string) =>
+  v
+    .trim()
+    .replace(/^(\d+)\.0+$/, '$1')
+    .replace(/(\d)\.(\d*?)0+$/, (_, a, b) => (b ? `${a},${b}` : a))
+    .replace(/\s*[хx]\s*/gi, '×')
+    .replace(/(\d)\s*-\s*(\d)/g, '$1–$2');
+
+const fillSpec = (tpl: string, params: Record<string, string>): string | null => {
+  let ok = true;
+  const res = tpl.replace(/\{(#|@)?("([^"]+)"|dims)\}/g, (_, mod, _q, key) => {
+    let raw: string | undefined;
+    if (mod === '@') {
+      const k = Object.keys(params).find((p) => /^(Размер|Размеры|Габариты)\s*\(Д/i.test(p));
+      raw = k ? params[k] : undefined;
+    } else {
+      raw = params[key];
+    }
+    if (!raw || !raw.trim()) {
+      ok = false;
+      return '';
+    }
+    if (mod === '#') {
+      const n = raw.match(/\d+/);
+      return n ? n[0] : clean(raw);
+    }
+    return clean(raw);
+  });
+  return ok ? res : null;
+};
+
+const applyFeed = (item: Arrival, feed?: FeedItem): Arrival => {
+  if (!feed) return item;
+  const params = feed.params || {};
+  return {
+    ...item,
+    name: feed.name || item.name,
+    specs: item.specs.map((sp) => {
+      if (!sp.feed) return sp;
+      const v = fillSpec(sp.feed, params);
+      return v ? { ...sp, value: v } : sp;
+    }),
+  };
+};
+
+const NewArrivals = ({ items, catalogKey, source = 'new-arrivals' }: Props) => {
+  const [feed, setFeed] = useState<Record<string, FeedItem>>({});
 
   useEffect(() => {
     fetch(func2url[catalogKey])
       .then((r) => r.json())
       .then((data) => {
-        const map: Record<string, string[]> = {};
-        [...(data.items || []), ...(data.planetary || []), ...(data.dough || [])].forEach((it: { id: string; pictures?: string[] }) => {
-          if (ARRIVALS.some((a) => a.id === String(it.id)) && it.pictures?.length) {
-            map[String(it.id)] = Array.from(new Set(it.pictures));
-          }
+        const map: Record<string, FeedItem> = {};
+        [...(data.items || []), ...(data.planetary || []), ...(data.dough || [])].forEach((it: FeedItem) => {
+          if (items.some((a) => a.id === String(it.id))) map[String(it.id)] = it;
         });
-        setPics(map);
+        setFeed(map);
       })
       .catch(() => undefined);
-  }, [catalogKey, ARRIVALS]);
+  }, [catalogKey, items]);
+
+  const ARRIVALS = items.map((a) => applyFeed(a, feed[a.id]));
+  const pics = Object.fromEntries(
+    Object.entries(feed)
+      .filter(([, f]) => f.pictures?.length)
+      .map(([id, f]) => [id, Array.from(new Set(f.pictures))]),
+  ) as Record<string, string[]>;
 
   return (
     <section id="new-arrivals" className="relative py-14 md:py-16 bg-coal-mid overflow-hidden">

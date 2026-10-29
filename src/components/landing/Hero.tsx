@@ -86,6 +86,14 @@ const Hero = ({ onQuiz, onKp }: { onQuiz: () => void; onKp: () => void }) => {
               <Icon name="FileText" size={18} />
               Запросить КП
             </button>
+            <a
+              href="#new-arrivals"
+              className="px-7 py-4 rounded-xl border-2 border-fire font-semibold transition flex items-center gap-2 bg-fire/10 hover:bg-fire/20"
+              style={{ color: 'hsl(var(--ink))' }}
+            >
+              <Icon name="PackageCheck" size={18} className="text-fire" />
+              Новое оборудование на складе
+            </a>
           </div>
         </div>
 
