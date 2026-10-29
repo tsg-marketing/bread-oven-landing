@@ -24,6 +24,7 @@ const Testoraskatka = () => {
       'Напольные, настольные и автоматические тестораскатки, машины для крутого теста и лапшерезки. Подбор под задачу, официальная гарантия, доставка по России и сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/rolling.jpg',
     url: 'https://pekarnoe.t-sib.ru/testoraskatka',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/testoraskatochnye-mashiny/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);

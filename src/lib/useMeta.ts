@@ -5,6 +5,7 @@ type MetaOptions = {
   description: string;
   image?: string;
   url?: string;
+  canonical?: string;
 };
 
 const setTag = (selector: string, attr: 'name' | 'property', key: string, content: string) => {
@@ -18,7 +19,7 @@ const setTag = (selector: string, attr: 'name' | 'property', key: string, conten
 };
 
 /** Устанавливает title и мета-теги (description, Open Graph, Twitter) для страницы */
-export function useMeta({ title, description, image, url }: MetaOptions) {
+export function useMeta({ title, description, image, url, canonical }: MetaOptions) {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = title;
@@ -31,13 +32,16 @@ export function useMeta({ title, description, image, url }: MetaOptions) {
 
     if (url) {
       setTag('meta[property="og:url"]', 'property', 'og:url', url);
+    }
+    const canonicalHref = canonical || url;
+    if (canonicalHref) {
       let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
       if (!link) {
         link = document.createElement('link');
         link.rel = 'canonical';
         document.head.appendChild(link);
       }
-      link.href = url;
+      link.href = canonicalHref;
     }
     if (image) {
       setTag('meta[property="og:image"]', 'property', 'og:image', image);
@@ -47,5 +51,5 @@ export function useMeta({ title, description, image, url }: MetaOptions) {
     return () => {
       document.title = prevTitle;
     };
-  }, [title, description, image, url]);
+  }, [title, description, image, url, canonical]);
 }

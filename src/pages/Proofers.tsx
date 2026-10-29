@@ -26,6 +26,7 @@ const Proofers = () => {
       'Расстоечные шкафы под конвекционную печь, на противни и под тележки. Точная температура и влажность, официальная гарантия, доставка по России и сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/proofers.jpg',
     url: 'https://pekarnoe.t-sib.ru/rasstoechnye-shkafy',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/rasstoechnye-shkafy/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);

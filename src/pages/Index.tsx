@@ -27,6 +27,7 @@ const Index = () => {
       '150+ моделей хлебопекарных и кондитерских печей: подовые, ротационные, конвекционные. Доставка по РФ, гарантия до 3 лет, собственный сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/ovens.jpg',
     url: 'https://pekarnoe.t-sib.ru/',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/pechi-dlya-vypechki/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);

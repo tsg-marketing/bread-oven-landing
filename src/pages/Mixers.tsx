@@ -26,6 +26,7 @@ const Mixers = () => {
       'Более 100 моделей планетарных миксеров с дежой от 5 до 600 л для пекарен, кондитерских и производств. Подбор под задачу, гарантия до 12 месяцев, доставка по России и сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/mixers.jpg',
     url: 'https://pekarnoe.t-sib.ru/mixers',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/miksery-planetarnye/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);

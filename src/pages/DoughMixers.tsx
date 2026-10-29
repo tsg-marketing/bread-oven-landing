@@ -26,6 +26,7 @@ const DoughMixers = () => {
       'Спиральные, лопастные, горизонтальные и вакуумные тестомесы с дежой от 10 до 420 л. Подбор под ваш объём теста, официальная гарантия, доставка по России и сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/testomesi.jpg',
     url: 'https://pekarnoe.t-sib.ru/testomesi',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/testomesilnoe-oborudovanie/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);

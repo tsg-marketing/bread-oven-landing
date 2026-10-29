@@ -26,6 +26,7 @@ const Depositors = () => {
       'Отсадочные машины и кондитерские депозиторы для пекарен, кондитерских и производств. Печенье, пряники, зефир, кремы и начинки. Гарантия, доставка по России и сервис.',
     image: 'https://pekarnoe.t-sib.ru/og/depositors.jpg',
     url: 'https://pekarnoe.t-sib.ru/otsadochnye-mashiny',
+    canonical: 'https://t-sib.ru/catalog/khlebopekarnoe-i-konditerskoe-oborudovanie/otsadochnye-mashiny/',
   });
 
   const [leadOpen, setLeadOpen] = useState(false);
