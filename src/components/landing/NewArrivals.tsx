@@ -12,6 +12,7 @@ type Arrival = {
   image: string;
   description: string;
   specs: { icon: string; label: string; value: string }[];
+  highlights: string[];
 };
 
 const proxify = (url: string) => {
@@ -34,13 +35,14 @@ const ARRIVALS: Arrival[] = [
     tag: 'Ротационная',
     image: 'https://t-sib.ru/upload/iblock/5e6/pdt7plv5cys4ac3r6ms1yd909idlsbak.jpg',
     description:
-      'Компактная ротационная печь на 10 противней: вращающийся стеллаж, конвекция и пар — равномерная выпечка на всех уровнях.',
+      'Компактная ротационная печь на 10 противней 400×600 мм. Вращающийся стеллаж, принудительная конвекция и встроенное пароувлажнение дают равномерную выпечку хлеба, багетов и кондитерки на всех уровнях. Помещается даже в небольшой цех.',
     specs: [
       { icon: 'Layers', label: 'Уровней', value: '10' },
       { icon: 'LayoutGrid', label: 'Противень', value: '400×600 мм' },
       { icon: 'Zap', label: 'Мощность', value: '18 кВт / 380 В' },
       { icon: 'Settings', label: 'Программ', value: '60' },
     ],
+    highlights: ['60 программ до 5 этапов каждая', 'Встроенная стеллажная тележка', 'Автооткрытие дверцы после выпечки'],
   },
   {
     id: '9030',
@@ -49,13 +51,14 @@ const ARRIVALS: Arrival[] = [
     tag: 'Подовая',
     image: 'https://t-sib.ru/upload/iblock/ab4/z1802xwz5jul1x3vmrdqiazs71jlq3ve.jpg',
     description:
-      'Три независимых яруса: в каждом свои температура, время и пар. Хлеб, сдоба и кондитерка одновременно по разным рецептам.',
+      'Трёхъярусная подовая печь на 6 противней. В каждом ярусе своя панель управления, раздельный верхний и нижний нагрев и собственный парогенератор — можно одновременно печь хлеб, сдобу и кондитерку по разным рецептам.',
     specs: [
       { icon: 'Layers', label: 'Ярусов / противней', value: '3 / 6' },
       { icon: 'LayoutGrid', label: 'Противень', value: '400×600 мм' },
       { icon: 'Zap', label: 'Мощность', value: '19 кВт / 380 В' },
       { icon: 'Droplets', label: 'Пар', value: 'В каждом ярусе' },
     ],
+    highlights: ['Независимое управление каждым ярусом', 'Пар по таймеру в каждой камере', 'Подсветка камер и система вытяжки'],
   },
   {
     id: '9048',
@@ -64,17 +67,18 @@ const ARRIVALS: Arrival[] = [
     tag: 'Печь + расстойка',
     image: 'https://t-sib.ru/upload/iblock/15f/7brc4bqfm1mrwekiu3co0ezmg45qbiky.jpg',
     description:
-      'Мини-цех в одном корпусе: конвекционная печь с пароувлажнением и расстоечный шкаф снизу. Для пекарен у дома и кофеен.',
+      'Готовый мини-цех в одном корпусе: конвекционная печь с пароувлажнением сверху и расстоечный шкаф снизу. Тесто подходит, пока выпекается предыдущая партия — идеальное решение для пекарен у дома, кафе и кофеен. Багеты, круассаны и хлеб с хрустящей корочкой.',
     specs: [
       { icon: 'Layers', label: 'Уровней / противней', value: '2 / 4' },
       { icon: 'Thermometer', label: 'Управление', value: 'Цифровое' },
       { icon: 'Zap', label: 'Мощность', value: '11,1 кВт / 380 В' },
       { icon: 'Box', label: 'Расстойка', value: 'В комплекте' },
     ],
+    highlights: ['Расстоечный шкаф в комплекте', 'Цифровой контроль температуры', 'Корпус из нержавеющей стали'],
   },
 ];
 
-const PhotoSlider = ({ pictures, alt, tag }: { pictures: string[]; alt: string; tag: string }) => {
+const PhotoSlider = ({ pictures, alt, tag, className = '' }: { pictures: string[]; alt: string; tag: string; className?: string }) => {
   const [i, setI] = useState(0);
   const total = pictures.length;
   const many = total > 1;
@@ -86,16 +90,16 @@ const PhotoSlider = ({ pictures, alt, tag }: { pictures: string[]; alt: string; 
   }, [i, many, total]);
 
   return (
-    <div className="relative h-52 xl:h-56 bg-white overflow-hidden group">
+    <div className={`relative h-72 bg-white overflow-hidden group ${className}`}>
       <div className="flex h-full transition-transform duration-500 ease-out" style={{ transform: `translateX(-${i * 100}%)` }}>
         {pictures.map((src, k) => (
-          <img key={src + k} src={proxify(src)} alt={alt} loading="lazy" className="w-full h-full shrink-0 object-contain p-3" />
+          <img key={src + k} src={proxify(src)} alt={alt} loading="lazy" className="w-full h-full shrink-0 object-contain p-5" />
         ))}
       </div>
-      <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-gradient-to-r from-fire to-ember text-[11px] font-bold uppercase animate-pulse-glow" style={{ color: '#fff' }}>
+      <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-gradient-to-r from-fire to-ember text-xs font-bold uppercase animate-pulse-glow" style={{ color: '#fff' }}>
         Новинка
       </span>
-      <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-coal-mid border border-coal-light text-[11px] font-semibold">
+      <span className="absolute top-3 right-3 px-3 py-1 rounded-full bg-coal-mid border border-coal-light text-xs font-semibold">
         {tag}
       </span>
       {many && (
@@ -165,7 +169,7 @@ const ArrivalForm = ({ item }: { item: Arrival }) => {
         <div className="flex items-center justify-center gap-2 font-oswald text-lg font-bold">
           <Icon name="CircleCheck" size={20} className="text-fire" /> Заявка принята!
         </div>
-        <p className="text-xs mt-1" style={{ color: 'hsl(var(--ink) / 0.65)' }}>
+        <p className="text-sm mt-1" style={{ color: 'hsl(var(--ink) / 0.65)' }}>
           Пришлём цену и условия поставки {item.short} в ближайшее время.
         </p>
       </div>
@@ -173,11 +177,11 @@ const ArrivalForm = ({ item }: { item: Arrival }) => {
   }
 
   const inputCls =
-    'w-full min-w-0 rounded-lg px-3 py-2.5 text-sm outline-none border-2 border-coal-light focus:border-fire bg-white transition placeholder:text-black/35';
+    'w-full min-w-0 rounded-xl px-4 py-3 text-base outline-none border-2 border-coal-light focus:border-fire bg-white transition placeholder:text-black/35';
 
   return (
-    <form onSubmit={submit} className="space-y-2.5">
-      <div className="grid grid-cols-2 gap-2">
+    <form onSubmit={submit} className="space-y-3">
+      <div className="grid grid-cols-2 gap-3">
         <input
           required
           value={form.name}
@@ -196,16 +200,16 @@ const ArrivalForm = ({ item }: { item: Arrival }) => {
           style={{ color: 'hsl(var(--ink))' }}
         />
       </div>
-      {err && <div className="text-xs text-red-500">{err}</div>}
-      <ConsentCheckbox checked={agree} onChange={setAgree} className="text-[11px] leading-snug" />
+      {err && <div className="text-sm text-red-500">{err}</div>}
+      <ConsentCheckbox checked={agree} onChange={setAgree} className="text-xs leading-snug" />
       <button
         type="submit"
         disabled={submitting}
-        className="w-full py-3 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-sm font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center justify-center gap-2 disabled:opacity-60"
+        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-fire to-fire-dark text-base font-semibold hover:shadow-lg hover:shadow-fire/40 transition flex items-center justify-center gap-2 disabled:opacity-60"
         style={{ color: '#fff' }}
       >
         {submitting ? 'Отправляем...' : 'Узнать цену и сроки'}
-        <Icon name="Send" size={15} style={{ color: '#fff' }} />
+        <Icon name="Send" size={17} style={{ color: '#fff' }} />
       </button>
     </form>
   );
@@ -244,56 +248,81 @@ const NewArrivals = () => {
               Уникальное <span className="text-fire-gradient">оборудование</span>
             </h2>
           </div>
-          <p className="max-w-md text-sm" style={{ color: 'hsl(var(--ink) / 0.65)' }}>
+          <p className="max-w-md text-base" style={{ color: 'hsl(var(--ink) / 0.65)' }}>
             Новинки, которые только поступили на склад. Количество ограничено — успейте забронировать.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {ARRIVALS.map((item) => (
-            <article
-              key={item.id}
-              className="card-hover relative bg-white rounded-2xl overflow-hidden border-2 border-fire/25 hover:border-fire shadow-xl shadow-fire/10 flex flex-col transition"
-            >
-              <div className="h-1.5 bg-gradient-to-r from-fire via-ember to-fire" />
-              <PhotoSlider pictures={pics[item.id] || [item.image]} alt={item.name} tag={item.tag} />
+        <div className="grid lg:grid-cols-2 gap-6">
+          {ARRIVALS.map((item, idx) => {
+            const wide = idx === ARRIVALS.length - 1 && ARRIVALS.length % 2 === 1;
+            return (
+              <article
+                key={item.id}
+                className={`card-hover relative bg-white rounded-3xl overflow-hidden border-2 border-fire/25 hover:border-fire shadow-xl shadow-fire/10 flex flex-col transition ${
+                  wide ? 'lg:col-span-2' : ''
+                }`}
+              >
+                <div className="h-1.5 bg-gradient-to-r from-fire via-ember to-fire" />
+                <div className={`flex flex-col flex-1 ${wide ? 'lg:flex-row' : ''}`}>
+                  <PhotoSlider
+                    pictures={pics[item.id] || [item.image]}
+                    alt={item.name}
+                    tag={item.tag}
+                    className={wide ? 'lg:w-[34%] lg:h-auto lg:min-h-[420px] shrink-0' : 'h-80'}
+                  />
 
-              <div className="p-4 flex flex-col flex-1 gap-3">
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-fire">{item.short}</div>
-                  <h3 className="font-oswald text-lg font-bold leading-tight mt-0.5">{item.name}</h3>
-                  <p className="text-xs mt-1.5 leading-relaxed" style={{ color: 'hsl(var(--ink) / 0.7)' }}>
-                    {item.description}
-                  </p>
-                </div>
+                  <div className={`p-6 flex-1 ${wide ? 'lg:grid lg:grid-cols-2 lg:gap-8' : 'flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-6'}`}>
+                    <div className="flex flex-col gap-4">
+                      <div>
+                        <div className="text-sm font-bold uppercase tracking-wider text-fire">{item.short}</div>
+                        <h3 className="font-oswald text-2xl font-bold leading-tight mt-1">{item.name}</h3>
+                        <p className="text-base mt-3 leading-relaxed" style={{ color: 'hsl(var(--ink) / 0.75)' }}>
+                          {item.description}
+                        </p>
+                      </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  {item.specs.map((s) => (
-                    <div key={s.label} className="rounded-lg px-2.5 py-2 bg-coal-mid flex items-center gap-2">
-                      <Icon name={s.icon} size={16} className="text-fire shrink-0" />
-                      <div className="min-w-0">
-                        <div className="text-[10px] uppercase tracking-wide leading-none" style={{ color: 'hsl(var(--ink) / 0.5)' }}>
-                          {s.label}
-                        </div>
-                        <div className="text-xs font-semibold truncate mt-0.5">{s.value}</div>
+                      <ul className="space-y-2">
+                        {item.highlights.map((h) => (
+                          <li key={h} className="flex items-start gap-2 text-base">
+                            <Icon name="CircleCheck" size={18} className="text-fire shrink-0 mt-0.5" />
+                            {h}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className={`flex flex-col gap-4 mt-4 md:mt-0`}>
+                      <div className="grid grid-cols-2 gap-2.5">
+                        {item.specs.map((sp) => (
+                          <div key={sp.label} className="rounded-xl px-3 py-2.5 bg-coal-mid flex items-center gap-2.5">
+                            <Icon name={sp.icon} size={20} className="text-fire shrink-0" />
+                            <div className="min-w-0">
+                              <div className="text-xs uppercase tracking-wide leading-tight" style={{ color: 'hsl(var(--ink) / 0.55)' }}>
+                                {sp.label}
+                              </div>
+                              <div className="text-sm font-semibold mt-0.5">{sp.value}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <a
+                        href={`#product-${item.id}`}
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-fire hover:underline w-fit"
+                      >
+                        Все характеристики <Icon name="ArrowRight" size={15} />
+                      </a>
+
+                      <div className="mt-auto">
+                        <ArrivalForm item={item} />
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
-
-                <a
-                  href={`#product-${item.id}`}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-fire hover:underline w-fit"
-                >
-                  Все характеристики <Icon name="ArrowRight" size={13} />
-                </a>
-
-                <div className="mt-auto">
-                  <ArrivalForm item={item} />
-                </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
