@@ -10,7 +10,7 @@ import MixersHero from '@/components/landing/mixers/MixersHero';
 import MixersTypes from '@/components/landing/mixers/MixersTypes';
 import MixersCatalog from '@/components/landing/mixers/MixersCatalog';
 import NewArrivals from '@/components/landing/NewArrivals';
-import { MIXER_ARRIVALS } from '@/components/landing/newArrivalsData';
+import { arrivalsFor } from '@/components/landing/newArrivalsData';
 import MixersWhy from '@/components/landing/mixers/MixersWhy';
 import MixersBrands from '@/components/landing/mixers/MixersBrands';
 import MixersQuiz from '@/components/landing/mixers/MixersQuiz';
@@ -18,6 +18,8 @@ import MixersQuizModal from '@/components/landing/mixers/MixersQuizModal';
 import MixersQuizTeaser from '@/components/landing/mixers/MixersQuizTeaser';
 import MixersFAQ from '@/components/landing/mixers/MixersFAQ';
 import MixersLeadForm from '@/components/landing/mixers/MixersLeadForm';
+
+const ARRIVALS = arrivalsFor('/mixers');
 
 const Mixers = () => {
   useMeta({
@@ -55,7 +57,7 @@ const Mixers = () => {
         <MixersHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
         <MixersTypes onCatalog={scrollToCatalog} />
         <MixersCatalog onLead={(src, payload) => openLead(src, payload, 'Оставить заявку')} />
-        <NewArrivals items={MIXER_ARRIVALS} catalogKey="mixers-catalog" source="mixers-new-arrivals" />
+        <NewArrivals items={ARRIVALS} catalogKey="mixers-catalog" source="mixers-new-arrivals" />
         <MixersWhy />
         <MixersBrands />
         <MixersQuiz />

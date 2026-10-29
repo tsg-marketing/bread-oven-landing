@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
 import { useSessionPopup } from '@/lib/useSessionPopup';
 import NewArrivals from '@/components/landing/NewArrivals';
-import { DEPOSITOR_ARRIVALS } from '@/components/landing/newArrivalsData';
+import { arrivalsFor } from '@/components/landing/newArrivalsData';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -18,6 +18,8 @@ import DepositorQuiz from '@/components/landing/depositor/DepositorQuiz';
 import DepositorQuizModal from '@/components/landing/depositor/DepositorQuizModal';
 import DepositorQuizTeaser from '@/components/landing/depositor/DepositorQuizTeaser';
 import DepositorFAQ from '@/components/landing/depositor/DepositorFAQ';
+
+const ARRIVALS = arrivalsFor('/otsadochnye-mashiny');
 
 const Depositors = () => {
   useMeta({
@@ -53,7 +55,7 @@ const Depositors = () => {
       <main>
         <DepositorHero onQuiz={() => setQuizOpen(true)} onCatalog={scrollToCatalog} />
         <DepositorCatalog onLead={openLead} perf={catFilter} setPerf={setCatFilter} />
-        <NewArrivals items={DEPOSITOR_ARRIVALS} catalogKey="depositor-catalog" source="depositor-new-arrivals" />
+        <NewArrivals items={ARRIVALS} catalogKey="depositor-catalog" source="depositor-new-arrivals" />
         <DepositorTypes
           onCatalog={(c) => {
             setCatFilter(c);

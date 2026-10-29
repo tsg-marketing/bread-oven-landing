@@ -7,6 +7,8 @@ export type Arrival = {
   description: string;
   specs: { icon: string; label: string; value: string; feed?: string }[];
   highlights: string[];
+  page?: string;
+  catalogKey?: string;
 };
 
 export const OVEN_ARRIVALS: Arrival[] = [
@@ -150,4 +152,19 @@ export const DEPOSITOR_ARRIVALS: Arrival[] = [
       'Корпус из нержавеющей стали, на колёсах',
     ],
   },
+];
+
+const withHome = (list: Arrival[], page: string, catalogKey: string) => list.map((a) => ({ ...a, page, catalogKey }));
+
+export const ALL_ARRIVALS: Arrival[] = [
+  ...withHome(OVEN_ARRIVALS, '/', 'catalog'),
+  ...withHome(DOUGH_ARRIVALS, '/testomesi', 'dough-catalog'),
+  ...withHome(MIXER_ARRIVALS, '/mixers', 'mixers-catalog'),
+  ...withHome(PROOFER_ARRIVALS, '/rasstoechnye-shkafy', 'proofer-catalog'),
+  ...withHome(DEPOSITOR_ARRIVALS, '/otsadochnye-mashiny', 'depositor-catalog'),
+];
+
+export const arrivalsFor = (page: string): Arrival[] => [
+  ...ALL_ARRIVALS.filter((a) => a.page === page),
+  ...ALL_ARRIVALS.filter((a) => a.page !== page),
 ];

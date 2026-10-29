@@ -213,17 +213,26 @@ const NewArrivals = ({ items, catalogKey, source = 'new-arrivals' }: Props) => {
   const [feed, setFeed] = useState<Record<string, FeedItem>>({});
 
   useEffect(() => {
-    fetch(func2url[catalogKey])
-      .then((r) => r.json())
-      .then((data) => {
-        const map: Record<string, FeedItem> = {};
+    const keys = Array.from(new Set(items.map((a) => (a.catalogKey || catalogKey) as keyof typeof func2url)));
+    Promise.all(
+      keys.map((k) =>
+        fetch(func2url[k])
+          .then((r) => r.json())
+          .catch(() => ({})),
+      ),
+    ).then((list) => {
+      const map: Record<string, FeedItem> = {};
+      list.forEach((data) => {
         [...(data.items || []), ...(data.planetary || []), ...(data.dough || [])].forEach((it: FeedItem) => {
           if (items.some((a) => a.id === String(it.id))) map[String(it.id)] = it;
         });
-        setFeed(map);
-      })
-      .catch(() => undefined);
+      });
+      setFeed(map);
+    });
   }, [catalogKey, items]);
+
+  const here = typeof window !== 'undefined' ? window.location.pathname : '/';
+  const specsHref = (a: Arrival) => (!a.page || a.page === here ? `#product-${a.id}` : `${a.page}#product-${a.id}`);
 
   const ARRIVALS = items.map((a) => applyFeed(a, feed[a.id]));
   const pics = Object.fromEntries(
@@ -307,7 +316,7 @@ const NewArrivals = ({ items, catalogKey, source = 'new-arrivals' }: Props) => {
                       </div>
 
                       <a
-                        href={`#product-${item.id}`}
+                        href={specsHref(item)}
                         className="inline-flex items-center gap-1 text-sm font-semibold text-fire hover:underline w-fit"
                       >
                         Все характеристики <Icon name="ArrowRight" size={15} />

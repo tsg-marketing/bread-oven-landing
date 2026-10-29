@@ -11,13 +11,15 @@ import DoughHero from '@/components/landing/dough/DoughHero';
 import DoughTypes from '@/components/landing/dough/DoughTypes';
 import DoughCatalog from '@/components/landing/dough/DoughCatalog';
 import NewArrivals from '@/components/landing/NewArrivals';
-import { DOUGH_ARRIVALS } from '@/components/landing/newArrivalsData';
+import { arrivalsFor } from '@/components/landing/newArrivalsData';
 import DoughBenefits from '@/components/landing/dough/DoughBenefits';
 import DoughWhy from '@/components/landing/dough/DoughWhy';
 import DoughQuiz from '@/components/landing/dough/DoughQuiz';
 import DoughQuizModal from '@/components/landing/dough/DoughQuizModal';
 import DoughQuizTeaser from '@/components/landing/dough/DoughQuizTeaser';
 import DoughFAQ from '@/components/landing/dough/DoughFAQ';
+
+const ARRIVALS = arrivalsFor('/testomesi');
 
 const DoughMixers = () => {
   useMeta({
@@ -59,7 +61,7 @@ const DoughMixers = () => {
           }}
         />
         <DoughCatalog onLead={openLead} cat={catFilter} setCat={setCatFilter} />
-        <NewArrivals items={DOUGH_ARRIVALS} catalogKey="dough-catalog" source="dough-new-arrivals" />
+        <NewArrivals items={ARRIVALS} catalogKey="dough-catalog" source="dough-new-arrivals" />
         <DoughBenefits />
         <DoughWhy />
         <DoughQuiz />

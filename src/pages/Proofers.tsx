@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMeta } from '@/lib/useMeta';
 import { useSessionPopup } from '@/lib/useSessionPopup';
 import NewArrivals from '@/components/landing/NewArrivals';
-import { PROOFER_ARRIVALS } from '@/components/landing/newArrivalsData';
+import { arrivalsFor } from '@/components/landing/newArrivalsData';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
@@ -18,6 +18,8 @@ import ProoferQuiz from '@/components/landing/proofer/ProoferQuiz';
 import ProoferQuizModal from '@/components/landing/proofer/ProoferQuizModal';
 import ProoferQuizTeaser from '@/components/landing/proofer/ProoferQuizTeaser';
 import ProoferFAQ from '@/components/landing/proofer/ProoferFAQ';
+
+const ARRIVALS = arrivalsFor('/rasstoechnye-shkafy');
 
 const Proofers = () => {
   useMeta({
@@ -59,7 +61,7 @@ const Proofers = () => {
           }}
         />
         <ProoferCatalog onLead={openLead} capacity={catFilter} setCapacity={setCatFilter} />
-        <NewArrivals items={PROOFER_ARRIVALS} catalogKey="proofer-catalog" source="proofer-new-arrivals" />
+        <NewArrivals items={ARRIVALS} catalogKey="proofer-catalog" source="proofer-new-arrivals" />
         <ProoferBenefits />
         <ProoferWhy />
         <ProoferQuiz />

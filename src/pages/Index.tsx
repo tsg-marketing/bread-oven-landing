@@ -5,7 +5,7 @@ import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import Advantages from '@/components/landing/Advantages';
 import NewArrivals from '@/components/landing/NewArrivals';
-import { OVEN_ARRIVALS } from '@/components/landing/newArrivalsData';
+import { arrivalsFor } from '@/components/landing/newArrivalsData';
 import Catalog from '@/components/landing/Catalog';
 import Comparison from '@/components/landing/Comparison';
 import Quiz from '@/components/landing/Quiz';
@@ -19,6 +19,8 @@ import Footer from '@/components/landing/Footer';
 import LeadModal from '@/components/landing/LeadModal';
 import QuizModal from '@/components/landing/QuizModal';
 import QuizTeaser from '@/components/landing/QuizTeaser';
+
+const ARRIVALS = arrivalsFor('/');
 
 const Index = () => {
   useMeta({
@@ -54,7 +56,7 @@ const Index = () => {
         <Hero onQuiz={openQuiz} onKp={() => openLead('hero-kp', undefined, 'Запросить КП')} />
         <Advantages />
         <Catalog onLead={(src, payload) => openLead(src, payload, 'Оставить заявку')} />
-        <NewArrivals items={OVEN_ARRIVALS} catalogKey="catalog" />
+        <NewArrivals items={ARRIVALS} catalogKey="catalog" />
         <Comparison />
         <Quiz />
         <Technologies />
